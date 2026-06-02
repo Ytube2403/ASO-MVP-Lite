@@ -2013,8 +2013,8 @@ Khi ton tai `selected_keywords.json`, pipeline kiem tra metadata co ban gom mark
 Khi sua logic shared, can chay:
 
 ```powershell
-python -m unittest discover -s ASO-MVP-Max\tests -p "test_*.py"
-python -m py_compile ASO-MVP-Max\shared\language_detector.py ASO-MVP-Max\shared\text_dedup.py ASO-MVP-Max\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Max\apps\App_Template\run_pipeline.py ASO-MVP-Max\apps\AR_Filter\run_ar_filter_v4_0.py ASO-MVP-Max\apps\Control_Widget\run_control_widget_v4_0.py ASO-MVP-Max\apps\Game_Emulator\run_game_emulator_v4_0.py
+python -m unittest discover -s ASO-MVP-Lite\tests -p "test_*.py"
+python -m py_compile ASO-MVP-Lite\shared\language_detector.py ASO-MVP-Lite\shared\text_dedup.py ASO-MVP-Lite\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Lite\apps\App_Template\run_pipeline.py ASO-MVP-Lite\apps\AR_Filter\run_ar_filter_v4_0.py ASO-MVP-Lite\apps\Control_Widget\run_control_widget_v4_0.py ASO-MVP-Lite\apps\Game_Emulator\run_game_emulator_v4_0.py
 ```
 
 ---
@@ -2162,31 +2162,28 @@ Winner priority va `MergedVariants` van duoc giu. Bien the chi gan giong khong t
 `shared/translation_service.py` gom toan bo logic dich keyword sang EN:
 
 ```text
-Provider: LibreTranslate self-host
-Endpoint mac dinh: http://127.0.0.1:5001
-Endpoint override: LIBRETRANSLATE_URL
-API key tuy chon: LIBRETRANSLATE_API_KEY
+Provider: Google GTX mien phi, khong chinh thuc
+Endpoint: https://translate.googleapis.com/translate_a/single
 Cache: .cache/translations.sqlite3
 SQLite mode: WAL
-TLS verification: bat buoc neu endpoint dung HTTPS
+TLS verification: bat buoc
 Retry: toi da 3 lan
 Backoff: 0.5s, 1s, 2s
 Timeout mac dinh: 5s
-Global rate limit mac dinh: 2 request/giay
-DataFrame translation workers mac dinh: 2
-Health check: GET /health, lazy va dung chung cho moi TranslationService
+Global rate limit mac dinh: 5 request/giay
+DataFrame translation workers mac dinh: 10
 ```
 
-Cache key gom provider, source language, target language va normalized keyword. Provider key LibreTranslate tach biet voi cache Google GTX cu. `fil` duoc map sang `tl`; mixed chi gom English va mot ngon ngu khac duoc map truc tiep; `unknown` hoac mixed nhieu ngon ngu duoc gui bang `auto`. Market `BR_PT-BR` uu tien model `pb`.
+Cache key gom provider, source language, target language va normalized keyword. `unknown`, chuoi rong va mixed language nhu `fil+en`, `pt+en` duoc gui bang `auto`. Cac cache key mixed cu van duoc doc de tai su dung cache Google GTX tu phien ban truoc.
 
-Service van ghi trang thai noi bo de test va audit ky thuat:
+Service van ghi trang thai noi bo de test:
 
 | Column | Values |
 |---|---|
-| `TranslationStatus` | `NOT_REQUIRED`, `PROVIDED_EN`, `CACHE_HIT`, `TRANSLATED`, `FAILED_RAW_FALLBACK` |
-| `TranslationError` | Loi cuoi sau retry neu co |
+| `TranslationStatus` | `NOT_REQUIRED`, `PROVIDED_EN`, `CACHE_HIT`, `TRANSLATED` |
+| `TranslationError` | De trong khi thanh cong |
 
-Neu health check hoac dich loi, pipeline tiep tuc dung raw keyword thay vi fail locale va in canh bao tong hop. `TranslationStatus` va `TranslationError` khong hien thi trong workbook review thong thuong.
+GTX la endpoint mien phi khong chinh thuc. Neu dich loi sau retry, service nem `TranslationUnavailableError` de dung locale dang xu ly thay vi tao workbook thieu ban dich. `TranslationStatus` va `TranslationError` khong hien thi trong workbook review thong thuong.
 
 ### 28.7 Shared profile service
 
@@ -2231,8 +2228,7 @@ Quy tac:
 - locale lay tu filename bang shared locale parser
 - locale-only filename van hop le vi manifest da ghi app
 - validate toan bo manifest truoc khi chay
-- cold Libre cache mac dinh --cold-cache-workers 1
-- warm Libre cache mac dinh --max-workers 2
+- mac dinh --max-workers 2 de tranh gui qua nhieu request GTX cung luc
 - khong ho tro interactive mode trong batch
 - mot locale loi khong chan job khac
 - exit code khac 0 neu co it nhat mot job loi

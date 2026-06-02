@@ -1,6 +1,6 @@
 # 🛠️ Prank Sounds ASO Pipeline — Hướng Dẫn Chạy & Cấu Hình
 
-Thư mục này chứa pipeline thực tế cho nhóm app Prank Sounds. Có thể chạy trực tiếp bằng `run_pipeline.py` hoặc chạy qua orchestrator `ASO-MVP-Max/run_aso_filter.py` với file CSV có tên chứa `Prank`/`Pranky`.
+Thư mục này chứa pipeline thực tế cho nhóm app Prank Sounds. Có thể chạy trực tiếp bằng `run_pipeline.py` hoặc chạy qua orchestrator `ASO-MVP-Lite/run_aso_filter.py` với file CSV có tên chứa `Prank`/`Pranky`.
 
 Hệ thống được thiết kế theo hướng **tách biệt cấu hình và mã nguồn**: toàn bộ thông số cấu hình nằm trong file `app_config.py` và hồ sơ ứng dụng nằm trong file `App_Profile.json`.
 
@@ -50,7 +50,7 @@ Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu t�
 
 ## 🚀 Cách chạy Lọc từ khóa
 
-Mở terminal/powershell tại thư mục `ASO-MVP-Max/apps/Prank_Sounds` và chạy trực tiếp pipeline:
+Mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/Prank_Sounds` và chạy trực tiếp pipeline:
 
 ```powershell
 # Chạy ở chế độ tự động xuất Excel trực tiếp
@@ -60,7 +60,7 @@ python run_pipeline.py --csv C:\duong-dan-den\PrankSounds_US_EN.csv --market US_
 python run_pipeline.py --csv C:\duong-dan-den\PrankSounds_US_EN.csv --market US_EN --interactive
 ```
 
-Hoặc chạy từ thư mục gốc `ASO-MVP-Max` qua orchestrator để tự archive input vào `apps/Prank_Sounds/Input/[MMYYYY]/` và xuất output vào `apps/Prank_Sounds/Output/[MMYYYY]/`:
+Hoặc chạy từ thư mục gốc `ASO-MVP-Lite` qua orchestrator để tự archive input vào `apps/Prank_Sounds/Input/[MMYYYY]/` và xuất output vào `apps/Prank_Sounds/Output/[MMYYYY]/`:
 
 ```powershell
 python run_aso_filter.py --csv C:\duong-dan-den\PrankSounds_US_EN.csv
@@ -73,7 +73,7 @@ Kết quả sẽ được xuất thành một file Excel duy nhất chứa đầ
 
 ## Shared platform logic từ v4.0
 
-Pipeline hiện sử dụng các module chung trong `ASO-MVP-Max/shared/`:
+Pipeline hiện sử dụng các module chung trong `ASO-MVP-Lite/shared/`:
 
 - `shared/language_detector.py`: detect ngôn ngữ theo market policy và phân nhóm `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache và version.

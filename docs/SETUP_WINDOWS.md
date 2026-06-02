@@ -11,7 +11,7 @@ Tai lieu nay danh cho may Windows moi. Muc tieu la chay day du pipeline ASO, wor
 | Windows 10/11 64-bit | Moi truong chay | PowerShell co san trong Windows |
 | [Python](https://www.python.org/downloads/windows/) 3.11+ 64-bit | Chay pipeline va test | Khi cai dat, dam bao lenh `python` hoat dong trong terminal |
 | Python packages trong `requirements.txt` | Xu ly CSV, Excel, dashboard, detect ngon ngu va stemming | Cai bang `python -m pip install -r requirements.txt` |
-| LibreTranslate local | Dich keyword moi sang English | Khoi dong bang `tools\start_libretranslate.ps1` trong terminal rieng |
+| Ket noi Internet | Dich keyword moi chua co cache bang Google GTX | GTX la endpoint mien phi khong chinh thuc |
 | Trinh duyet web hien dai | Mo dashboard va interactive selector | Microsoft Edge hoac Google Chrome deu duoc |
 | Microsoft Excel hoac [LibreOffice Calc](https://www.libreoffice.org/download/download-libreoffice/) | Mo va review workbook `.xlsx` | Excel duoc khuyen nghi de xem format chinh xac nhat |
 
@@ -37,13 +37,13 @@ Khi mo workspace bang VS Code, file `.vscode/extensions.json` se de xuat ba exte
 
 - Khong can Node.js, npm, Java, Docker hoac database server.
 - SQLite da nam trong Python standard library. Pipeline dung SQLite cho translation cache va tracker database local.
-- LibreTranslate duoc cai trong `.venv-libretranslate` rieng, khong them package nang vao moi truong pipeline `.venv`.
+- Khong can cai LibreTranslate, model dich local hoac translation service rieng.
 - PowerShell va Microsoft Edge thuong da co san tren Windows.
 - AppTweak hoac Sensor Tower chi la nguon xuat CSV. Pipeline khong bat buoc cai extension hay SDK cua cac dich vu nay.
 
 ## 3. Cai dat tu dau
 
-Mo PowerShell tai thu muc `ASO-MVP-Max`:
+Mo PowerShell tai thu muc `ASO-MVP-Lite`:
 
 ```powershell
 python --version
@@ -85,41 +85,11 @@ python -m compileall -q .
 
 Test suite phai ket thuc bang `OK` va khong con dong Snowball `skipped`.
 
-## 6. Khoi dong LibreTranslate local
+## 6. Dich keyword tren ban Lite
 
-Mo mot terminal PowerShell rieng tai thu muc `ASO-MVP-Max`:
+Ban Lite dung Google GTX mien phi qua HTTPS. Khong can khoi dong service local hoac mo them terminal. Cache SQLite tai `.cache/translations.sqlite3` duoc uu tien truoc khi gui request mang.
 
-```powershell
-.\tools\start_libretranslate.ps1
-```
-
-Helper tao `.venv-libretranslate`, cai LibreTranslate `1.9.6` neu can va chay foreground tai `http://127.0.0.1:5001`. Mac dinh daily profile chi load `en,es,pt,pb,id,hi,tl`, dung `2` thread, tat web UI va file translation de giam workload.
-
-Khi can audit ngoai ngu rong hon:
-
-```powershell
-.\tools\start_libretranslate.ps1 -Profile extended
-```
-
-Chi dung `-Profile all` tren may du tai nguyen khi that su can load tat ca model.
-
-Kiem tra service tu terminal khac:
-
-```powershell
-Invoke-RestMethod http://127.0.0.1:5001/health
-python tools\check_libretranslate_quality.py
-```
-
-Port `5001` duoc dung de tranh xung dot voi Keyword Tracker Dashboard tai port `5000`. Neu can endpoint khac:
-
-```powershell
-$env:LIBRETRANSLATE_URL = "http://127.0.0.1:5002"
-.\tools\start_libretranslate.ps1 -Port 5002
-```
-
-Neu endpoint da bat API key, dat them `$env:LIBRETRANSLATE_API_KEY`.
-
-Pipeline van tiep tuc tao workbook neu LibreTranslate tam thoi khong chay: keyword chua co cache duoc giu nguyen va ghi audit ky thuat.
+GTX la endpoint khong chinh thuc. Neu dich loi sau retry, pipeline dung locale dang xu ly de tranh tao workbook thieu ban dich. Thu lai khi ket noi mang on dinh, hoac dung [ASO-MVP-Max](https://github.com/Ytube2403/ASO-MVP-Max) neu can LibreTranslate local.
 
 ## 7. Dang nhap GitHub cho Sync.bat
 
@@ -134,7 +104,7 @@ gh auth status
 
 ## 8. Chay thu pipeline
 
-Tu thu muc `ASO-MVP-Max`:
+Tu thu muc `ASO-MVP-Lite`:
 
 ```powershell
 python run_aso_filter.py --csv C:\duong_dan\Pranky_US_EN.csv
@@ -145,8 +115,8 @@ Dashboard mo tai `http://localhost:5000`.
 
 ## 9. Ket noi mang
 
-- Can internet khi cai LibreTranslate lan dau, tai model hoac refresh profile tu Google Play.
-- Sau khi tai model, LibreTranslate local co the dich offline. Pipeline cung co the dung translation cache SQLite khi service dang tat.
+- Can Internet khi dich keyword chua co cache hoac refresh profile tu Google Play.
+- Translation cache SQLite giam request GTX, nhung ban Lite khong dam bao dich offline khi cache thieu.
 - Neu dung GitHub clone, pull hoac push thi can internet va quyen truy cap repository.
 
 ## 10. Xu ly loi nhanh
@@ -175,7 +145,7 @@ Dong va mo lai terminal sau khi cai dat. Neu van loi, kiem tra bien moi truong `
 
 Dong file `.xlsx` trong Excel hoac truyen `--output` voi ten file moi.
 
-### Muon dich lai keyword bang model LibreTranslate moi
+### Muon dich lai toan bo keyword
 
 Dung pipeline, sau do xoa cache local:
 

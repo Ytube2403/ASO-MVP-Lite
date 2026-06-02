@@ -50,7 +50,7 @@ Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu t�
 
 ## 🚀 Cách chạy Lọc từ khóa
 
-Nếu đang cấu hình app mới từ `App_Template`, mở terminal/powershell tại thư mục `ASO-MVP-Max/apps/App_Template` và chạy trực tiếp pipeline template:
+Nếu đang cấu hình app mới từ `App_Template`, mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/App_Template` và chạy trực tiếp pipeline template:
 
 ```powershell
 # Chạy ở chế độ tự động xuất Excel trực tiếp
@@ -60,7 +60,7 @@ python run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
 python run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN --interactive
 ```
 
-Nếu chạy từ thư mục gốc `ASO-MVP-Max`, dùng đường dẫn script đầy đủ:
+Nếu chạy từ thư mục gốc `ASO-MVP-Lite`, dùng đường dẫn script đầy đủ:
 
 ```powershell
 python apps\App_Template\run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
@@ -72,7 +72,7 @@ Kết quả sẽ tự động được xuất ra cùng thư mục với file CSV
 
 ## 📊 Các bước tiếp theo sau khi lọc
 
-Sau khi chạy pipeline lọc từ khóa thành công, mở terminal tại thư mục gốc `ASO-MVP-Max` nếu muốn sử dụng thêm 2 công cụ bổ trợ:
+Sau khi chạy pipeline lọc từ khóa thành công, mở terminal tại thư mục gốc `ASO-MVP-Lite` nếu muốn sử dụng thêm 2 công cụ bổ trợ:
 
 ### Xuất danh sách Master Keywords
 Gộp tất cả keyword đã thu thập (từ mọi tháng) thành 1 danh sách sạch sau khi loại bỏ keyword không liên quan (`irrelevant_intent`, `noise_only`). Danh sách này dùng để nhập batch vào AppTweak mỗi tháng:
@@ -96,7 +96,7 @@ Dashboard sẽ tự động mở trình duyệt tại `http://127.0.0.1:5000` v�
 
 ## Shared platform logic v4.0
 
-Template pipeline hien su dung cac module chung trong `ASO-MVP-Max/shared/`:
+Template pipeline hien su dung cac module chung trong `ASO-MVP-Lite/shared/`:
 
 - `shared/language_detector.py`: detect ngon ngu theo market policy va phan nhom `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache va version.

@@ -10,7 +10,6 @@
 __pycache__/
 *.py[cod]
 *.pyo
-.venv-libretranslate/
 
 # ── Data files (mỗi máy có data riêng) ──
 # Legacy nested workspace accidentally committed before the ASO-MVP cleanup.
