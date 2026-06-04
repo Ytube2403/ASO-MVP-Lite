@@ -1,4 +1,4 @@
-﻿import pandas as pd
+import pandas as pd
 import numpy as np
 import re
 import os
@@ -23,6 +23,7 @@ from shared import text_dedup as _shared_text_dedup
 from shared import profile_service as _shared_profile_service
 from shared import project_memory as _shared_project_memory
 from shared import translation_service as _shared_translation_service
+from shared import ai_keyword_classifier as _shared_ai_keyword_classifier
 from shared.paths import COUNTRY_LANGUAGE_MAP_PATH, DOCS_DIR
 
 # Parse arguments
@@ -54,6 +55,34 @@ config = {
         "review_overlap_threshold": 0.80,
         "accent_fold_auto_merge_locales": [],
         "enable_review_log": True,
+    },
+    "ai_keyword_classifier": {
+        "enabled": True,
+        "provider": "deepseek",
+        "model": "deepseek-v4-flash",
+        "batch_size": 50,
+        "requests_per_second": 2.0,
+        "prompt_version": "aso-keyword-classifier-v1",
+        "fail_on_api_error": True,
+        "min_confidence": 0.55,
+        "cache_path": ".cache/ai_keyword_analysis.sqlite3",
+        "pre_filter": {
+            "enabled": True,
+            "duplicate_strategy": "canonical_reuse",
+            "preserve_if_matches_intent": True,
+            "allow_possible_truncated_to_ai": True,
+            "skip_rules": [
+                "empty_keyword",
+                "duplicate_keyword",
+                "competitor_brand",
+                "typo_blacklist",
+                "truncated_keyword",
+                "irrelevant_intent",
+                "noise_only",
+                "platform_affiliation",
+                "platform_only"
+            ]
+        }
     },
 
     "intent_core_terms": [
@@ -178,18 +207,18 @@ market_lang = config["market"].split("_")[1].upper() if "_" in config["market"] 
 
 localized_data = {
     "ES": {
-        "intent_core_words": ["filtro", "filtros", "cÃ¡mara", "camara", "efecto", "efectos", "lente", "lentes"],
-        "intent_core_terms": ["filtro ar", "filtros ar", "camara ar", "cÃ¡mara ar", "filtro de cara", "filtros de cara", "filtro de rostro", "filtros de rostro", "efeito ar", "efecto ar", "efectos ar", "filtro divertido", "filtros divertidos", "filtro gracioso", "filtros graciosos", "filtro de perro", "filtros de perro", "filtro de perrito", "filtros de perrito", "filtro meme", "filtros de memes", "filtro facial", "filtros faciales"],
-        "feature_terms": ["personaje 3d", "personajes 3d", "personaje ar", "personajes ar", "video divertido", "videos divertidos", "video ar", "videos ar", "broma de filtro", "filtro de broma", "deformar cara", "cara de perro", "cara de perrito", "filtro feo", "filtro de llanto", "filtro calvo", "efecto calvo", "muÃ±eco 3d", "muÃ±eco animado", "avatar animado", "personaje animado", "personajes animados"],
+        "intent_core_words": ["filtro", "filtros", "cámara", "camara", "efecto", "efectos", "lente", "lentes"],
+        "intent_core_terms": ["filtro ar", "filtros ar", "camara ar", "cámara ar", "filtro de cara", "filtros de cara", "filtro de rostro", "filtros de rostro", "efeito ar", "efecto ar", "efectos ar", "filtro divertido", "filtros divertidos", "filtro gracioso", "filtros graciosos", "filtro de perro", "filtros de perro", "filtro de perrito", "filtros de perrito", "filtro meme", "filtros de memes", "filtro facial", "filtros faciales"],
+        "feature_terms": ["personaje 3d", "personajes 3d", "personaje ar", "personajes ar", "video divertido", "videos divertidos", "video ar", "videos ar", "broma de filtro", "filtro de broma", "deformar cara", "cara de perro", "cara de perrito", "filtro feo", "filtro de llanto", "filtro calvo", "efecto calvo", "muñeco 3d", "muñeco animado", "avatar animado", "personaje animado", "personajes animados"],
         "style_terms": ["divertido", "gracioso", "perro", "perrito", "mascota", "mascotas", "broma", "bromas", "animado", "realidad aumentada", "virtual"],
-        "visual_terms": ["foto", "fotos", "video", "videos", "cÃ¡mara", "camara", "selfie", "selfies", "imagen", "imÃ¡genes"]
+        "visual_terms": ["foto", "fotos", "video", "videos", "cámara", "camara", "selfie", "selfies", "imagen", "imágenes"]
     },
     "PT": {
-        "intent_core_words": ["filtro", "filtros", "cÃ¢mera", "camera", "efeito", "efeitos", "lente", "lentes"],
-        "intent_core_terms": ["filtro ar", "filtros ar", "camera ar", "cÃ¢mera ar", "filtro de cara", "filtros de cara", "filtro de rosto", "filtros de rosto", "efeito ar", "efeitos ar", "filtro divertido", "filtros divertidos", "filtro engraÃ§ado", "filtros engraÃ§ados", "filtro de cachorro", "filtros de cachorro", "filtro de cÃ£o", "filtro de pet", "filtro meme", "filtros de memes", "filtro facial", "filtros faciais"],
+        "intent_core_words": ["filtro", "filtros", "câmera", "camera", "efeito", "efeitos", "lente", "lentes"],
+        "intent_core_terms": ["filtro ar", "filtros ar", "camera ar", "câmera ar", "filtro de cara", "filtros de cara", "filtro de rosto", "filtros de rosto", "efeito ar", "efeitos ar", "filtro divertido", "filtros divertidos", "filtro engraçado", "filtros engraçados", "filtro de cachorro", "filtros de cachorro", "filtro de cão", "filtro de pet", "filtro meme", "filtros de memes", "filtro facial", "filtros faciais"],
         "feature_terms": ["personagem 3d", "personagens 3d", "personagem ar", "personagens ar", "video divertido", "videos divertidos", "video ar", "videos ar", "piada de filtro", "filtro de piada", "deformar rosto", "cara de cachorro", "filtro feio", "filtro de choro", "filtro careca", "efeito careca", "boneco 3d", "boneco animado", "avatar animado", "personagem animado", "personagens animados"],
-        "style_terms": ["divertido", "engraÃ§ado", "cachorro", "cÃ£o", "pet", "pets", "piada", "piadas", "animado", "realidade aumentada", "virtual"],
-        "visual_terms": ["foto", "fotos", "video", "videos", "cÃ¢mera", "camera", "selfie", "selfies", "imagem", "imagens"]
+        "style_terms": ["divertido", "engraçado", "cachorro", "cão", "pet", "pets", "piada", "piadas", "animado", "realidade aumentada", "virtual"],
+        "visual_terms": ["foto", "fotos", "video", "videos", "câmera", "camera", "selfie", "selfies", "imagem", "imagens"]
     },
     "ID": {
         "intent_core_words": ["filter", "kamera", "efek", "lensa"],
@@ -650,29 +679,23 @@ except Exception as e:
     print(f"Warning loading shared language detector: {e}. Falling back to legacy detector.")
 
 # Populate language columns in df
-detected_langs = []
-lang_groups = []
-
-for idx, row in df.iterrows():
-    # If columns already exist in raw data, use them
-    raw_lang = df_raw.loc[idx, 'DetectedLanguage'] if 'DetectedLanguage' in df_raw.columns else None
-    raw_group = df_raw.loc[idx, 'LanguageGroup'] if 'LanguageGroup' in df_raw.columns else None
-    
-    if pd.notna(raw_lang) and pd.notna(raw_group):
-        detected_langs.append(raw_lang)
-        lang_groups.append(raw_group)
-    else:
-        lang, group = detect_keyword_language(row['Keyword'], config.get('market', 'US_EN'), config)
-        detected_langs.append(lang)
-        lang_groups.append(group)
-
-df['DetectedLanguage'] = detected_langs
-df['LanguageGroup'] = lang_groups
+ai_language_frame = _shared_ai_keyword_classifier.analyze_dataframe(
+    df,
+    config,
+    app_profile=app_profile,
+    cache_path=os.path.join(_SHARED_ROOT, ".cache", "ai_keyword_analysis.sqlite3"),
+    market=config.get("market", ""),
+    english_vocab=english_vocab,
+)
+for column in _shared_ai_keyword_classifier.OUTPUT_COLUMNS:
+    df[column] = ai_language_frame[column]
 
 # Translate non-English keywords to English
 print("[Step 2.5] Translating non-English keywords to English...")
+provided_en = df_raw['EN'].fillna('').astype(str) if 'EN' in df_raw.columns else pd.Series("", index=df.index)
+provided_en = provided_en.where(provided_en.str.strip() != "", df['AIEnglishGloss'].fillna('').astype(str))
 translation_frame = _shared_translation_service.translate_dataframe(
-    df, cache_path=os.path.join(_SHARED_ROOT, ".cache", "translations.sqlite3"),
+    df, provided_en=provided_en, cache_path=os.path.join(_SHARED_ROOT, ".cache", "translations.sqlite3"),
     market=config.get("market", ""),
 )
 df[['EN', 'TranslationStatus', 'TranslationError']] = translation_frame
@@ -716,7 +739,7 @@ def check_naturalness(kw, config):
         if re.search(pat, kw_lower):
             return 'UNNATURAL', 'Fails structural validation'
     for char in kw_lower:
-        if ord(char) > 127 and char not in 'Ã¡Ã©Ã­Ã³ÃºÃ¼Ã±Â¿Â¡Ã­Ã³Ãº':
+        if ord(char) > 127 and char not in 'áéíóúüñ¿¡íóú':
             return 'LANGUAGE_BLEED', 'Foreign script character detected'
     return 'OK', 'Natural enough for keyword research'
 
@@ -1296,15 +1319,15 @@ for idx, entry in enumerate(all_shortlist):
     sec = entry['Section']
     if sec == 'Core Intent Final':
         if idx < 2:
-            entry['WhereToUse'] = 'ðŸ·ï¸ Title'
+            entry['WhereToUse'] = '🏷️ Title'
         elif idx < 9:
-            entry['WhereToUse'] = 'ðŸ“± Short Description'
+            entry['WhereToUse'] = '📱 Short Description'
         else:
-            entry['WhereToUse'] = 'ðŸ“„ Full Description'
+            entry['WhereToUse'] = '📄 Full Description'
     elif sec == 'Broad Expansion':
-        entry['WhereToUse'] = 'ðŸ“„ Full Description'
+        entry['WhereToUse'] = '📄 Full Description'
     else:
-        entry['WhereToUse'] = 'ðŸ” Consider / Research Only'
+        entry['WhereToUse'] = '🔍 Consider / Research Only'
 
 df_shortlist = pd.DataFrame(all_shortlist)
 
@@ -1516,6 +1539,7 @@ ws_report.column_dimensions['E'].width = 65
 # --- 06_All_Candidates ---
 ws_all = wb.create_sheet(title="06_All_Candidates")
 cols_all = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'RelevancyScore', 'CompetitorProven', 'ProvenDetails', 'Bucket',
+            'NeedsAI', 'PreAIAction', 'PreAIRule', 'PreAIReason', 'CanonicalKeyword', 'AISemanticBucket', 'AIDecisionRule', 'AIReason', 'AIConfidence', 'AIStatus',
             'DetectedLanguage', 'LanguageGroup', 'NaturalnessFlag', 'Reason', 'HardFilterRule', 'HardFilterTerm', 'HardFilterSource', 'PolicyFlags']
 for col_idx, col in enumerate(cols_all, 1):
     ws_all.cell(row=1, column=col_idx, value=col)
