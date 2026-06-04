@@ -1,4 +1,4 @@
-# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.0
+# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.1
 
 Ban Lite dung Google GTX mien phi de giam workload tren may yeu. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
 
@@ -23,6 +23,7 @@ ASO-MVP-Lite/
 |   |-- language_detector.py
 |   |-- translation_service.py
 |   |-- profile_service.py
+|   |-- project_memory.py          # Snapshot setup cho Dashboard, workbook va handoff MD
 |   `-- text_dedup.py
 |
 |-- tools/                        # Cong cu van hanh
@@ -34,7 +35,7 @@ ASO-MVP-Lite/
 |   `-- static/
 |
 |-- docs/                         # Dac ta, template, guide va tu dien
-|   |-- ASO_Keyword_Planner_v4_0.md
+|   |-- ASO_Keyword_Planner_v4_1.md
 |   |-- SETUP_WINDOWS.md
 |   |-- README_File_Guide.md
 |   `-- english_words_10k.txt
@@ -55,8 +56,9 @@ ASO-MVP-Lite/
 
 ## Nguyen tac
 
-- Moi app giu `app_config.py`, `App_Profile.json`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
-- Logic loc, parser locale, dich, profile va dedup phai dung module trong `shared/`.
+- Moi app giu `app_config.py`, `App_Profile.json`, `PROJECT_MEMORY.md`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
+- Logic loc, parser locale, dich, profile, project memory va dedup phai dung module trong `shared/`.
+- Truncation logic v4.1 duoc harden trong shared engine: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
@@ -103,7 +105,7 @@ python run_aso_filter.py --csv C:\duong_dan\ARFilter_US_EN.csv --interactive
 python run_aso_filter.py --csv C:\duong_dan\US_EN.csv --app Pranky
 ```
 
-Orchestrator archive CSV vao `apps/<AppName>/Input/<MMYYYY>/` va ghi workbook vao `apps/<AppName>/Output/<MMYYYY>/`.
+Orchestrator archive CSV vao `apps/<AppName>/Input/<MMYYYY>/`, ghi workbook vao `apps/<AppName>/Output/<MMYYYY>/`, them sheet `00_Project_Memory` va cap nhat `apps/<AppName>/PROJECT_MEMORY.md`.
 
 ## Chay dashboard
 
@@ -111,7 +113,7 @@ Orchestrator archive CSV vao `apps/<AppName>/Input/<MMYYYY>/` va ghi workbook va
 python tracker/run_dashboard.py
 ```
 
-Dashboard mo tai `http://localhost:5000`.
+Dashboard mo tai `http://localhost:5000`. Tab `Setup` hien thi Project Memory cua app dang chon: identity, positioning, keyword setup, competitor setup, risk/drop policy, overrides, quota va warnings.
 
 ## Chay batch
 
@@ -149,7 +151,7 @@ python -m compileall -q .
 
 ## Tai lieu
 
-- [Dac ta pipeline v4.0](docs/ASO_Keyword_Planner_v4_0.md)
+- [Dac ta pipeline v4.1](docs/ASO_Keyword_Planner_v4_1.md)
 - [Cai dat Windows day du](docs/SETUP_WINDOWS.md)
 - [Huong dan cac file](docs/README_File_Guide.md)
 - [Template app moi](apps/App_Template/README.md)

@@ -15,6 +15,7 @@ apps/App_Template/
 ├── README.md                      (Tài liệu hướng dẫn này)
 ├── app_config.py                  (Nơi điền từ khóa, thương hiệu đối thủ, trọng số điểm)
 ├── App_Profile.json               (Nơi điền mô tả hiện tại và đối thủ của app)
+├── PROJECT_MEMORY.md              (Snapshot setup tự sinh sau mỗi lần chạy pipeline thành công)
 ├── run_pipeline.py                (Mã nguồn chạy 10 bước lọc - KHÔNG cần chỉnh sửa)
 ├── interactive_optimizer.html     (Giao diện Web tối ưu hóa từ khóa)
 └── interactive_description_editor.html (Giao diện Web soạn thảo mô tả ASO)
@@ -42,6 +43,8 @@ Mở file `App_Profile.json` và điền:
 2. `live_store_metadata`: Short Description hiện tại của bạn.
 3. `suggested_competitors`: Danh sách từ 3-5 đối thủ cạnh tranh chính. Đối với mỗi đối thủ, điền `package_id`, `title`, `short_description` và một đoạn mô tả ngắn (`desc200`). Script sẽ quét thông tin này để tự động cộng điểm ưu tiên (`Competitor Boost`) cho các từ khóa mà đối thủ của bạn đang sử dụng hiệu quả.
 
+Project Memory sẽ đọc trực tiếp `app_config.py` và `App_Profile.json` để hiển thị lại setup hiện tại trong Dashboard tab `Setup`, sheet `00_Project_Memory` và file `PROJECT_MEMORY.md`. Không cần nhập thêm dữ liệu riêng cho phần này.
+
 ### Bước 3: Đặt tên file dữ liệu đầu vào chuẩn
 Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu tên theo chuẩn:
 `[AppName]_[Country]_[Language].csv` (Ví dụ: `MyNewApp_US_EN.csv`).
@@ -66,7 +69,7 @@ Nếu chạy từ thư mục gốc `ASO-MVP-Lite`, dùng đường dẫn script 
 python apps\App_Template\run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
 ```
 
-Kết quả sẽ tự động được xuất ra cùng thư mục với file CSV đầu vào, trừ khi truyền thêm `--output`. File Excel chứa đầy đủ báo cáo, shortlist Top 30, danh sách Consider và lý do cụ thể loại/giữ từng từ khóa.
+Kết quả sẽ tự động được xuất ra cùng thư mục với file CSV đầu vào, trừ khi truyền thêm `--output`. File Excel chứa đầy đủ báo cáo, shortlist Top 30, danh sách Consider, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.
 
 ---
 
@@ -90,11 +93,11 @@ Theo dõi và so sánh hiệu suất keyword qua các tháng bằng giao diện 
 ```powershell
 python tracker/run_dashboard.py
 ```
-Dashboard sẽ tự động mở trình duyệt tại `http://127.0.0.1:5000` với các biểu đồ ASO Power Score, bảng so sánh keyword chi tiết và danh sách biến động thứ hạng.
+Dashboard sẽ tự động mở trình duyệt tại `http://127.0.0.1:5000` với các biểu đồ ASO Power Score, bảng so sánh keyword chi tiết, danh sách biến động thứ hạng và tab `Setup` để xem Project Memory của app đang chọn.
 
 ---
 
-## Shared platform logic v4.0
+## Shared platform logic v4.1
 
 Template pipeline hien su dung cac module chung trong `ASO-MVP-Lite/shared/`:
 
@@ -103,6 +106,7 @@ Template pipeline hien su dung cac module chung trong `ASO-MVP-Lite/shared/`:
 - `shared/text_dedup.py`: dedup Unicode indexed `NFKC` + `casefold()`, stemming theo locale, va ghi `MergedVariants` cho main shortlist.
 - `shared/translation_service.py`: dich EN voi SQLite WAL cache, retry, global rate limit va TLS verification.
 - `shared/profile_service.py`: doc custom profile uu tien tuyet doi, generated cache atomic va stale fallback.
+- `shared/project_memory.py`: tao setup overview cho Tracker tab `Setup`, sheet `00_Project_Memory` va `PROJECT_MEMORY.md`.
 - `shared/locale_parser.py`: parse locale dung chung cho orchestrator, exporter, tracker va batch runner.
 
 Quy tac quan trong:
@@ -113,6 +117,9 @@ Quy tac quan trong:
 - `SECONDARY` giu o `Consider Keywords`.
 - Naturalness khong con drop non-Latin/script khac bang `LANGUAGE_BLEED`; ngon ngu do language detector xu ly.
 - Selection cache chi duoc dung lai khi metadata `app_id`, market, input hash, config hash va engine version khop run hien tai.
+- Low-volume keyword co the vao shortlist/Consider khi config v4.1 dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.
+- Truncation v4.1 bao ve complete token va singular/plural: `battery emoji`, `battery icon`, `prank sound`, `ar filter`, `control widget` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.
+- Hoan vi thu tu tu duoc giu nhu keyword doc lap khi `auto_merge_token_bag=False`.
 - Dedup chi ap dung cho `01_Main_Keyword_Shortlist`. Cac sheet tinh nang/style chi sort theo uu tien thong thuong.
 - Accent-fold va keyword chi gan giong duoc giu nhu keyword doc lap; khong con `ReviewVariants`.
 

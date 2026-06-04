@@ -111,7 +111,7 @@ python run_aso_filter.py --csv C:\duong_dan\Pranky_US_EN.csv
 python tracker\run_dashboard.py
 ```
 
-Dashboard mo tai `http://localhost:5000`.
+Dashboard mo tai `http://localhost:5000`. Sau khi chay pipeline, workbook phai co sheet `00_Project_Memory`, app folder phai co `PROJECT_MEMORY.md`, va Dashboard tab `Setup` phai hien thi setup cua app dang chon.
 
 ## 9. Ket noi mang
 
