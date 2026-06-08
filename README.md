@@ -1,4 +1,4 @@
-# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.1
+# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.2
 
 Ban Lite dung Google GTX mien phi de giam workload tren may yeu. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
 
@@ -35,7 +35,7 @@ ASO-MVP-Lite/
 |   `-- static/
 |
 |-- docs/                         # Dac ta, template, guide va tu dien
-|   |-- ASO_Keyword_Planner_v4_1.md
+|   |-- ASO_Keyword_Planner_v4_2.md
 |   |-- SETUP_WINDOWS.md
 |   |-- README_File_Guide.md
 |   `-- english_words_10k.txt
@@ -58,9 +58,34 @@ ASO-MVP-Lite/
 
 - Moi app giu `app_config.py`, `App_Profile.json`, `PROJECT_MEMORY.md`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
 - Logic loc, parser locale, dich, profile, project memory va dedup phai dung module trong `shared/`.
-- Truncation logic v4.1 duoc harden trong shared engine: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
+- Truncation logic v4.2 duoc harden trong shared engine: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
+- DeepSeek AI classifier v4.2 chay sau `pre_ai_filter`: duplicate/noise/competitor/typo/irrelevant ro rang duoc skip truoc API, con keyword rong lien quan van duoc gui AI va cache de tai su dung.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
+
+## AI keyword classifier v4.2
+
+Khuyen nghi tao file `.env` tu template va dien key local:
+
+```powershell
+Copy-Item .env.example .env
+notepad .env
+```
+
+Noi dung `.env`:
+
+```env
+DEEPSEEK_API_KEY=your_key_here
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+```
+
+File `.env` da nam trong `.gitignore`, khong commit len repo. Neu khong dung `.env`, co the set key tam thoi trong terminal:
+
+```powershell
+$env:DEEPSEEK_API_KEY = "your_key_here"
+```
+
+Ket qua AI duoc cache tai `.cache/ai_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus` de biet keyword nao duoc goi AI, keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc API.
 
 ## Cai dat
 
@@ -113,7 +138,7 @@ Orchestrator archive CSV vao `apps/<AppName>/Input/<MMYYYY>/`, ghi workbook vao 
 python tracker/run_dashboard.py
 ```
 
-Dashboard mo tai `http://localhost:5000`. Tab `Setup` hien thi Project Memory cua app dang chon: identity, positioning, keyword setup, competitor setup, risk/drop policy, overrides, quota va warnings.
+Dashboard mo tai `http://127.0.0.1:5100`. Tab `Setup` hien thi Project Memory cua app dang chon: identity, positioning, keyword setup, competitor setup, risk/drop policy, overrides, quota va warnings.
 
 ## Chay batch
 
@@ -151,7 +176,7 @@ python -m compileall -q .
 
 ## Tai lieu
 
-- [Dac ta pipeline v4.1](docs/ASO_Keyword_Planner_v4_1.md)
+- [Dac ta pipeline v4.2](docs/ASO_Keyword_Planner_v4_2.md)
 - [Cai dat Windows day du](docs/SETUP_WINDOWS.md)
 - [Huong dan cac file](docs/README_File_Guide.md)
 - [Template app moi](apps/App_Template/README.md)
