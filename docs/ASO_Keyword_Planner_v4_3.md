@@ -1,6 +1,6 @@
 # ASO Keyword Planner
 
-**PhiÃªn báº£n:** 4.1
+**PhiÃªn báº£n:** 4.3
 **TÃªn cÅ©:** ASO Keyword Master Pipeline â€” Universal Template
 **TÃªn má»›i:** ASO Keyword Planner
 **Má»¥c Ä‘Ã­ch:** Lá»c, cháº¥m Ä‘iá»ƒm, phÃ¢n nhÃ³m vÃ  xuáº¥t shortlist keyword ASO theo tá»«ng app, tá»«ng market, tá»«ng ngÃ´n ngá»¯ vÃ  tá»«ng ná»n táº£ng metadata.
@@ -225,16 +225,18 @@ NhÃ³m nÃ y cÃ³ thá»ƒ gá»“m:
 - Keyword cÃ³ volume tá»‘t nhÆ°ng cáº§n review thÃªm.
 - Keyword Ä‘iá»ƒm cao nhÆ°ng bá»‹ loáº¡i khá»i Top 30 do overlap hoáº·c quota.
 
-Sub-quota máº·c Ä‘á»‹nh cho 10 Consider:
+Consider khong chia sub-quota theo nhom. 10 slot Consider duoc chon nhu mot review pool duy nhat, uu tien keyword co chat luong tot nhat:
 
-| NhÃ³m | Quota gá»£i Ã½ | Ghi chÃº |
-|---|---:|---|
-| Platform-style / risky-but-relevant | 4 | VÃ­ dá»¥ iPhone / iOS / OS version |
-| Secondary language | 3 | Chá»‰ Ã¡p dá»¥ng náº¿u market cÃ³ secondary language phÃ¹ há»£p |
-| High-score missed opportunities | 3 | Keyword Ä‘iá»ƒm tá»‘t nhÆ°ng khÃ´ng vÃ o Top 30 |
+```text
+1. RelevancyScore cao
+2. VolumeN cao
+3. BalancedScore cao
+4. Rank_numeric tot hon
+5. KEI cao hon
+6. Difficulty thap hon
+```
 
-Náº¿u má»™t nhÃ³m khÃ´ng Ä‘á»§ keyword, quota cÃ²n láº¡i cÃ³ thá»ƒ chuyá»ƒn cho nhÃ³m khÃ¡c. KhÃ´ng Ä‘Æ°á»£c nhÃ©t keyword yáº¿u chá»‰ Ä‘á»ƒ Ä‘á»§ sá»‘ lÆ°á»£ng.
-
+Platform-style, secondary language, risky IP, mixed-language hop le va missed opportunities deu co the vao Consider neu van match app/core intent. Tuy nhien chung khong duoc giu slot rieng; keyword yeu khong duoc chen vao chi de du nhom.
 VÃ­ dá»¥ vá»›i Control Widget US_EN:
 
 ```text
@@ -306,7 +308,6 @@ APP_CONFIG = {
         "allow_secondary_in_top25_core": False,
         "allow_secondary_in_broad_expansion": False,
         "secondary_max_quota_in_broad": 0,
-        "secondary_max_quota_in_consider": 3,
         "allow_secondary_in_feature_file": False,
         "allow_secondary_in_style_file": False,
 
@@ -375,7 +376,6 @@ APP_CONFIG = {
             "max_keywords": 30,
             "intent_linked_style": 15,
             "broad_style": 10,
-            "platform_style_consider": 5
         },
         "fallback_policy": {
             "allow_under_quota": True,
@@ -843,7 +843,7 @@ HistoricalVolumeN = exp_curve(Max. Volume, floor=5, ceiling=100)
 VolumeN = 0.85 * CurrentVolumeN + 0.15 * HistoricalVolumeN
 ```
 
-Náº¿u `Volume <= 5`, `VolumeN` bá»‹ giá»›i háº¡n tá»‘i Ä‘a á»Ÿ `0.05`. Keyword tier tháº¥p váº«n cÃ²n trong pool nghiÃªn cá»©u, nhÆ°ng máº·c Ä‘á»‹nh khÃ´ng tá»± Ä‘á»™ng Ä‘i vÃ o Core/Broad metadata shortlist. Danh sÃ¡ch Consider chá»‰ giá»¯ tá»‘i Ä‘a `3` keyword tier tháº¥p Ä‘á»ƒ review.
+Neu `Volume <= 5`, `VolumeN` bi gioi han toi da o `0.05`. Keyword tier thap van con trong pool nghien cuu, nhung bi uu tien thap; Consider khong con gioi han bang sub-quota `3` keyword.
 
 #### DifficultyN
 
@@ -1101,7 +1101,6 @@ Quota Ä‘á» xuáº¥t:
 
 - 15 style keywords gáº¯n vá»›i core intent
 - 10 broad style keywords váº«n liÃªn quan
-- 5 platform-style consider keywords
 ```
 
 Æ¯u tiÃªn:
@@ -1214,7 +1213,6 @@ APP_CONFIG = {
         "allow_secondary_in_top25_core": False,
         "allow_secondary_in_broad_expansion": False,
         "secondary_max_quota_in_broad": 0,
-        "secondary_max_quota_in_consider": 3,
         "allow_secondary_in_feature_file": False,
         "allow_secondary_in_style_file": False,
         "mixed_language_action": "manual_review",
@@ -1321,7 +1319,6 @@ APP_CONFIG = {
             "max_keywords": 30,
             "intent_linked_style": 15,
             "broad_style": 10,
-            "platform_style_consider": 5
         },
         "fallback_policy": {
             "allow_under_quota": True,
@@ -1739,7 +1736,7 @@ CÃ¡ch sá»­a:
 ```text
 1. Top 30 = 25 sÃ¡t intent + 5 má»Ÿ rá»™ng cÃ³ kiá»ƒm soÃ¡t.
 2. ThÃªm 10 Consider á»Ÿ cuá»‘i sheet chÃ­nh.
-3. Consider cÃ³ sub-quota: platform-style, secondary language, missed opportunities.
+3. Consider la review pool theo chat luong; khong chia sub-quota theo nhom.
 4. Feature sheet chá»‰ láº¥y tá»‘i Ä‘a 30 keyword curated.
 5. Style sheet chá»‰ láº¥y tá»‘i Ä‘a 30 keyword curated.
 6. Má»—i market báº¯t buá»™c cÃ³ primary / secondary / optional secondary language policy.
@@ -1779,12 +1776,12 @@ CÃ¡ch sá»­a:
 
 - Äá»‹nh nghÄ©a rÃµ cÃ´ng thá»©c normalize cho Volume, Difficulty, KEI, Rank, ExpansionValue.
 - ThÃªm Quota Fallback Policy khi khÃ´ng Ä‘á»§ 25/5/10 hoáº·c 30 Feature/Style.
-- ThÃªm sub-quota cho 10 Consider Keywords.
+- Bo sub-quota cho 10 Consider Keywords; uu tien quality ranking theo RelevancyScore va VolumeN.
 - ThÃªm `platform_mode` vÃ  metadata slot riÃªng cho Google Play / App Store.
 
 ---
 
-*ASO Keyword Planner v4.1*
+*ASO Keyword Planner v4.3*
 *Updated for the shared hard-filter platform, compiled matcher runtime, indexed multilingual dedup, reliable translation/profile services, exact app registry, scoped cache and concurrent batch execution.*
 
 
@@ -1958,7 +1955,7 @@ PhiÃªn báº£n 3.5 chuáº©n hÃ³a láº¡i toÃ n bá»™ pipeline hiá�
 3. **Fallback exponential**: Náº¿u thiáº¿u `MaximumReach`, há»‡ thá»‘ng dÃ¹ng proxy exponential trÃªn thang Search Popularity tuyá»‡t Ä‘á»‘i `5â€“100`, thay vÃ¬ log-minmax theo keyword máº¡nh nháº¥t trong file.
 4. **Giá»¯ peak volume á»Ÿ vai trÃ² phá»¥**: `Volume` hiá»‡n táº¡i chiáº¿m `85%`, cÃ²n `Max. Volume` lá»‹ch sá»­ chiáº¿m `15%`.
 5. **Cap tier tháº¥p**: Keyword cÃ³ `Volume <= 5` chá»‰ nháº­n tá»‘i Ä‘a `0.05` Ä‘iá»ƒm `VolumeN`.
-6. **KhÃ´ng Ã©p Ä‘á»§ quota báº±ng keyword yáº¿u**: Tier `5` máº·c Ä‘á»‹nh khÃ´ng Ä‘Æ°á»£c tá»± Ä‘á»™ng Ä‘Æ°a vÃ o Core/Broad metadata shortlist; Consider chá»‰ giá»¯ tá»‘i Ä‘a `3` keyword Ä‘á»ƒ review.
+6. **Khong ep du quota bang keyword yeu**: Tier `5` khong bi hard-drop khoi Consider, nhung bi uu tien thap qua `VolumeN`; Consider khong con gioi han bang sub-quota `3` keyword.
 
 ### 25.2 Nháº­n diá»‡n ngÃ´n ngá»¯ lai (Hybrid Language Detection Heuristic)
 Nháº±m ngÄƒn ngá»«a hiá»‡n tÆ°á»£ng loáº¡i bá» sai cÃ¡c cá»¥m tá»« ASO tiáº¿ng Anh ngáº¯n do cÃ¡c thÆ° viá»‡n tá»± Ä‘á»™ng nháº­n diá»‡n ngÃ´n ngá»¯ gáº¯n cá» nháº§m lÃ  ngÃ´n ngá»¯ láº¡ (Language Bleed):
@@ -2025,7 +2022,7 @@ Khi sua logic shared, can chay:
 
 ```powershell
 python -m unittest discover -s ASO-MVP-Lite\tests -p "test_*.py"
-python -m py_compile ASO-MVP-Lite\shared\language_detector.py ASO-MVP-Lite\shared\text_dedup.py ASO-MVP-Lite\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Lite\apps\App_Template\run_pipeline.py ASO-MVP-Lite\apps\AR_Filter\run_ar_filter_v4_3.py ASO-MVP-Lite\apps\Control_Widget\run_control_widget_v4_3.py ASO-MVP-Lite\apps\Game_Emulator\run_game_emulator_v4_3.py
+python -m py_compile ASO-MVP-Lite\shared\language_detector.py ASO-MVP-Lite\shared\text_dedup.py ASO-MVP-Lite\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Lite\apps\App_Template\run_pipeline.py ASO-MVP-Lite\apps\Emoji_Battery_Icon_Customize\run_pipeline.py ASO-MVP-Lite\apps\AR_Filter\run_ar_filter_v4_3.py ASO-MVP-Lite\apps\Control_Widget\run_control_widget_v4_3.py ASO-MVP-Lite\apps\Game_Emulator\run_game_emulator_v4_3.py
 ```
 
 ---
@@ -2340,7 +2337,7 @@ Control Widget: US_EN
 Batch: it nhat 3 locale chay dong thoi
 ```
 
-Runner hien tai da dong bo ten file `*_v4_3.py`. `Prank_Sounds` va `App_Template` tiep tuc dung ten trung tinh `run_pipeline.py`.
+Runner hien tai da dong bo ten file `*_v4_3.py` cho `AR_Filter`, `Control_Widget` va `Game_Emulator`. `Emoji_Battery_Icon_Customize`, `Prank_Sounds` va `App_Template` tiep tuc dung ten trung tinh `run_pipeline.py`.
 
 ---
 
@@ -2368,3 +2365,269 @@ Phien ban 4.1 dieu chinh mot so quy tac quan trong de tranh mat mat tu khoa co v
 - **Thay doi (v4.1)**: Shared engine tao tap complete token tu semantic terms, feature/style/visual terms, noise terms va language lexicons. Token hoan chinh va bien the singular/plural don gian (`emoji/emojis`, `icon/icons`, `sound/sounds`, `filter/filters`) khong bi hard-drop.
 - **Ket qua**: Prefix co anchor ro rang van bi drop high-confidence (`prank sou -> sound`, `control widg -> widget`); prefix thieu anchor vao `possible_truncated_keyword` va mac dinh `Manual Review`.
 - **Config moi**: `protect_complete_tokens=True`, `ignore_inflection_prefix=True`, `low_confidence_action="manual_review"`, `dangling_action="manual_review"`.
+
+---
+
+## 30. Cap nhat v4.2 - DeepSeek AI Classifier & Conservative Pre-AI Filter
+
+Phien ban 4.2 thay doi huong nhan dien ngon ngu/semantic cho keyword bang cach dua DeepSeek AI classifier vao truoc cac buoc bucket chinh, dong thoi them `pre_ai_filter` de tiet kiem API ma khong lam mat keyword rong co lien quan.
+
+### 30.1 Vi tri moi trong pipeline
+
+```text
+Input CSV
+-> normalize keyword
+-> pre_ai_filter
+-> cache lookup / DeepSeek only for NeedsAI=True
+-> merge AI result back to full dataframe
+-> hard filters
+-> naturalness
+-> keyword bucket classifier
+-> shortlist/export
+```
+
+`pre_ai_filter` khong thay the semantic classifier. No chi chan cac truong hop deterministic/high-confidence waste truoc khi goi cache/API.
+
+### 30.2 Nguyen tac bao ve keyword rong lien quan
+
+Keyword rong, gan nghia hoac lien quan gian tiep van duoc gui AI neu co kha nang phuc vu ASO intent, vi du `theme pin`, `trang tri dien thoai`, `icon pack`, `battery widget`, `status bar`, `pin de thuong`, `cute charging`, `phone personalization`.
+
+Mac dinh khong pre-skip `possible_truncated_keyword`, `risky_ip`, `ambiguous_brand` hoac `platform_context`; cac rule nay van duoc hard filter/classifier phia sau xu ly khi da co ngu canh semantic.
+
+### 30.3 Cac truong hop duoc skip truoc AI
+
+- Keyword rong/invalid/khong co token hop le.
+- Duplicate sau normalize/canonicalize: chi goi AI cho canonical dau tien, cac ban lap dung lai ket qua.
+- Competitor brand ro rang.
+- Typo blacklist ro rang.
+- `truncated_keyword` hard-drop ro rang.
+- `noise_only` khong co core/feature/style/visual intent.
+- `platform_affiliation` hoac `platform_only` khong co app intent.
+- `irrelevant_intent` ro rang va khong co tin hieu lien quan den core/feature/style/visual terms.
+
+### 30.4 Config moi
+
+```python
+"ai_keyword_classifier": {
+    "enabled": True,
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "batch_size": 50,
+    "requests_per_second": 2.0,
+    "prompt_version": "aso-keyword-classifier-v1",
+    "fail_on_api_error": True,
+    "min_confidence": 0.55,
+    "cache_path": ".cache/ai_keyword_analysis.sqlite3",
+    "pre_filter": {
+        "enabled": True,
+        "duplicate_strategy": "canonical_reuse",
+        "preserve_if_matches_intent": True,
+        "allow_possible_truncated_to_ai": True,
+        "skip_rules": [
+            "empty_keyword",
+            "duplicate_keyword",
+            "competitor_brand",
+            "typo_blacklist",
+            "truncated_keyword",
+            "irrelevant_intent",
+            "noise_only",
+            "platform_affiliation",
+            "platform_only"
+        ]
+    }
+}
+```
+
+API key khong duoc luu vao repo/config. Cach khuyen nghi la copy `.env.example` thanh `.env`, dien `DEEPSEEK_API_KEY=...`, va de `.env` local trong `.gitignore`. Neu khong dung `.env`, co the dat qua bien moi truong `DEEPSEEK_API_KEY` tren may chay pipeline.
+
+### 30.5 Audit columns moi
+
+Sheet `06_All_Candidates` va dataframe noi bo co cac cot moi de truy vet chi phi API va ly do pre-filter:
+
+```text
+NeedsAI
+PreAIAction
+PreAIRule
+PreAIReason
+CanonicalKeyword
+AISemanticBucket
+AIDecisionRule
+AIReason
+AIConfidence
+AIStatus
+```
+
+`AIStatus` co cac trang thai chinh: `AI_CLASSIFIED`, `AI_CACHE_HIT`, `AI_REUSED_CANONICAL`, `AI_SKIPPED_PREFILTER`, `AI_DISABLED_HEURISTIC`.
+
+### 30.6 Kiem thu v4.2
+
+Regression bat buoc:
+
+```powershell
+python -m unittest discover -s ASO-MVP-Max\tests
+python -m unittest discover -s ASO-MVP-Lite\tests
+```
+
+Test moi can dam bao keyword rong lien quan khong bi pre-skip, duplicate chi goi AI mot lan, va keyword waste deterministic bi `AI_SKIPPED_PREFILTER`.
+
+## 31. Cap nhat v4.3 - AI Parallel Batch, Key Pool & Warm Cache
+
+### 31.1 Muc tieu
+
+v4.3 toi uu thoi gian cua DeepSeek AI keyword classification nhung van giu nguyen nguyen tac conservative cua `pre_ai_filter`. Pipeline khong de Python doan semantic khi chua co du lieu; thay vao do:
+
+```text
+Input CSV
+-> normalize keyword
+-> pre_ai_filter
+-> cache lookup
+-> DeepSeek only for uncached NeedsAI=True rows
+-> merge AI result back to full dataframe
+-> hard filters
+-> naturalness
+-> keyword bucket classifier
+-> shortlist/export
+```
+
+Nhung keyword bi duplicate/noise/competitor/irrelevant chac chan van khong goi API. Nhung keyword rong co lien quan nhu `theme pin`, `icon pack`, `battery widget`, `status bar`, `cute charging` van duoc gui AI neu khong co deterministic skip rule.
+
+### 31.2 Key pool trong `.env`
+
+v4.3 ho tro ca single key va multi-key:
+
+```env
+DEEPSEEK_API_KEY=single_key_here
+DEEPSEEK_API_KEYS=key_1,key_2,key_3
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+DEEPSEEK_MAX_WORKERS=2
+DEEPSEEK_REQUESTS_PER_SECOND_PER_KEY=1.0
+```
+
+`DEEPSEEK_API_KEYS` uu tien khi co nhieu key. Neu chi co `DEEPSEEK_API_KEY`, pipeline van backward-compatible. Key that khong duoc log; log chi dung `key_1`, `key_2`, ...
+
+### 31.3 Config `ai_keyword_classifier`
+
+```python
+"ai_keyword_classifier": {
+    "enabled": True,
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "batch_size": 50,
+    "requests_per_second_per_key": 1.0,
+    "max_workers": 2,
+    "key_strategy": "round_robin",
+    "failover_on_key_error": True,
+    "prompt_version": "aso-keyword-classifier-v1",
+    "fail_on_api_error": True,
+    "min_confidence": 0.55,
+    "cache_path": ".cache/ai_keyword_analysis.sqlite3"
+}
+```
+
+`requests_per_second` cu duoc giu de tuong thich config cu, nhung limiter moi tinh theo tung key qua `requests_per_second_per_key`.
+
+### 31.4 Batch song song co kiem soat
+
+`analyze_rows()` xu ly cache miss bang `ThreadPoolExecutor`. So worker hieu luc:
+
+```text
+effective_workers = min(max_workers, key_count * 2, number_of_batches)
+```
+
+Neu co nhieu key, batch duoc chia theo round-robin. Neu mot key gap timeout/rate-limit va `failover_on_key_error=True`, batch duoc thu lai voi key khac. Neu tat ca key loi, pipeline giu hanh vi cu: fail khi `fail_on_api_error=True`, hoac fallback heuristic khi config cho phep.
+
+### 31.5 Rate limit rieng tung key
+
+SQLite table rate limit van duoc dung lai, nhung lane moi duoc ghi theo:
+
+```text
+deepseek:key_1
+deepseek:key_2
+deepseek:key_3
+```
+
+Nhu vay mot key bi delay khong khoa toan bo provider. Dieu nay giup hai API key thuc su chay song song co kiem soat thay vi xep hang chung.
+
+### 31.6 Timing summary
+
+Log cuoi `analyze_dataframe(...)` bo sung cac chi so:
+
+```text
+total_rows
+pre_skipped
+reused
+cache_hit
+api_candidates
+api_batches
+key_pool_size
+max_workers
+avg_batch_seconds
+slowest_batch_seconds
+retries
+rate_limit_errors
+timeout_errors
+total_ai_seconds
+```
+
+Moi batch log dang:
+
+```text
+AI batch completed: key=key_2, rows=50, seconds=8.40, status=ok
+```
+
+Khong co API key that trong log.
+
+### 31.7 Warm cache command
+
+Tool moi:
+
+```powershell
+python tools/warm_ai_keyword_cache.py --csv path.csv --app ARFilter
+```
+
+Tool nay load app config/profile, chay `pre_ai_filter`, reuse SQLite cache, goi DeepSeek cho cache miss va luu vao `.cache/ai_keyword_analysis.sqlite3`. Tool khong tao workbook. Khi chay pipeline chinh sau do, phan AI se chu yeu la `AI_CACHE_HIT`.
+
+### 31.8 Kiem thu v4.3
+
+Regression bat buoc:
+
+```powershell
+python -m unittest discover -s ASO-MVP-Max\tests
+python -m unittest discover -s ASO-MVP-Lite\tests
+```
+
+Test moi can dam bao single key van chay nhu cu, `.env` doc `DEEPSEEK_API_KEYS`, round-robin chia batch qua nhieu key, failover khong log secret, rate limiter tach lane tung key va warm-cache tool compile duoc.
+
+---
+
+## 32. Cap nhat v4.3 moi nhat - Consider Keywords theo chat luong
+
+Phien ban v4.3 moi nhat bo cach chia sub-quota cho `Consider Keywords`. `Consider Keywords` bay gio la mot review pool duy nhat cho cac keyword co tin hieu tot nhung can xem lai truoc khi dua vao metadata chinh.
+
+Nguyen tac moi:
+
+```text
+Consider Keywords = keyword co co hoi tot, nhung can review
+
+Uu tien chon theo:
+1. RelevancyScore cao
+2. VolumeN cao
+3. BalancedScore cao
+4. Rank_numeric tot hon
+5. KEI cao hon
+6. Difficulty thap hon
+```
+
+Cac keyword bi dinh policy, platform context, risky IP, secondary/mixed language hop le, hoac core intent override van co the vao `Consider Keywords`. Tuy nhien, chung khong con duoc giu slot rieng theo nhom. Keyword nao volume tot, dung core intent va match voi app hon se duoc uu tien truoc.
+
+Quota tong van nam o:
+
+```python
+"keyword_quota": {
+    "main_file": {
+        "consider": 10
+    }
+}
+```
+
+Pipeline doc quota nay tu config, khong con hardcode `10` trong vong chon `selected_consider`.

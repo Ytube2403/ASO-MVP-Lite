@@ -5,13 +5,13 @@ import re
 APP_REGISTRY = {
     "ar_filter": {
         "folder": "apps/AR_Filter",
-        "runner": "apps/AR_Filter/run_ar_filter_v4_0.py",
+        "runner": "apps/AR_Filter/run_ar_filter_v4_3.py",
         "config": "apps/AR_Filter/app_config.py",
         "aliases": ["ARFilter", "AR_Filter"],
     },
     "game_emulator": {
         "folder": "apps/Game_Emulator",
-        "runner": "apps/Game_Emulator/run_game_emulator_v4_0.py",
+        "runner": "apps/Game_Emulator/run_game_emulator_v4_3.py",
         "config": "apps/Game_Emulator/app_config.py",
         "aliases": ["GameEmulator", "GameRetro", "Game_Emulator"],
     },
@@ -23,7 +23,7 @@ APP_REGISTRY = {
     },
     "control_widget": {
         "folder": "apps/Control_Widget",
-        "runner": "apps/Control_Widget/run_control_widget_v4_0.py",
+        "runner": "apps/Control_Widget/run_control_widget_v4_3.py",
         "config": "apps/Control_Widget/app_config.py",
         "aliases": ["ControlWidget", "Control_Widget"],
     },
@@ -32,6 +32,12 @@ APP_REGISTRY = {
         "runner": "apps/App_Template/run_pipeline.py",
         "config": "apps/App_Template/app_config.py",
         "aliases": ["AppTemplate", "App_Template"],
+    },
+    "emoji_battery_icon_customize": {
+        "folder": "apps/Emoji_Battery_Icon_Customize",
+        "runner": "apps/Emoji_Battery_Icon_Customize/run_pipeline.py",
+        "config": "apps/Emoji_Battery_Icon_Customize/app_config.py",
+        "aliases": ["EmojiBatteryIconCustomize", "Emoji_Battery_Icon_Customize", "EmojiBattery"],
     },
 }
 

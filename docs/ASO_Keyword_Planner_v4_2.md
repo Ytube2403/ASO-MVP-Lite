@@ -1,9 +1,9 @@
 # ASO Keyword Planner
 
 **PhiÃªn báº£n:** 4.2
-**TÃªn cÅ©:** ASO Keyword Master Pipeline â€” Universal Template  
-**TÃªn má»›i:** ASO Keyword Planner  
-**Má»¥c Ä‘Ã­ch:** Lá»c, cháº¥m Ä‘iá»ƒm, phÃ¢n nhÃ³m vÃ  xuáº¥t shortlist keyword ASO theo tá»«ng app, tá»«ng market, tá»«ng ngÃ´n ngá»¯ vÃ  tá»«ng ná»n táº£ng metadata.  
+**TÃªn cÅ©:** ASO Keyword Master Pipeline â€” Universal Template
+**TÃªn má»›i:** ASO Keyword Planner
+**Má»¥c Ä‘Ã­ch:** Lá»c, cháº¥m Ä‘iá»ƒm, phÃ¢n nhÃ³m vÃ  xuáº¥t shortlist keyword ASO theo tá»«ng app, tá»«ng market, tá»«ng ngÃ´n ngá»¯ vÃ  tá»«ng ná»n táº£ng metadata.
 **DÃ¹ng cho:** Google Play / App Store keyword research, metadata planning, ASO testing, UA keyword review.
 
 ---
@@ -14,13 +14,13 @@ ASO Keyword Planner khÃ´ng chá»‰ lÃ  má»™t bá»™ lá»c keyword
 
 Pipeline cáº§n trÃ¡nh 3 lá»—i phá»• biáº¿n:
 
-1. **QuÃ¡ mÃ¡y mÃ³c theo Ä‘iá»ƒm sá»‘**  
+1. **QuÃ¡ mÃ¡y mÃ³c theo Ä‘iá»ƒm sá»‘**
    Keyword cÃ³ Volume/KEI cao nhÆ°ng quÃ¡ rá»™ng váº«n khÃ´ng nÃªn chiáº¿m slot chÃ­nh.
 
-2. **QuÃ¡ gáº¯t khi lá»c rá»§i ro**  
+2. **QuÃ¡ gáº¯t khi lá»c rá»§i ro**
    Má»™t sá»‘ keyword nhÆ° iPhone / iOS / OS-style cÃ³ thá»ƒ cÃ³ intent sÃ¡t. KhÃ´ng nÃªn auto drop náº¿u váº«n cÃ³ giÃ¡ trá»‹ nghiÃªn cá»©u.
 
-3. **Láº«n ngÃ´n ngá»¯ sai market**  
+3. **Láº«n ngÃ´n ngá»¯ sai market**
    Keyword khÃ¡c ngÃ´n ngá»¯ metadata chÃ­nh khÃ´ng nÃªn tá»± Ä‘á»™ng chen vÃ o output chÃ­nh, dÃ¹ cÃ³ Ä‘iá»ƒm tá»‘t. Tuy nhiÃªn secondary language phÃ¹ há»£p quá»‘c gia váº«n nÃªn Ä‘Æ°á»£c giá»¯ Ä‘á»ƒ Consider.
 
 NguyÃªn táº¯c má»›i:
@@ -364,11 +364,6 @@ APP_CONFIG = {
             "core_intent": 25,
             "broad_expansion": 5,
             "consider": 10,
-            "consider_subquota": {
-                "platform_style": 4,
-                "secondary_language": 3,
-                "missed_opportunity": 3
-            }
         },
         "feature_file": {
             "max_keywords": 30,
@@ -1315,11 +1310,6 @@ APP_CONFIG = {
             "core_intent": 25,
             "broad_expansion": 5,
             "consider": 10,
-            "consider_subquota": {
-                "platform_style": 4,
-                "secondary_language": 3,
-                "missed_opportunity": 3
-            }
         },
         "feature_file": {
             "max_keywords": 30,
@@ -1496,11 +1486,11 @@ APP_CONFIG = {
 ```markdown
 Cháº¡y ASO Keyword Planner cho app cá»§a tÃ´i.
 
-**App:** [TÃªn app]  
-**App ID:** [Bundle ID]  
-**Category:** [Category]  
-**Market:** [Market code]  
-**Platform:** [google_play hoáº·c app_store]  
+**App:** [TÃªn app]
+**App ID:** [Bundle ID]
+**Category:** [Category]
+**Market:** [Market code]
+**Platform:** [google_play hoáº·c app_store]
 **File CSV:** [Ä‘Ã­nh kÃ¨m file CSV]
 
 ---
@@ -2035,7 +2025,7 @@ Khi sua logic shared, can chay:
 
 ```powershell
 python -m unittest discover -s ASO-MVP-Lite\tests -p "test_*.py"
-python -m py_compile ASO-MVP-Lite\shared\language_detector.py ASO-MVP-Lite\shared\text_dedup.py ASO-MVP-Lite\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Lite\apps\App_Template\run_pipeline.py ASO-MVP-Lite\apps\AR_Filter\run_ar_filter_v4_0.py ASO-MVP-Lite\apps\Control_Widget\run_control_widget_v4_0.py ASO-MVP-Lite\apps\Game_Emulator\run_game_emulator_v4_0.py
+python -m py_compile ASO-MVP-Lite\shared\language_detector.py ASO-MVP-Lite\shared\text_dedup.py ASO-MVP-Lite\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Lite\apps\App_Template\run_pipeline.py ASO-MVP-Lite\apps\AR_Filter\run_ar_filter_v4_3.py ASO-MVP-Lite\apps\Control_Widget\run_control_widget_v4_3.py ASO-MVP-Lite\apps\Game_Emulator\run_game_emulator_v4_3.py
 ```
 
 ---
@@ -2350,7 +2340,7 @@ Control Widget: US_EN
 Batch: it nhat 3 locale chay dong thoi
 ```
 
-Runner hien tai da dong bo ten file `*_v4_0.py` (hoac `*_v4_1.py`). `Prank_Sounds` va `App_Template` tiep tuc dung ten trung tinh `run_pipeline.py`.
+Runner hien tai da dong bo ten file `*_v4_3.py`. `Prank_Sounds` va `App_Template` tiep tuc dung ten trung tinh `run_pipeline.py`.
 
 ---
 

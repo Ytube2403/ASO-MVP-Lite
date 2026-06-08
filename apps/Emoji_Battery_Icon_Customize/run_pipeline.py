@@ -16,7 +16,8 @@ from openpyxl.utils import get_column_letter
 import argparse
 import sys
 
-_SHARED_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_SHARED_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 if _SHARED_ROOT not in sys.path:
     sys.path.insert(0, _SHARED_ROOT)
 from shared import text_dedup as _shared_text_dedup
@@ -26,307 +27,45 @@ from shared import translation_service as _shared_translation_service
 from shared import ai_keyword_classifier as _shared_ai_keyword_classifier
 from shared.paths import COUNTRY_LANGUAGE_MAP_PATH, DOCS_DIR
 
+# Resolve script and project root directories
+PROJECT_ROOT = _SHARED_ROOT
+
 # Parse arguments
-parser = argparse.ArgumentParser(description="ASO Keyword Planner for Game Emulator")
-parser.add_argument("--csv", type=str, default=None, help="Path to input CSV")
-parser.add_argument("--market", type=str, default="US_EN", help="Market code (e.g. US_EN)")
+parser = argparse.ArgumentParser(description="ASO Keyword Planner Generic Pipeline")
+parser.add_argument("--csv", type=str, required=True, help="Path to input CSV")
+parser.add_argument("--market", type=str, default="", help="Market code (e.g. US_EN)")
 parser.add_argument("--output", type=str, default="", help="Path to output Excel file")
 parser.add_argument("--interactive", action="store_true", help="Run interactive Web UI selector")
 args, unknown = parser.parse_known_args()
 
-INPUT_PATH = args.csv
+# Load configuration from app_config.py
+try:
+    from app_config import APP_CONFIG as config
+except ImportError:
+    # Fallback if run from a different directory
+    import sys
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        from app_config import APP_CONFIG as config
+    except ImportError:
+        print("Error: Could not import APP_CONFIG from app_config.py.")
+        sys.exit(1)
+
+INPUT_PATH = os.path.abspath(args.csv)
+market = args.market if args.market else config.get("market", "US_EN")
+config["market"] = market # Override default market with cli arg
+
 if args.output:
     OUTPUT_PATH = args.output
 else:
     # Update OUTPUT_PATH dynamically
     csv_dir = os.path.dirname(os.path.abspath(INPUT_PATH))
-    OUTPUT_PATH = os.path.join(csv_dir, "Game_Emulator", f"GameEmulator_{args.market.replace('_', '-')}_Output.xlsx")
-
-# Game Emulator configuration
-config = {
-    "app_id": "com.game.emulator.gb4.retro.gameboy.collection",
-    "app_name": "Game Emulator: GB4 Retro Games",
-    "category": "Game Emulator",
-    "market": args.market,
-    "platform_mode": "google_play",
-    "semantic_mode": "game_emulator",
-    "dedup_policy": {
-        "auto_merge_token_bag": False,
-        "review_overlap_threshold": 0.80,
-        "accent_fold_auto_merge_locales": [],
-        "enable_review_log": True,
-    },
-    "ai_keyword_classifier": {
-        "enabled": True,
-        "provider": "deepseek",
-        "model": "deepseek-v4-flash",
-        "batch_size": 50,
-        "requests_per_second": 2.0,
-        "prompt_version": "aso-keyword-classifier-v1",
-        "fail_on_api_error": True,
-        "min_confidence": 0.55,
-        "cache_path": ".cache/ai_keyword_analysis.sqlite3",
-        "pre_filter": {
-            "enabled": True,
-            "duplicate_strategy": "canonical_reuse",
-            "preserve_if_matches_intent": True,
-            "allow_possible_truncated_to_ai": True,
-            "skip_rules": [
-                "empty_keyword",
-                "duplicate_keyword",
-                "competitor_brand",
-                "typo_blacklist",
-                "truncated_keyword",
-                "irrelevant_intent",
-                "noise_only",
-                "platform_affiliation",
-                "platform_only"
-            ]
-        }
-    },
-
-    "intent_core_terms": [
-        "game emulator", "retro game emulator", "retro games emulator", 
-        "gba emulator", "gameboy emulator", "arcade emulator", "handheld emulator",
-        "gb4 emulator", "gb4 emulador", "gb4", "gba4 emulator", "gba4 emulador", "gba4"
-    ],
-    
-    "feature_terms": [
-        # Nintendo
-        'gameboy', 'gba', 'gbc', 'gb', 'game boy', 'game boy advance', 'gb advance',
-        'nes', 'snes', 'n64', 'super nintendo',
-        '3ds', 'ds', 'nds', 'nintendo ds',
-        'gamecube', 'wii', 'wii u', 'nintendo',
-        # Sony
-        'ps2', 'ps3', 'ps4', 'ps5', 'playstation', 'playstation 2', 'playstation 3',
-        'playstation 4', 'playstation 5',
-        'psp', 'psx', 'ps vita',
-        # Microsoft/Sega/Others
-        'xbox', 'sega', 'dreamcast', 'arcade', 'fliperama',
-        'handheld', 'console', 'portable',
-        # Retro/Classic indicators
-        'retro', 'classic', 'classicos', 'clássico', 'klasik',
-        '8bit', '8-bit', '16bit', '16-bit', '32bit',
-        'old', 'vintage', 'nostalgic', 'nostalgia',
-        'jadul', 'lawas', 'advance', 'collection'
-    ],
-    
-    "style_terms": [
-        # Nintendo IP
-        'pokemon', 'pokemon red', 'pokemon blue', 'pokemon fire red',
-        'pokemon emerald', 'pokemon yellow', 'pokemon gold', 'pokemon silver',
-        'mario', 'super mario', 'mario kart', 'zelda', 'legend of zelda',
-        'metroid', 'kirby', 'donkey kong', 'star fox', 'fire emblem',
-        'animal crossing', 'smash bros', 'super smash bros',
-        # Sega/Sonic
-        'sonic', 'sonic the hedgehog', 'tails', 'knuckles',
-        'golden axe', 'streets of rage', 'shinobi',
-        # Capcom/Konami/Square
-        'street fighter', 'mega man', 'rockman',
-        'castlevania', 'metal gear', 'silent hill',
-        'final fantasy', 'dragon quest', 'chrono trigger',
-        'resident evil', 'devil may cry', 'monster hunter',
-        # Namco/Others
-        'pacman', 'pac-man', 'galaga', 'dig dug',
-        'tekken', 'soulcalibur', 'ridge racer',
-        'naruto', 'dragon ball', 'dbz', 'bleach', 'one piece',
-        'tetris', 'puzzle',
-        # Sony IP
-        'god of war', 'crash', 'crash bandicoot', 'spyro',
-        'gran turismo', 'twisted metal', 'parappa',
-        # Fighting/Shooters
-        'mortal kombat', 'mk', 'killer instinct',
-        'doom', 'quake', 'wolfenstein', 'duke nukem',
-        'contra', 'metal slug', 'gunstar heroes',
-        # RPG/JRPG
-        'earthbound', 'mother', 'undertale',
-        'persona', 'shin megami tensei', 'smt',
-        'suikoden', 'wild arms', 'vagrant story',
-        # Platform/Adventure
-        'banjo kazooie', 'conker', 'rareware',
-        'banjo-tooie', 'perfect dark',
-        # Misc classic
-        'bomberman', 'ice climber', 'excitebike',
-        'duck hunt', 'punch out', 'kid icarus',
-        'wario', 'waluigi', 'yoshi', 'luigi'
-    ],
-    
-    "competitor_brands": [
-        # Major multi-system
-        'ppsspp', 'ppsspp gold', 'dolphin emulator',
-        'retroarch', 'retroarch emulator',
-        'delta emulator', 'delta nintendo emulator',
-        'citra', 'citra emulator', 'lime3ds', 'lime3ds emulator',
-        'aethersx2', 'aethersx2 emulator',
-        'lemuroid', 'lemuroid emulator',
-        # GBA specific
-        'my boy', 'my boy emulator', 'my boy free', 'my boy gba',
-        'john gba', 'john gba lite', 'john gba emulator',
-        'gameboid', 'gameboid emulator',
-        'gba4ios', 'gba4ios emulator',
-        'vgbanext', 'vgbanext emulator',
-        'gamma emulator', 'gamma game emulator',
-        # NDS/3DS
-        'drastic', 'drastic emulator', 'drastic ds',
-        'melonDS', 'melon ds', 'desmume',
-        # NES/SNES
-        'snes9x', 'snes9x ex', 'zsnes',
-        'nestopia', 'fceux', 'quicknes',
-        'super retro 16', 'super retro 16 plus',
-        # PS1/PS2
-        'epsxe', 'epsxe emulator',
-        'fpse', 'fpse emulator',
-        'pcsx2', 'pcsx2 emulator', 'damonps2', 'damon ps2',
-        'play emulator',
-        # N64
-        'mupen64plus', 'mupen64', 'mupen',
-        'project64', 'project 64', 'n64oid',
-        # Arcade/MAME
-        'mame', 'mame4droid', 'mame4ios',
-        'fba', 'fbneo', 'final burn alpha', 'final burn neo',
-        'kawaks',
-        # All-in-one
-        'classicboy', 'classicboy lite',
-        'retro game boy',
-        'emu games', 'emu paradise',
-        'romsmania', 'loveroms', 'romhustler',
-        # Cloud/Remote
-        'netboom', 'netboom cloud gaming',
-        'airconsole', 'air console',
-        'starparks', 'chikii', 'chikii cloud',
-        'psplay', 'psplay remote play',
-        'xbplay', 'xbplay remote play',
-        # Misc
-        'superpsx', 'super psx',
-        'bitboy', 'bitboy emulator',
-        'onecast', 'onecast xbox',
-        'happy chick', 'happy chick emulator',
-        'pizza emulator', 'pizza boy', 'pizza boy gba',
-        'easy emu', 'mock emulator', 'lucky emulator',
-        'gk emulator', 'gas emulator', 'folium emulator', 'jeans emulator',
-        'emulsio', 'emulator guia', 'emulator md2',
-        'emulator anak permainan', 'emulator juegos pro',
-        'retro game master', 'retro game hub',
-        # Browser/Non-emulator
-        'dolphin browser', '870 fitness'
-    ],
-    
-    "noise_terms": [
-        'game', 'games', 'gaming', 'gamer', 'gamers', 'gameplay',
-        'video game', 'videogame', 'video games', 'computer game',
-        'android game', 'mobile game', 'phone game', 'tablet game',
-        'play', 'playing', 'player', 'fun', 'entertainment',
-        'download', 'free', 'gratis', 'premium', 'pro', 'lite',
-        'best', 'top', 'new', 'old', 'latest', 'update', 'version',
-        'android', 'ios', 'iphone', 'ipad', 'phone', 'mobile', 'tablet',
-        'app', 'application', 'software', 'tool', 'utility', 'program',
-        'device', 'system', 'platform', 'technology', 'digital',
-        'emulator', 'emulador', 'emulation', 'emu', 'emulators', 'emuladores',
-        'simulador', 'simulator', 'simulate', 'virtual', 'virtual machine',
-        'rom', 'roms', 'iso', 'bios', 'cheat', 'cheats', 'hack', 'mod',
-        'save', 'load', 'state', 'slot', 'backup', 'restore',
-        'controller', 'control', 'controle', 'kontrol', 'kontroler',
-        'gamepad', 'joypad', 'joystick', 'pad', 'button', 'buttons',
-        'd-pad', 'dpad', 'analog', 'stick', 'trigger', 'bumper',
-        'bluetooth controller', 'wireless controller', 'usb controller',
-        'remote', 'remoto', 'remote play', 'second screen',
-        'cloud', 'cloud gaming', 'streaming', 'stream',
-        'geforce now', 'xbox cloud', 'playstation now', 'stadia',
-        'nvidia', 'shadow', 'boosteroid', 'blacknut',
-        'screen', 'display', 'monitor', 'resolution', 'fps', 'hz',
-        'battery', 'storage', 'memory', 'ram', 'cpu', 'gpu',
-        'speed', 'fast', 'slow', 'lag', 'latency', 'ping',
-        'online', 'offline', 'multiplayer', 'coop', 'pvp', 'pve',
-        'wifi', 'internet', 'network', 'connection', 'server',
-        'account', 'login', 'register', 'profile', 'avatar',
-        'chat', 'message', 'friend', 'social', 'community', 'forum',
-        'rate', 'review', 'feedback', 'support', 'help', 'faq',
-        'guide', 'tutorial', 'walkthrough', 'tips', 'tricks',
-        'news', 'blog', 'patch', 'dlc', 'expansion',
-        'skin', 'theme', 'wallpaper', 'icon', 'font', 'sound',
-        'music', 'song', 'audio', 'soundtrack', 'ost', 'bgm',
-        'record', 'recording', 'screenshot', 'capture', 'clip',
-        'share', 'export', 'import', 'sync', 'transfer',
-        'the', 'a', 'an', 'and', 'or', 'but', 'for', 'with', 'without',
-        'in', 'on', 'at', 'to', 'from', 'by', 'of', 'about', 'into',
-        'through', 'during', 'before', 'after', 'above', 'below',
-        'between', 'among', 'within', 'against', 'under', 'over',
-        'good', 'great', 'awesome', 'amazing', 'excellent', 'perfect',
-        'bad', 'terrible', 'awful', 'horrible', 'worst',
-        'big', 'small', 'huge', 'tiny', 'large', 'mini',
-        'easy', 'hard', 'difficult', 'simple', 'complex',
-        'first', 'last', 'next', 'previous', 'final',
-        '1990', '1995', '2000', '2005', '2010', '2015', '2020',
-        '90s', '80s', '00s', 'year', 'years', 'decade',
-        'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'
-    ],
-    
-    "typo_blacklist": [
-        'gretro', 'restro', 'gaem', 'gam emulador', 'imulator', 'gbã', 'gbã emulator', 'emulsio',
-        '0s5', 'pspusado', 'ps4ps5', 'ps ps ps', 'ps5ps4', 'pxp', 'pps', 'pc5', 'eio', 'psdp', 'pspp', 'ppsp', 'ssip', 'ds3',
-        'pintasan', '870 fitness', 'maldives', 'dolphin browser', 'restaurați poza', 'memperlambat',
-        'ukuran panjang', 'seperti apa', 'seperti apa itu', 'tujuan', 'posisi', 'tercepat',
-        'calculator', 'calendar', 'weather', 'clock', 'alarm', 'reminder',
-        'note', 'notes', 'file manager', 'gallery', 'camera', 'video player',
-        'music player', 'audio player', 'podcast', 'radio', 'news', 'magazine',
-        'shopping', 'delivery', 'food', 'restaurant', 'hotel', 'travel',
-        'booking', 'ticket', 'flight', 'train', 'bus', 'map', 'navigation',
-        'gps', 'tracker', 'fitness', 'health', 'medical', 'diet', 'yoga',
-        'meditation', 'sleep', 'water', 'step', 'calorie', 'workout',
-        'education', 'learning', 'course', 'lesson', 'quiz', 'exam', 'study',
-        'language', 'dictionary', 'translator', 'keyboard', 'input method',
-        'launcher', 'home screen', 'lock screen', 'live wallpaper', 'widget',
-        'keyboard theme', 'icon pack', 'font', 'ringtone', 'notification sound'
-    ],
-    
-    "risky_platform_terms": [
-        "ios", "iphone", "apple", "os 17", "os 18", "os17", "os18", "ipad"
-    ],
-
-    "risky_ip_terms": ["pokemon", "mario", "zelda", "nintendo", "playstation"],
-    "ambiguous_brand_terms": ["dolphin", "delta", "play"],
-    "platform_affiliation_terms": [],
-    "truncation_policy": {
-        "enabled": True,
-        "min_prefix_length": 2,
-        "allowed_partial_terms": [],
-        "protect_complete_tokens": True,
-        "ignore_inflection_prefix": True,
-        "low_confidence_action": "manual_review",
-        "dangling_action": "manual_review"
-    },
-    "risk_policy": {
-        "competitor_brand_action": "drop",
-        "ambiguous_brand_action": "consider",
-        "risky_ip_action": "consider",
-        "platform_context_action": "consider",
-        "platform_only_action": "drop",
-        "platform_affiliation_action": "drop",
-        "style_only_action": "reserve",
-        "core_intent_override": True
-    },
-    "user_overrides": {
-        "force_top30_terms": [],
-        "force_consider_terms": [],
-        "force_drop_terms": []
-    },
-    
-    "balanced_weights": {
-        "VolumeN": 0.20,
-        "DifficultyN": 0.15,
-        "KEIN": 0.15,
-        "RelevancyScore": 0.30,
-        "CurrentRankN": 0.10,
-        "ExpansionValue": 0.10
-    }
-}
-
-from app_config import FILTER_POLICY
-config.update(FILTER_POLICY)
+    app_slug = config.get("app_name", "App").replace(" ", "_")
+    OUTPUT_PATH = os.path.join(csv_dir, f"{app_slug}_{market.replace('_', '-')}_Output.xlsx")
 
 # --- Shared Google Play profile service ---
-# Build or load App Profile using seed query 'Game Emulator'
-app_profile = _shared_profile_service.get_app_profile(config, "Game Emulator", os.path.dirname(__file__))
+# Build or load App Profile using seed query from config
+app_profile = _shared_profile_service.get_app_profile(config, config.get("app_name", "App"), SCRIPT_DIR)
 
 # --- Local HTTP Server for Selection & ASO Dashboard ---
 def start_interactive_server(df, config, app_profile):
@@ -335,7 +74,7 @@ def start_interactive_server(df, config, app_profile):
     import webbrowser
     import threading
     import time
-    
+
     keywords_data = []
     for idx, row in df.iterrows():
         keywords_data.append({
@@ -350,7 +89,7 @@ def start_interactive_server(df, config, app_profile):
             "CompetitorProven": row.get('CompetitorProven', 'No'),
             "ProvenDetails": row.get('ProvenDetails', '')
         })
-        
+
     data_payload = {
         "app_name": config["app_name"],
         "app_id": config["app_id"],
@@ -358,13 +97,13 @@ def start_interactive_server(df, config, app_profile):
         "competitors": app_profile.get("competitors", []),
         "keywords": keywords_data
     }
-    
+
     server_data = {"confirmed_payload": None}
-    
+
     class SelectionHandler(http.server.BaseHTTPRequestHandler):
         def log_message(self, format, *args):
             return
-            
+
         def do_GET(self):
             if self.path == '/':
                 self.send_response(200)
@@ -381,7 +120,7 @@ def start_interactive_server(df, config, app_profile):
             else:
                 self.send_response(404)
                 self.end_headers()
-                
+
         def do_POST(self):
             if self.path == '/confirm':
                 content_length = int(self.headers['Content-Length'])
@@ -392,12 +131,12 @@ def start_interactive_server(df, config, app_profile):
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 self.wfile.write(b'{"status": "ok"}')
-                
+
                 def shutdown_soon():
                     time.sleep(0.5)
                     server.shutdown()
                 threading.Thread(target=shutdown_soon).start()
-                
+
     port = 8000
     for p in range(8000, 8050):
         try:
@@ -406,10 +145,10 @@ def start_interactive_server(df, config, app_profile):
             break
         except OSError:
             continue
-            
+
     print(f"\n[INTERACTIVE SELECTOR] Starting local server at http://localhost:{port}...")
     print("Opening browser automatically... Please select keywords and write ASO descriptions in the dashboard, then click Confirm.")
-    
+
     webbrowser.open(f"http://localhost:{port}/")
     server.serve_forever()
     server.server_close()
@@ -418,8 +157,8 @@ def start_interactive_server(df, config, app_profile):
 
 
 
-# Step 1: Load and Clean
-print("[Step 1] Loading raw candidates...")
+# Load and Clean
+print("[Step 1] Loading candidates...")
 df_raw = pd.read_csv(INPUT_PATH, encoding="utf-8-sig")
 
 df = pd.DataFrame()
@@ -484,7 +223,7 @@ def normalize_text(text):
 
 df['keyword_normalized'] = df['Keyword'].apply(normalize_text)
 
-# Step 2: Language Detection
+# Language classification
 print("[Step 2] Language classification...")
 
 try:
@@ -538,7 +277,7 @@ def _load_country_language_map():
     try:
         import openpyxl
         map_path = COUNTRY_LANGUAGE_MAP_PATH
-        
+
         if os.path.exists(map_path):
             wb = openpyxl.load_workbook(map_path, read_only=True)
             if 'Country-Language Map' in wb.sheetnames:
@@ -550,7 +289,7 @@ def _load_country_language_map():
                         secondary_locale = str(row[6] or '').strip()
                         if not country:
                             continue
-                        
+
                         p_langs = [primary_locale.split('-')[0].lower()] if primary_locale else []
                         s_langs = []
                         if secondary_locale and secondary_locale.lower() != 'none':
@@ -568,7 +307,7 @@ def _load_country_language_map():
 def _get_language_policy(config, primary_lang):
     """Get or auto-derive market language policy, incorporating the spreadsheet mapping."""
     policy = config.get('market_language_policy', {})
-    
+
     # 1. If explicit policy exists in the configuration, use it
     if policy.get('primary_languages') or policy.get('secondary_languages'):
         policy_primary = [l.split('-')[0].lower() for l in policy.get('primary_languages', [])]
@@ -576,7 +315,7 @@ def _get_language_policy(config, primary_lang):
         if not policy_primary:
             policy_primary = [primary_lang]
         return policy_primary, secondary_langs
-    
+
     # 2. Derive policy dynamically from the Country-Language map
     market = config.get('market', 'US_EN')
     if "_" in market:
@@ -586,12 +325,12 @@ def _get_language_policy(config, primary_lang):
     else:
         country_code = market.upper()
         target_lang = primary_lang
-        
+
     cmap = _load_country_language_map()
     if cmap and country_code in cmap:
         sheet_primary = cmap[country_code]['primary']
         sheet_secondary = cmap[country_code]['secondary']
-        
+
         # If the target language is part of the spreadsheet's primary languages
         if target_lang in sheet_primary:
             policy_primary = [target_lang]
@@ -600,14 +339,14 @@ def _get_language_policy(config, primary_lang):
             policy_primary = [target_lang]
             # Include the spreadsheet's primary and other secondary languages as secondary for this run
             secondary_langs = [l for l in (sheet_primary + sheet_secondary) if l != target_lang]
-            
+
         # Ensure secondary_langs is deduplicated and doesn't contain target_lang
         secondary_langs = list(dict.fromkeys(secondary_langs))
     else:
         # Fallback to standard derivation if spreadsheet is not loaded or country not found
         policy_primary = [target_lang]
         secondary_langs = ['en'] if target_lang != 'en' else []
-        
+
     return policy_primary, secondary_langs
 
 def _build_eng_words_only(config):
@@ -652,25 +391,25 @@ def detect_keyword_language(kw, market_lang, config):
 
     kw_lower = str(kw).lower().strip()
     primary_lang = market_lang.split("_")[1].lower() if "_" in market_lang else "en"
-    
+
     if not kw_lower:
         return primary_lang, 'PRIMARY'
-    
+
     policy_primary, secondary_langs = _get_language_policy(config, primary_lang)
-    
+
     words = [re.sub(r'[^a-z0-9]', '', w) for w in kw_lower.split()]
     words = [w for w in words if w]
-    
+
     if not words:
         return primary_lang, 'PRIMARY'
-    
+
     all_english = True
     for w in words:
         root = get_root_word(w)
         if w not in _eng_words_cache and w not in english_vocab and root not in _eng_words_cache and root not in english_vocab:
             all_english = False
             break
-    
+
     if all_english:
         if any(lang_match('en', p) for p in policy_primary):
             return 'en', 'PRIMARY'
@@ -678,13 +417,13 @@ def detect_keyword_language(kw, market_lang, config):
             return 'en', 'SECONDARY'
         else:
             return 'en', 'FOREIGN'
-    
+
     if HAS_LANGDETECT:
         try:
             langs = detect_langs(kw_lower)
             best_lang = langs[0].lang
             prob = langs[0].prob
-            
+
             # Apply confusion matrix corrections for short text
             word_count = len(words)
             confusion_corrected = False
@@ -709,17 +448,17 @@ def detect_keyword_language(kw, market_lang, config):
                 elif word_count <= 2:
                     best_lang = primary_lang
                     confusion_corrected = True
-            
+
             # Classify the detected language
             if lang_match(best_lang, primary_lang) or any(lang_match(best_lang, p) for p in policy_primary):
                 return best_lang, 'PRIMARY'
-            
+
             # For confusion-corrected results, trust the correction directly
             if confusion_corrected:
                 if any(lang_match(best_lang, s) for s in secondary_langs):
                     return best_lang, 'SECONDARY'
                 return best_lang, 'FOREIGN'
-            
+
             # For non-corrected results, require higher confidence for short keywords
             min_prob = 0.85 if word_count <= 2 else 0.7 if word_count <= 3 else 0.6
             if prob >= min_prob:
@@ -727,10 +466,10 @@ def detect_keyword_language(kw, market_lang, config):
                     return best_lang, 'SECONDARY'
                 # Only mark as FOREIGN with sufficient confidence
                 return best_lang, 'FOREIGN'
-            
+
         except Exception:
             pass
-    
+
     return primary_lang, 'PRIMARY'
 
 # Override the legacy local detector with the shared, market-aware implementation.
@@ -751,7 +490,7 @@ ai_language_frame = _shared_ai_keyword_classifier.analyze_dataframe(
     df,
     config,
     app_profile=app_profile,
-    cache_path=os.path.join(_SHARED_ROOT, ".cache", "ai_keyword_analysis.sqlite3"),
+    cache_path=os.path.join(PROJECT_ROOT, ".cache", "ai_keyword_analysis.sqlite3"),
     market=config.get("market", ""),
     english_vocab=english_vocab,
 )
@@ -763,14 +502,14 @@ print("[Step 2.5] Translating non-English keywords to English...")
 provided_en = df_raw['EN'].fillna('').astype(str) if 'EN' in df_raw.columns else pd.Series("", index=df.index)
 provided_en = provided_en.where(provided_en.str.strip() != "", df['AIEnglishGloss'].fillna('').astype(str))
 translation_frame = _shared_translation_service.translate_dataframe(
-    df, provided_en=provided_en, cache_path=os.path.join(_SHARED_ROOT, ".cache", "translations.sqlite3"),
+    df, provided_en=provided_en, cache_path=os.path.join(PROJECT_ROOT, ".cache", "translations.sqlite3"),
     market=config.get("market", ""),
 )
 df[['EN', 'TranslationStatus', 'TranslationError']] = translation_frame
 
 from shared import keyword_filter as _shared_keyword_filter
 
-# Step 3: Hard filters
+# Hard filters
 print("[Step 3] Hard filters...")
 for warning in _shared_keyword_filter.validate_filter_config(config):
     print(f"Warning: {warning}")
@@ -786,6 +525,8 @@ def check_naturalness(kw, config):
     words = kw_lower.split()
     if len(words) == 0:
         return 'UNNATURAL', 'Empty keyword'
+    if len(words) < 2:
+        return 'UNNATURAL', 'Single-word keyword excluded'
     word_counts = {}
     for w in words:
         word_counts[w] = word_counts.get(w, 0) + 1
@@ -800,14 +541,22 @@ def check_naturalness(kw, config):
         else:
             return 'TOO_LONG', f'Keyword has too many words ({len(words)})'
     grammar_patterns = [
-        r"\b(game game|emulator emulator|play play)\b",
+        r"\b(game game|widget widget|theme theme)\b",
         r"\b(what is|how to|why do|when is|where is)\b"
     ]
     for pat in grammar_patterns:
         if re.search(pat, kw_lower):
             return 'UNNATURAL', 'Fails structural validation'
+    allowed_chars = 'áéíóúüñ¿¡íóú'
+    # Add Vietnamese characters
+    allowed_chars += 'àảãạăắằẳẵặâấầẩẫậèẻẽẹêếềểễệìỉĩịòỏõọôốồổỗộơớờởỡợùủũụưứừửữựỳỷỹỵđ'
+    # Add Portuguese characters
+    allowed_chars += 'áàâãçéêíóôõú'
     for char in kw_lower:
-        if ord(char) > 127 and char not in 'áéíóúüñ¿¡íóú':
+        if ord(char) > 127 and char not in allowed_chars:
+            # Allow Devanagari (Hindi) script characters range
+            if '\u0900' <= char <= '\u097F':
+                continue
             return 'LANGUAGE_BLEED', 'Foreign script character detected'
     return 'OK', 'Natural enough for keyword research'
 
@@ -815,7 +564,7 @@ naturalness = df.apply(lambda r: _shared_keyword_filter.check_naturalness(r, con
 df['NaturalnessFlag'] = [n[0] for n in naturalness]
 df['NaturalnessReason'] = [n[1] for n in naturalness]
 
-# Scoring Logic (Game Emulator spec formulas)
+# Scoring Logic
 print("[Step 5] Relevancy Scoring...")
 
 # Pre-calculate competitor-proven keywords and score boost
@@ -838,24 +587,24 @@ competitor_boost_list = []
 
 for idx, row in df.iterrows():
     kw_norm = normalize_match_text(row['Keyword'])
-    
+
     comp_title_matches = []
     comp_short_matches = []
     comp_desc_matches = []
-    
+
     for comp in app_profile.get("competitors", []):
         comp_title_norm = normalize_match_text(comp.get("title", ""))
         comp_short_norm = normalize_match_text(comp.get("short_description", ""))
         comp_desc_norm = normalize_match_text(comp.get("desc200", ""))
         comp_name = comp.get("title", comp.get("package_id", ""))
-        
+
         if check_keyword_in_text(kw_norm, comp_title_norm):
             comp_title_matches.append(comp_name)
         if check_keyword_in_text(kw_norm, comp_short_norm):
             comp_short_matches.append(comp_name)
         if check_keyword_in_text(kw_norm, comp_desc_norm):
             comp_desc_matches.append(comp_name)
-            
+
     boost = 0.0
     details = []
     if comp_title_matches:
@@ -867,9 +616,9 @@ for idx, row in df.iterrows():
     if comp_desc_matches:
         boost += 0.05
         details.append(f"Desc200: {', '.join(comp_desc_matches)}")
-        
+
     boost = min(boost, 0.15)
-    
+
     if boost > 0:
         competitor_proven_list.append("Yes")
         proven_details_list.append("; ".join(details))
@@ -885,51 +634,31 @@ df['CompetitorBoost'] = competitor_boost_list
 
 def calculate_relevancy(row, config):
     kw = str(row.get('EN', row['Keyword'])).lower()
-    score = 0.3  # Base score
-    
-    # +0.40: Core emulator intent
-    if 'emulator' in kw or 'emulador' in kw:
-        score += 0.40
-        
-    # +0.15: Specific Console/Feature
-    feature_match = [
-        'gameboy', 'gba', 'gbc', 'nes', 'snes', 'n64',
-        'ps2', 'psp', '3ds', 'sega', 'arcade', 'gamecube', 'dreamcast', 'fliperama',
-        'gb4', 'gba4'
-    ]
-    if any(c in kw for c in feature_match):
+    score = 0.3 # baseline
+
+    # Core intent
+    if any(term in kw for term in config['intent_core_terms']):
+        score += 0.35
+
+    # Feature match
+    if any(re.search(r'\b' + re.escape(f.lower()) + r'\b', kw) for f in config['feature_terms']):
+        score += 0.20
+
+    # Style match
+    if any(re.search(r'\b' + re.escape(s.lower()) + r'\b', kw) for s in config['style_terms']):
         score += 0.15
-        
-    # +0.10: Retro/Classic style
-    retro_match = [
-        'retro', 'retrô', 'classic', 'klasik', 'clássico',
-        '8bit', '8-bit', '16bit', '16-bit',
-        'old', 'nostalgic', 'nostalgia', 'nostálgia', 'vintage', 'jadul', 'lawas'
-    ]
-    if any(r in kw for r in retro_match):
-        score += 0.10
-        
-    # +0.05: Game title IP
-    ip_match = [
-        'pokemon', 'pokémon', 'mario', 'zelda', 'naruto', 'sonic',
-        'tetris', 'pacman', 'metroid', 'street fighter', 'crash',
-        'god of war', 'gta', 'tekken', 'wwe', 'super smash bros'
-    ]
-    if any(g in kw for g in ip_match):
-        score += 0.05
-        
+
     # Penalties
     if row['is_competitor']:
-        score -= 0.25
-    if row['is_noise']:
         score -= 0.20
+    if row['is_irrelevant']:
+        score -= 0.25
     if row['LanguageGroup'] == 'FOREIGN':
-        score -= 0.35
-    if row['NaturalnessFlag'] != 'OK':
-        score -= 0.35
+        score -= 0.30
+
     # Competitor Boost
     score += row.get('CompetitorBoost', 0.0)
-        
+
     return max(0.0, min(1.0, score))
 
 if 'RelevancyScore' in df_raw.columns:
@@ -968,7 +697,7 @@ def get_rank_n(rank_val):
         return 0.0
 df['CurrentRankN'] = df['Rank'].apply(get_rank_n)
 
-def calculate_expansion(row):
+def calculate_expansion(row, config):
     kw = str(row['Keyword']).lower()
     words = kw.split()
     n = len(words)
@@ -980,14 +709,11 @@ def calculate_expansion(row):
         score = 0.5
     else:
         score = 0.3
-    if 'emulator' in kw or 'emulador' in kw:
+
+    if 'widget' in kw or 'control' in kw:
         score += 0.1
     if row['is_competitor']:
         score = 0.1
-    # Check if keyword has style/game IP
-    has_style = any(re.search(r'\b' + re.escape(s.lower()) + r'\b', kw) for s in config['style_terms'])
-    if has_style:
-        score = min(score, 0.3)
     return max(0.0, min(1.0, score))
 
 df['ExpansionValue'] = df.apply(lambda r: _shared_keyword_filter.calculate_expansion(r, config), axis=1)
@@ -1014,64 +740,70 @@ def get_language_bonus(row):
 df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)
 
-# Bucket classification (Game Emulator Mode)
+# Bucket classification
 print("[Step 7] Bucket classification...")
 def classify_keyword(row, config):
     kw = str(row['Keyword']).lower()
-    
+
     # Hard drops
     if row['is_competitor']:
         return 'Dropped', 'competitor_brand', 'Dropped: Competitor brand'
     if row['is_typo']:
         return 'Dropped', 'typo_truncated_broken', 'Dropped: Typo, truncated, or broken'
+    if row['is_irrelevant']:
+        return 'Dropped', 'irrelevant_intent', 'Dropped: Irrelevant category/intent'
     if row['is_noise']:
         return 'Dropped', 'noise_only', 'Dropped: Noise-only generic term'
     if row['NaturalnessFlag'] != 'OK':
         return 'Dropped', 'unnatural', f"Dropped: Unnatural phrase ({row['NaturalnessReason']})"
-        
-    # Language Policy
+
+    # Language Mismatches
     if row['LanguageGroup'] == 'FOREIGN':
         return 'Language Mismatch Audit', 'foreign_language_mismatch', 'Foreign language mismatch'
     if row['LanguageGroup'] in ['MIXED', 'UNKNOWN']:
         return 'Manual Review', 'manual_review', 'Mixed or unknown language'
     if row['LanguageGroup'] == 'SECONDARY':
-        return 'Consider Keywords', 'secondary_language_handling', 'Spanish keyword for US_EN (Secondary language)'
-        
+        return 'Consider Keywords', 'secondary_language_handling', 'Secondary language handling'
+
     # Platform Risk
     has_platform_risk = any(term in kw for term in config['risky_platform_terms'])
     if has_platform_risk:
-        return 'Consider Keywords', 'platform_style_risk', 'Platform-style risk; keep for review only'
-        
-    # Check console/feature and game titles
+        return 'Consider Keywords', 'platform_style_risk', 'Platform-style risk'
+
+    # Core, Feature, Style
     has_core = any(term in kw for term in config['intent_core_terms'])
     has_feature = any(re.search(r'\b' + re.escape(f.lower()) + r'\b', kw) for f in config['feature_terms'])
     has_style = any(re.search(r'\b' + re.escape(s.lower()) + r'\b', kw) for s in config['style_terms'])
-    
+
     if has_core:
-        return 'Core Intent Final', 'core_intent_final', 'Strong core game emulator search intent'
-        
-    if has_style:
-        generic_game_terms = ["retro games", "classic games", "gba games", "arcade games", "jogos retrô", "jogos gba", "game emulator"]
-        if any(term in kw for term in generic_game_terms):
-            return 'Broad Expansion', 'broad_expansion', 'Generic game/emulator variant'
-        else:
-            return 'Game Keywords', 'game_keywords', 'Game Title/Franchise candidate (Research Only)'
-            
+        return 'Core Intent Final', 'core_intent_final', 'Strong core widget/control search intent'
+
+    # Check style-only held back
+    if has_style and not has_core and not has_feature:
+        return 'Generic Style Reserve', 'style_only', 'Generic aesthetic/style-only terms held back from shortlist'
+
     if has_feature:
-        return 'System Keywords', 'system_keywords', 'System/Console candidate'
-        
+        return 'Feature Keywords', 'feature_keywords', 'Specific features/toggles candidate'
+
+    if has_style:
+        return 'Style Keywords', 'style_keywords', 'Aesthetic/theme candidate'
+
     if row['RelevancyScore'] < 0.45:
         return 'Dropped', 'dropped', 'Dropped: Weak app intent after scoring'
-        
-    return 'Broad Expansion', 'broad_expansion', 'Moderately relevant emulator expansion'
+
+    return 'Broad Expansion', 'broad_expansion', 'Broad widget expansion'
 
 classifications = df.apply(lambda r: _shared_keyword_filter.classify_keyword(r, config), axis=1)
 df['Bucket'] = [c[0] for c in classifications]
 df['DecisionRule'] = [c[1] for c in classifications]
 df['Reason'] = [c[2] for c in classifications]
 
+# Apply user overrides
+def apply_user_overrides(row, config):
+    return _shared_keyword_filter.apply_user_overrides(row, config)
+
 def override_row(row):
-    bucket, rule, reason = _shared_keyword_filter.apply_user_overrides(row, config)
+    bucket, rule, reason = apply_user_overrides(row, config)
     return pd.Series([bucket, rule, reason])
 
 df[['Bucket', 'DecisionRule', 'Reason']] = df.apply(override_row, axis=1)
@@ -1079,20 +811,21 @@ df[['Bucket', 'DecisionRule', 'Reason']] = df.apply(override_row, axis=1)
 # Shortlist building & duplicate checking
 print("[Step 8] Main Shortlist Equivalent-Variant Cleanup & Shortlist building...")
 def build_shortlist(df_all, config):
-    eligible_buckets = ['Core Intent Final', 'System Keywords', 'Broad Expansion', 'Game Keywords', 'Consider Keywords']
+    eligible_buckets = ['Core Intent Final', 'Feature Keywords', 'Broad Expansion', 'Style Keywords', 'Consider Keywords']
     df_candidates = df_all[df_all['Bucket'].isin(eligible_buckets)]
     df_sorted, dedup_log = _shared_text_dedup.prepare_dataframe(df_candidates, '01_Main_Keyword_Shortlist', config)
     df_sorted = df_sorted.sort_values(by=['BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'], ascending=[False, True, False, True]).copy()
     selected_core, selected_broad, selected_consider = [], [], []
+    main_quota = (config.get('keyword_quota', {}) or {}).get('main_file', {}) or {}
+    consider_quota = int(main_quota.get('consider', 10) or 10)
     selected_normalized, selected_tokens = set(), set()
 
     def volume_eligible(row, section):
         low_tier_count = sum(_shared_keyword_filter.is_low_volume_tier(item, config) for item in selected_consider)
         return _shared_keyword_filter.is_shortlist_volume_eligible(row, section, low_tier_count, config)
-    
+
     def check_duplicate(kw, original_bucket):
         norm = normalize_text(kw)
-        tokens = " ".join(sorted(norm.split()))
         if not norm:
             return True, "Empty normalized keyword", ""
         if norm in selected_normalized:
@@ -1103,22 +836,28 @@ def build_shortlist(df_all, config):
                     kept_kw = item['Keyword']
                     break
             return True, f"Exact normalized duplicate of '{kept_kw}'", kept_kw
-        if tokens in selected_tokens:
-            all_selected = selected_core + selected_broad + selected_consider
-            kept_kw = ""
-            for item in all_selected:
-                t = " ".join(sorted(normalize_text(item['Keyword']).split()))
-                if t == tokens:
-                    kept_kw = item['Keyword']
-                    break
-            return True, f"Same normalized token set as '{kept_kw}'", kept_kw
+
+        auto_merge_token_bag = config.get("dedup_policy", {}).get("auto_merge_token_bag", True)
+        if auto_merge_token_bag:
+            tokens = " ".join(sorted(norm.split()))
+            if tokens in selected_tokens:
+                all_selected = selected_core + selected_broad + selected_consider
+                kept_kw = ""
+                for item in all_selected:
+                    t = " ".join(sorted(normalize_text(item['Keyword']).split()))
+                    if t == tokens:
+                        kept_kw = item['Keyword']
+                        break
+                return True, f"Same normalized token set as '{kept_kw}'", kept_kw
         return False, "", ""
-        
+
     def add_to_shortlist(item, section):
         norm = normalize_text(item['Keyword'])
-        tokens = " ".join(sorted(norm.split()))
         selected_normalized.add(norm)
-        selected_tokens.add(tokens)
+        auto_merge_token_bag = config.get("dedup_policy", {}).get("auto_merge_token_bag", True)
+        if auto_merge_token_bag:
+            tokens = " ".join(sorted(norm.split()))
+            selected_tokens.add(tokens)
         entry = item.to_dict()
         entry['Section'] = section
         entry['QuotaStatus'] = 'EXACT'
@@ -1143,10 +882,10 @@ def build_shortlist(df_all, config):
             })
         else:
             selected_core.append(add_to_shortlist(row, 'Core Intent Final'))
-            
+
     # Core Fallback
     if len(selected_core) < 25:
-        fallback_candidates = df_sorted[df_sorted['Bucket'].isin(['System Keywords', 'Broad Expansion'])]
+        fallback_candidates = df_sorted[df_sorted['Bucket'].isin(['Feature Keywords', 'Broad Expansion'])]
         for _, row in fallback_candidates.iterrows():
             if len(selected_core) >= 25:
                 break
@@ -1189,10 +928,10 @@ def build_shortlist(df_all, config):
             })
         else:
             selected_broad.append(add_to_shortlist(row, 'Broad Expansion'))
-            
+
     # Broad Fallback
     if len(selected_broad) < 5:
-        fallback_candidates = df_sorted[df_sorted['Bucket'].isin(['System Keywords', 'Game Keywords'])]
+        fallback_candidates = df_sorted[df_sorted['Bucket'].isin(['Feature Keywords', 'Style Keywords'])]
         for _, row in fallback_candidates.iterrows():
             if len(selected_broad) >= 5:
                 break
@@ -1218,10 +957,14 @@ def build_shortlist(df_all, config):
                 entry['FillReason'] = 'Broad Expansion Quota Fallback'
                 selected_broad.append(entry)
 
-    # Consider (Quota: 10)
-    consider_candidates = df_sorted[df_sorted['Bucket'] == 'Consider Keywords']
+    # Consider (quality-ranked review pool)
+    consider_candidates = df_sorted[df_sorted['Bucket'] == 'Consider Keywords'].copy()
+    consider_sort_cols = [col for col in ['RelevancyScore', 'VolumeN', 'BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'] if col in consider_candidates.columns]
+    consider_ascending = [col in {'Rank_numeric', 'Difficulty'} for col in consider_sort_cols]
+    if consider_sort_cols:
+        consider_candidates = consider_candidates.sort_values(by=consider_sort_cols, ascending=consider_ascending)
     for _, row in consider_candidates.iterrows():
-        if len(selected_consider) >= 10:
+        if len(selected_consider) >= consider_quota:
             break
         if not volume_eligible(row, 'Consider Keywords'):
             continue
@@ -1235,14 +978,14 @@ def build_shortlist(df_all, config):
             })
         else:
             selected_consider.append(add_to_shortlist(row, 'Consider Keywords'))
-            
+
     # Consider Fallback
-    if len(selected_consider) < 10:
+    if len(selected_consider) < consider_quota:
         selected_kws = {item['Keyword'].lower() for item in selected_core + selected_broad}
-        missed_opps = df_sorted[df_sorted['Bucket'].isin(['Core Intent Final', 'Broad Expansion']) & 
+        missed_opps = df_sorted[df_sorted['Bucket'].isin(['Core Intent Final', 'Broad Expansion']) &
                                 (~df_sorted['Keyword'].str.lower().isin(selected_kws))]
         for _, row in missed_opps.iterrows():
-            if len(selected_consider) >= 10:
+            if len(selected_consider) >= consider_quota:
                 break
             if not volume_eligible(row, 'Consider Keywords'):
                 continue
@@ -1282,10 +1025,8 @@ def build_curated_sheet(df_all, bucket_name, sheet_name):
         selected.append(entry)
     return selected
 
-# System Keywords (capped <=30, no fallback fill)
-selected_feature = build_curated_sheet(df, 'System Keywords', '02_System_Keywords')
-# Game Keywords (capped <=30, no fallback fill)
-selected_style = build_curated_sheet(df, 'Game Keywords', '03_Game_Keywords')
+selected_feature = build_curated_sheet(df, 'Feature Keywords', '02_Feature_Keywords')
+selected_style = build_curated_sheet(df, 'Style Keywords', '03_Style_Keywords')
 df_dedup_log = pd.DataFrame(_shared_text_dedup.normalize_log_entries(dedup_log_list))
 
 # Metadata assignment
@@ -1312,7 +1053,7 @@ else:
         if confirmed_selection:
             payload = _shared_keyword_filter.wrap_selection_payload(confirmed_selection, selection_cache_meta)
             _shared_keyword_filter.atomic_write_json(selections_file, payload)
-                
+
             print("\n" + "="*50)
             print("[SELECTION_CONFIRMED] Keyword selections successfully saved!")
             print("Selections saved to:", selections_file)
@@ -1325,9 +1066,9 @@ if confirmed_selection:
     user_secondary = confirmed_selection.get("secondary_keywords", [])
     user_feature = confirmed_selection.get("feature_keywords", [])
     user_style = confirmed_selection.get("style_keywords", [])
-    
+
     df_lookup = df.set_index('Keyword')
-    
+
     selected_core = []
     for kw in user_core:
         if kw in df_lookup.index:
@@ -1339,7 +1080,7 @@ if confirmed_selection:
             entry['Section'] = 'Core Intent Final'
             entry['QuotaStatus'] = 'EXACT'
             selected_core.append(entry)
-            
+
     selected_broad = []
     selected_consider = []
     for idx, kw in enumerate(user_secondary):
@@ -1355,7 +1096,7 @@ if confirmed_selection:
             else:
                 entry['Section'] = 'Consider Keywords'
                 selected_consider.append(entry)
-                
+
     selected_feature = []
     for kw in user_feature:
         if kw in df_lookup.index:
@@ -1364,9 +1105,9 @@ if confirmed_selection:
                 row = row.iloc[0]
             entry = row.to_dict()
             entry['Keyword'] = kw
-            entry['Section'] = 'System Keywords'
+            entry['Section'] = 'Feature Keywords'
             selected_feature.append(entry)
-            
+
     selected_style = []
     for kw in user_style:
         if kw in df_lookup.index:
@@ -1375,9 +1116,9 @@ if confirmed_selection:
                 row = row.iloc[0]
             entry = row.to_dict()
             entry['Keyword'] = kw
-            entry['Section'] = 'Game Keywords'
+            entry['Section'] = 'Style Keywords'
             selected_style.append(entry)
-            
+
     config["app_title_draft"] = confirmed_selection.get("title", "")
     config["short_desc_draft"] = confirmed_selection.get("short_description", "")
     config["full_desc_draft"] = confirmed_selection.get("full_description", "")
@@ -1416,24 +1157,24 @@ def style_sheet(ws, title, is_report=False):
     ws.views.sheetView[0].showGridLines = True
     if not is_report and ws.max_row > 1:
         ws.freeze_panes = 'A2'
-        
+
     navy_fill = PatternFill(start_color="1F4E78", end_color="1F4E78", fill_type="solid")
     white_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
     thin = Side(border_style="thin", color="D3D3D3")
     border = Border(left=thin, right=thin, top=thin, bottom=thin)
-    
+
     if not is_report:
         for col_idx in range(1, ws.max_column + 1):
             cell = ws.cell(row=1, column=col_idx)
             cell.fill = navy_fill
             cell.font = white_font
             cell.alignment = Alignment(horizontal="center", vertical="center")
-            
+
         for row_idx in range(2, ws.max_row + 1):
             for col_idx in range(1, ws.max_column + 1):
                 cell = ws.cell(row=row_idx, column=col_idx)
                 cell.border = border
-                
+
                 col_name = ws.cell(row=1, column=col_idx).value
                 if col_name in ['Volume', 'Max. Volume', 'Difficulty', 'Rank', 'MaximumReach']:
                     try: cell.value = int(float(cell.value))
@@ -1446,7 +1187,7 @@ def style_sheet(ws, title, is_report=False):
                         else:
                             cell.number_format = '0.0000'
                     except: pass
-                        
+
     for col in ws.columns:
         max_len = 0
         for cell in col:
@@ -1456,7 +1197,7 @@ def style_sheet(ws, title, is_report=False):
             max_len = max(max_len, len(val_str))
         col_letter = get_column_letter(col[0].column)
         ws.column_dimensions[col_letter].width = max(max_len + 3, 12)
-        
+
         # Hide Traffic Stability and Stability Class columns
         col_name = ws.cell(row=1, column=col[0].column).value
         if col_name in ['Traffic Stability', 'Stability Class']:
@@ -1502,24 +1243,24 @@ for row_idx, entry in enumerate(all_shortlist, 2):
         ws_shortlist.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
 style_sheet(ws_shortlist, "01_Main_Keyword_Shortlist")
 
-# --- 02_System_Keywords ---
-ws_system = wb.create_sheet(title="02_System_Keywords")
+# --- 02_Feature_Keywords ---
+ws_feature = wb.create_sheet(title="02_Feature_Keywords")
 cols_curated = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'Reason']
 for col_idx, col in enumerate(cols_curated, 1):
-    ws_system.cell(row=1, column=col_idx, value=col)
+    ws_feature.cell(row=1, column=col_idx, value=col)
 for row_idx, entry in enumerate(selected_feature, 2):
     for col_idx, col in enumerate(cols_curated, 1):
-        ws_system.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
-style_sheet(ws_system, "02_System_Keywords")
+        ws_feature.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
+style_sheet(ws_feature, "02_Feature_Keywords")
 
-# --- 03_Game_Keywords ---
-ws_game = wb.create_sheet(title="03_Game_Keywords")
+# --- 03_Style_Keywords ---
+ws_style = wb.create_sheet(title="03_Style_Keywords")
 for col_idx, col in enumerate(cols_curated, 1):
-    ws_game.cell(row=1, column=col_idx, value=col)
+    ws_style.cell(row=1, column=col_idx, value=col)
 for row_idx, entry in enumerate(selected_style, 2):
     for col_idx, col in enumerate(cols_curated, 1):
-        ws_game.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
-style_sheet(ws_game, "03_Game_Keywords")
+        ws_style.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
+style_sheet(ws_style, "03_Style_Keywords")
 
 # --- 04_Dropped_Audit ---
 ws_dropped = wb.create_sheet(title="04_Dropped_Audit")
@@ -1544,8 +1285,8 @@ metrics = [
     ("Core Intent Selected", len(selected_core)),
     ("Broad Expansion Selected", len(selected_broad)),
     ("Consider Selected", len(selected_consider)),
-    ("System Keywords Curated (02)", len(selected_feature)),
-    ("Game Keywords Curated (03)", len(selected_style)),
+    ("Feature Keywords Curated (02)", len(selected_feature)),
+    ("Style Keywords Curated (03)", len(selected_style)),
     ("Main Shortlist Dedup Log Entries (PRUNED)", len(df_dedup_log))
 ]
 for idx, (lbl, val) in enumerate(metrics, 4):
@@ -1568,8 +1309,8 @@ ws_report.cell(row=3, column=4, value="Sheet Index").font = Font(size=12, bold=T
 sheets_info = [
     ("00_README_CONFIG", "App configuration parameters and run metadata"),
     ("01_Main_Keyword_Shortlist", "Top 25 Core + 5 Broad + 10 Consider shortlist for metadata allocation"),
-    ("02_System_Keywords", "Curated system, console, and platform candidates (capped <= 30)"),
-    ("03_Game_Keywords", "Curated game title and franchise candidates (capped <= 30, Research Only)"),
+    ("02_Feature_Keywords", "Curated feature and control center specific candidates (capped <= 30)"),
+    ("03_Style_Keywords", "Curated aesthetic, theme, and styling specific candidates (capped <= 30)"),
     ("04_Dropped_Audit", "Dropped keywords with detailed reasons"),
     ("05_Report_Summary", "Summary stats, language breakdowns, and sheet indices"),
     ("06_All_Candidates", "Full candidate pool with detailed score and policy values"),
@@ -1578,13 +1319,14 @@ sheets_info = [
     ("09_Manual_Review", "Audit sheet for keywords flagged with mixed or unknown languages"),
     ("10_Top_By_Score", "Candidates sorted by BalancedScore before diversity overlap filtering"),
     ("11_Secondary_Language", "Research candidates matching Spanish (Secondary Language)"),
-    ("12_Text_Dedup_Log", "Log of equivalent keyword variants pruned from the main shortlist")
+    ("12_Text_Dedup_Log", "Log of equivalent keyword variants pruned from the main shortlist"),
+    ("13_Top_15_Keywords", "Top 15 selected ASO keywords for quick reference")
 ]
 for idx, (title, purpose) in enumerate(sheets_info, 5):
     ws_report.cell(row=idx, column=4, value=title).font = Font(bold=True)
     ws_report.cell(row=idx, column=5, value=purpose)
 
-thin_border = Border(left=Side(style='thin', color='C0C0C0'), right=Side(style='thin', color='C0C0C0'), 
+thin_border = Border(left=Side(style='thin', color='C0C0C0'), right=Side(style='thin', color='C0C0C0'),
                      top=Side(style='thin', color='C0C0C0'), bottom=Side(style='thin', color='C0C0C0'))
 for r in range(4, 13):
     ws_report.cell(row=r, column=1).border = thin_border
@@ -1677,6 +1419,15 @@ if not df_dedup_log.empty:
             ws_dedup.cell(row=row_idx, column=col_idx, value=row.get(col, ''))
 style_sheet(ws_dedup, "12_Text_Dedup_Log")
 
+# --- 13_Top_15_Keywords ---
+ws_top15 = wb.create_sheet(title="13_Top_15_Keywords")
+for col_idx, col in enumerate(cols_shortlist, 1):
+    ws_top15.cell(row=1, column=col_idx, value=col)
+for row_idx, entry in enumerate(all_shortlist[:15], 2):
+    for col_idx, col in enumerate(cols_shortlist, 1):
+        ws_top15.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
+style_sheet(ws_top15, "13_Top_15_Keywords")
+
 # Save
 try:
     memory_path = _shared_project_memory.write_project_memory_markdown(SCRIPT_DIR, project_memory)
@@ -1687,7 +1438,7 @@ except Exception as exc:
 print(f"Saving stylized workbook to {OUTPUT_PATH}...")
 try:
     wb.save(OUTPUT_PATH)
-    print("Pipeline for Game Emulator complete!")
+    print("Pipeline for Emoji Battery complete!")
 except PermissionError:
     alt_path = OUTPUT_PATH.replace(".xlsx", "_temp.xlsx")
     print(f"WARNING: Permission denied to write to {OUTPUT_PATH} (file is likely open in another program).")
