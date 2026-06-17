@@ -50,7 +50,7 @@ config = {
     "category": "Game Emulator",
     "market": args.market,
     "platform_mode": "google_play",
-    "semantic_mode": "game_emulator",
+    "semantic_mode": "game",
     "dedup_policy": {
         "auto_merge_token_bag": False,
         "review_overlap_threshold": 0.80,
@@ -267,7 +267,7 @@ config = {
     ],
 
     "typo_blacklist": [
-        'gretro', 'restro', 'gaem', 'gam emulador', 'imulator', 'gbã', 'gbã emulator', 'emulsio',
+        'gretro', 'restro', 'gaem', 'gam emulador', 'imulator', 'emulsio',
         '0s5', 'pspusado', 'ps4ps5', 'ps ps ps', 'ps5ps4', 'pxp', 'pps', 'pc5', 'eio', 'psdp', 'pspp', 'ppsp', 'ssip', 'ds3',
         'pintasan', '870 fitness', 'maldives', 'dolphin browser', 'restaurați poza', 'memperlambat',
         'ukuran panjang', 'seperti apa', 'seperti apa itu', 'tujuan', 'posisi', 'tercepat',
@@ -317,10 +317,10 @@ config = {
     },
 
     "balanced_weights": {
-        "VolumeN": 0.20,
-        "DifficultyN": 0.15,
-        "KEIN": 0.15,
-        "RelevancyScore": 0.30,
+        "VolumeN": 0.35,
+        "DifficultyN": 0.10,
+        "KEIN": 0.10,
+        "RelevancyScore": 0.25,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
     }
@@ -469,7 +469,7 @@ if max_vol_col is not None:
 else:
     df['Max. Volume'] = df['Volume']
 
-df['Max. Volume'] = pd.to_numeric(df['Max. Volume'], errors='coerce').fillna(df['Volume']).astype(int)
+df['Max. Volume'] = pd.to_numeric(df['Max. Volume'], errors='coerce').replace(0, np.nan).fillna(df['Volume']).astype(int)
 df['Traffic Stability'] = (df['Volume'] / df['Max. Volume']).fillna(1.0).clip(0.0, 1.0)
 
 def get_stability_class(ratio):
@@ -1017,6 +1017,15 @@ def get_language_bonus(row):
     return 0.0
 
 df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
+
+# Apply low volume penalty (Volume <= 5)
+def apply_volume_penalty(row):
+    score = row['BalancedScore']
+    if float(row['Volume']) <= 5.0:
+        score -= 0.15
+    return max(0.0, score)
+
+df['BalancedScore'] = df.apply(apply_volume_penalty, axis=1).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)
 
 # Bucket classification (Game Emulator Mode)
@@ -1071,7 +1080,12 @@ def classify_keyword(row, config):
     return 'Broad Expansion', 'broad_expansion', 'Moderately relevant emulator expansion'
 
 classifications = df.apply(lambda r: _shared_keyword_filter.classify_keyword(r, config), axis=1)
-df['Bucket'] = [c[0] for c in classifications]
+def map_ai_bucket(b):
+    if b == 'Feature Keywords': return 'System Keywords'
+    if b == 'Style Keywords': return 'Game Keywords'
+    return b
+
+df['Bucket'] = [map_ai_bucket(c[0]) for c in classifications]
 df['DecisionRule'] = [c[1] for c in classifications]
 df['Reason'] = [c[2] for c in classifications]
 
@@ -1127,14 +1141,14 @@ def build_shortlist(df_all, config):
         selected_normalized.add(norm)
         selected_tokens.add(tokens)
         entry = item.to_dict()
-        entry['Section'] = section
+        entry['Section'] = item['Bucket']
         entry['QuotaStatus'] = 'EXACT'
         entry['FillSource'] = ''
         entry['FillReason'] = ''
         return entry
 
     # Core (Quota: 25)
-    core_candidates = df_sorted[df_sorted['Bucket'] == 'Core Intent Final']
+    core_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]
     for _, row in core_candidates.iterrows():
         if len(selected_core) >= 25:
             break
@@ -1180,7 +1194,7 @@ def build_shortlist(df_all, config):
                 selected_core.append(entry)
 
     # Broad (Quota: 5)
-    broad_candidates = df_sorted[df_sorted['Bucket'] == 'Broad Expansion']
+    broad_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]
     for _, row in broad_candidates.iterrows():
         if len(selected_broad) >= 5:
             break
@@ -1226,7 +1240,7 @@ def build_shortlist(df_all, config):
                 selected_broad.append(entry)
 
     # Consider (quality-ranked review pool)
-    consider_candidates = df_sorted[df_sorted['Bucket'] == 'Consider Keywords'].copy()
+    consider_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)].copy()
     consider_sort_cols = [col for col in ['RelevancyScore', 'VolumeN', 'BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'] if col in consider_candidates.columns]
     consider_ascending = [col in {'Rank_numeric', 'Difficulty'} for col in consider_sort_cols]
     if consider_sort_cols:

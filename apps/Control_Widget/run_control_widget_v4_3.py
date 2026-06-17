@@ -178,10 +178,10 @@ config = {
     },
 
     "balanced_weights": {
-        "VolumeN": 0.20,
-        "DifficultyN": 0.15,
-        "KEIN": 0.15,
-        "RelevancyScore": 0.30,
+        "VolumeN": 0.35,
+        "DifficultyN": 0.10,
+        "KEIN": 0.10,
+        "RelevancyScore": 0.25,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
     }
@@ -330,7 +330,7 @@ if max_vol_col is not None:
 else:
     df['Max. Volume'] = df['Volume']
 
-df['Max. Volume'] = pd.to_numeric(df['Max. Volume'], errors='coerce').fillna(df['Volume']).astype(int)
+df['Max. Volume'] = pd.to_numeric(df['Max. Volume'], errors='coerce').replace(0, np.nan).fillna(df['Volume']).astype(int)
 df['Traffic Stability'] = (df['Volume'] / df['Max. Volume']).fillna(1.0).clip(0.0, 1.0)
 
 def get_stability_class(ratio):
@@ -855,6 +855,15 @@ def get_language_bonus(row):
     return 0.0
 
 df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
+
+# Apply low volume penalty (Volume <= 5)
+def apply_volume_penalty(row):
+    score = row['BalancedScore']
+    if float(row['Volume']) <= 5.0:
+        score -= 0.15
+    return max(0.0, score)
+
+df['BalancedScore'] = df.apply(apply_volume_penalty, axis=1).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)
 
 # Bucket classification

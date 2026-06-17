@@ -7,7 +7,7 @@ from .matcher import has_any_term, normalize_filter_text, tokenize
 DEFAULT_VOLUME_SCORE_POLICY = {
     "search_popularity_floor": 5.0,
     "search_popularity_ceiling": 100.0,
-    "exponential_curve_factor": 4.0,
+    "exponential_curve_factor": 0.0,
     "current_volume_weight": 0.85,
     "historical_max_volume_weight": 0.15,
     "low_tier_threshold": 5.0,
@@ -58,7 +58,7 @@ def calculate_volume_score(volume, max_volume=None, maximum_reach=0, max_maximum
     historical_volume = max(current_volume, number(max_volume, current_volume))
     reach = max(0.0, number(maximum_reach))
     reach_ceiling = max(0.0, number(max_maximum_reach))
-    current_score = min(1.0, reach / reach_ceiling) if reach > 0 and reach_ceiling > 0 else _normalize_search_popularity(current_volume, policy)
+    current_score = _normalize_search_popularity(current_volume, policy)
     historical_score = _normalize_search_popularity(historical_volume, policy)
     current_weight = max(0.0, number(policy.get("current_volume_weight"), 0.85))
     historical_weight = max(0.0, number(policy.get("historical_max_volume_weight"), 0.15))

@@ -1,8 +1,8 @@
-﻿FILTER_POLICY = {
+FILTER_POLICY = {
     "semantic_mode": "game_emulator",
     "risky_ip_terms": ["pokemon", "mario", "zelda", "nintendo", "playstation"],
     "ambiguous_brand_terms": ["dolphin", "delta", "play"],
-    "platform_affiliation_terms": [],
+    "platform_affiliation_terms": ["ps1", "3ds", "wii", "ps2", "ps3", "ps4", "ps5", "switch", "gamecube"],
     "truncation_policy": {
         "enabled": True,
         "min_prefix_length": 2,
@@ -22,4 +22,8 @@
         "style_only_action": "reserve",
         "core_intent_override": True,
     },
+    "volume_score_policy": {
+        "max_low_tier_consider_keywords": 3,
+        "exclude_low_tier_from_metadata_shortlist": True
+    }
 }

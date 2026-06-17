@@ -118,6 +118,17 @@ def classify_keyword(row, config):
     if naturalness != "OK":
         return "Dropped", "unnatural", f"Dropped: Unnatural phrase ({row.get('NaturalnessReason', '')})"
 
+    if flags["is_platform_affiliation"]:
+        return _action_result(policy["platform_affiliation_action"], "platform_affiliation", "Platform affiliation risk")
+    if flags["is_platform_only"]:
+        return _action_result(policy["platform_only_action"], "platform_only", "Platform-only keyword")
+    if flags["is_risky_ip"]:
+        return _action_result(policy["risky_ip_action"], "risky_ip", "Sensitive IP term")
+    if flags["is_ambiguous_brand"]:
+        return _action_result(policy["ambiguous_brand_action"], "ambiguous_brand", "Ambiguous brand term")
+    if flags["is_platform_risk"]:
+        return _action_result(policy["platform_context_action"], "platform_style_risk", "Platform-style context")
+
     language_group = str(row.get("LanguageGroup", "PRIMARY")).upper()
     ai_result = _ai_classification_result(row, config)
     if ai_result:
@@ -136,17 +147,6 @@ def classify_keyword(row, config):
         if _is_explicit_core_term(row, config):
             return "Core Intent Final", "secondary_explicit_core_intent", "Explicit core intent term retained across market languages"
         return "Consider Keywords", "secondary_language_handling", "Secondary language handling"
-
-    if flags["is_platform_affiliation"]:
-        return _action_result(policy["platform_affiliation_action"], "platform_affiliation", "Platform affiliation risk")
-    if flags["is_platform_only"]:
-        return _action_result(policy["platform_only_action"], "platform_only", "Platform-only keyword")
-    if flags["is_risky_ip"]:
-        return _action_result(policy["risky_ip_action"], "risky_ip", "Sensitive IP term")
-    if flags["is_ambiguous_brand"]:
-        return _action_result(policy["ambiguous_brand_action"], "ambiguous_brand", "Ambiguous brand term")
-    if flags["is_platform_risk"]:
-        return _action_result(policy["platform_context_action"], "platform_style_risk", "Platform-style context")
 
     if has_core:
         if app_mode == "game":

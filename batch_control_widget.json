@@ -1,0 +1,16 @@
+{
+  "jobs": [
+    {
+      "app": "control_widget",
+      "csv": "apps/Control_Widget/Input/ControlWidget_BR_PT.csv"
+    },
+    {
+      "app": "control_widget",
+      "csv": "apps/Control_Widget/Input/ControlWidget_MX-ES.csv"
+    },
+    {
+      "app": "control_widget",
+      "csv": "apps/Control_Widget/Input/ControlWidget_US_EN.csv"
+    }
+  ]
+}

@@ -19,6 +19,8 @@ import sys
 _SHARED_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if _SHARED_ROOT not in sys.path:
     sys.path.insert(0, _SHARED_ROOT)
+PROJECT_ROOT = _SHARED_ROOT
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 from shared import text_dedup as _shared_text_dedup
 from shared import profile_service as _shared_profile_service
 from shared import project_memory as _shared_project_memory
@@ -199,7 +201,7 @@ if max_vol_col is not None:
 else:
     df['Max. Volume'] = df['Volume']
 
-df['Max. Volume'] = pd.to_numeric(df['Max. Volume'], errors='coerce').fillna(df['Volume']).astype(int)
+df['Max. Volume'] = pd.to_numeric(df['Max. Volume'], errors='coerce').replace(0, np.nan).fillna(df['Volume']).astype(int)
 df['Traffic Stability'] = (df['Volume'] / df['Max. Volume']).fillna(1.0).clip(0.0, 1.0)
 
 def get_stability_class(ratio):
@@ -736,6 +738,15 @@ def get_language_bonus(row):
     return 0.0
 
 df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
+
+# Apply low volume penalty (Volume <= 5)
+def apply_volume_penalty(row):
+    score = row['BalancedScore']
+    if float(row['Volume']) <= 5.0:
+        score -= 0.15
+    return max(0.0, score)
+
+df['BalancedScore'] = df.apply(apply_volume_penalty, axis=1).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)
 
 # Bucket classification
