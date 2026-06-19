@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0",
+  "profile_type": "aso_app_profile",
+  "last_checked": "2026-06-18",
+  "source_url": "https://play.google.com/store/apps/details?id=com.funvideo.face.filter.swap.changer.effect",
+  "app_identity": {
+    "app_id": "com.funvideo.face.filter.swap.changer.effect",
+    "package_id": "com.funvideo.face.filter.swap.changer.effect",
+    "title": "FunVid: Funny Face Filters",
+    "developer": "Smart Utilities Hub",
+    "category": "Photography",
+    "content_rating": "Everyone",
+    "monetization": {
+      "contains_ads": true,
+      "in_app_purchases": true
+    },
+    "installs": "1,000,000+",
+    "updated_on": "2026-06-09"
+  },
+  "live_store_metadata": {
+    "short_description": "3D Face Filters and Silly Camera Effects for selfies and videos",
+    "full_description_digest": {
+      "one_sentence_summary": "FunVid is a funny face filter app for creating silly selfies and entertaining videos with playful camera effects.",
+      "description_sections": [
+        "Trendy Funny Face Filters",
+        "Make Funny Selfies and Videos",
+        "Fun with Friends and Family",
+        "Playful Prank Filter Fun",
+        "Fun Face Changer Effects",
+        "Why Users Use FunVid",
+        "Popular Filter Styles"
+      ],
+      "main_feature_claims": [
+        "20+ funny face filters and camera effects",
+        "Easy face changer tools for selfies and videos",
+        "Animal morph filters with fun visual variety",
+        "Quick face distortion effects for silly reactions",
+        "Simple controls made for fast, casual use"
+      ],
+      "how_to_use_flow": [
+        "Open FunVid app",
+        "Choose your favorite face filter or animal morph effect",
+        "Snap a photo or record a video with live effects",
+        "Save and share the funny creation with friends"
+      ]
+    }
+  },
+  "corrected_positioning": {
+    "primary_positioning": "Funny face filters, camera effects, face distortion, and animal morphing for photos and videos.",
+    "secondary_positioning": [
+      "Prank filter fun with friends and family",
+      "Weird face morphing and silly selfies"
+    ],
+    "not_the_right_positioning": [
+      "Professional photo editing",
+      "Beauty filters and makeup touch-ups"
+    ],
+    "strongest_differentiators": [
+      "Playful animal morph filters (horse, platypus, camel, rat)",
+      "Zero editing required - live camera effects are applied instantly"
+    ]
+  },
+  "competitor_strategy": {
+    "recommended_competitor_types": [
+      {
+        "type": "Face Swap and Morph Apps",
+        "description": "Apps that focus on face changing, funny filters, and animal morphing."
+      },
+      {
+        "type": "Time Warp and Scan Apps",
+        "description": "Apps with trendy distortion effects like Time Warp Scan."
+      }
+    ],
+    "suggested_competitors": [
+      {
+        "package_id": "com.vysionapps.face28",
+        "title": "Funny Face Filters Live Camera",
+        "developer": "Vysion Apps Limited",
+        "relationship": "direct competitor",
+        "why_relevant": "Direct competitor specializing in live face changing, warping, and swapping effects.",
+        "short_description": "Face Changer Camera: Warp, swap, and prank with live face filters and effects!",
+        "desc200": "Face Changer Camera: Warp, swap, and prank with live face filters and effects! Playful filters, face morphing, and silly camera face wraps.",
+        "overlap_keywords": [
+          "funny face filters",
+          "face changer camera",
+          "face warp"
+        ]
+      },
+      {
+        "package_id": "com.sjh.funnyface.filter.snapfilter",
+        "title": "Funny Face Camera: Snap Filter",
+        "developer": "SJH infotech",
+        "relationship": "direct competitor",
+        "why_relevant": "Direct competitor focused on snap face filters, face swap, and live selfie effects.",
+        "short_description": "Funny Face Camera: Snap Filter – Face Swap, Funny Filters & Live Selfie Camera.",
+        "desc200": "Funny Face Camera: Snap Filter – Face Swap, Funny Filters & Live Selfie Camera. Enjoy selfie effects and face changer options.",
+        "overlap_keywords": [
+          "funny face camera",
+          "snap filter",
+          "face swap"
+        ]
+      },
+      {
+        "package_id": "com.funnycamera.crazypictures",
+        "title": "Funny Camera - Photo Editor",
+        "developer": "QUANTUM EDGE LTD",
+        "relationship": "direct competitor",
+        "why_relevant": "Competitor app focusing on funny photo editing effects, warping, and caricature templates.",
+        "short_description": "Edit photos with Funny Camera - Photo Editor app: laugh with funny photo effects",
+        "desc200": "Edit photos with Funny Camera - Photo Editor app: laugh with funny photo effects, create crazy pictures, warp faces, and use humorous stickers.",
+        "overlap_keywords": [
+          "funny camera",
+          "photo editor",
+          "crazy pictures"
+        ]
+      }
+    ]
+  }
+}

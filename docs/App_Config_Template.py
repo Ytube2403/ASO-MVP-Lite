@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ASO Keyword Planner - App Configuration Template
-Version: 4.3
+Version: 4.4
 Purpose: Template configuration for deploying ASO Keyword Planner on a new application.
 """
 
@@ -24,7 +24,7 @@ APP_CONFIG = {
     "market_language_policy": {
         "enabled": True,
         "required": True,
-        "primary_languages": ["en"],              # Danh sÃ¡ch ngÃ´n ngá»¯ chÃ­nh Ä‘Æ°á»£c phÃ©p xuáº¥t hiá»‡n trong Top 25 Core
+        "primary_languages": ["en"],              # Danh sÃ¡ch ngÃ´n ngá»¯ chÃ­nh Ä‘Æ°á»£c phÃ©p xuáº¥t hiá»‡n trong Top 20 Core
         "secondary_languages": ["es", "es-MX"],   # NgÃ´n ngá»¯ phá»¥ (vÃ­ dá»¥ tiáº¿ng TÃ¢y Ban Nha táº¡i Má»¹), Ä‘Æ°a vÃ o danh sÃ¡ch Consider
         "optional_secondary_languages": [],       # NgÃ´n ngá»¯ tÃ¹y chá»n khÃ¡c
 
@@ -168,7 +168,8 @@ APP_CONFIG = {
     # ==========================================
     "keyword_quota": {
         "main_file": {
-            "core_intent": 25,       # Sá»‘ lÆ°á»£ng keyword core chÃ­nh (Top 25)
+            "core_intent": 20,       # So luong keyword core chinh (Top 20)
+            "core_feature": 5,       # So luong keyword feature (Top 5)
             "broad_expansion": 5,    # Sá»‘ lÆ°á»£ng keyword má»Ÿ rá»™ng rá»™ng hÆ¡n (Top 5)
             "consider": 10,          # Sá»‘ lÆ°á»£ng keyword Ä‘Æ°a vÃ o danh sÃ¡ch Consider
         },
@@ -313,7 +314,8 @@ APP_CONFIG = {
             "03_Style_Keywords",
             "04_Dropped_Audit",
             "05_Report_Summary",
-            "06_All_Candidates"
+            "06_All_Candidates",
+            "13_Top_By_Volume"
         ],
         "optional_sheets": [
             "07_Language_Mismatch",

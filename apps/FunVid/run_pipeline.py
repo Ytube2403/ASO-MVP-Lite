@@ -807,6 +807,20 @@ def override_row(row):
 
 df[['Bucket', 'DecisionRule', 'Reason']] = df.apply(override_row, axis=1)
 
+# Custom drop for features not supported by this app (bug, lip, spider, insect, age, ar)
+def custom_drop_unsupported_features(row):
+    kw = str(row['Keyword']).lower()
+    if re.search(r'\b(bug|bugs|bugzz|bugzzz|spider|spiders|insect|insects|lip|lips|age|aged|aging|old|older|ar)\b', kw, re.I):
+        return 'Dropped', 'unsupported_feature', 'Dropped: Unsupported app feature (bug / lip / spider / insect / age / ar)'
+    return None
+
+for idx, row in df.iterrows():
+    custom_res = custom_drop_unsupported_features(row)
+    if custom_res:
+        df.loc[idx, 'Bucket'] = custom_res[0]
+        df.loc[idx, 'DecisionRule'] = custom_res[1]
+        df.loc[idx, 'Reason'] = custom_res[2]
+
 # Shortlist building & duplicate checking
 print("[Step 8] Main Shortlist Equivalent-Variant Cleanup & Shortlist building...")
 def build_shortlist(df_all, config):
@@ -1068,8 +1082,47 @@ def build_curated_sheet(df_all, bucket_name, sheet_name):
         selected.append(entry)
     return selected
 
-selected_feature = build_curated_sheet(df, 'Feature Keywords', '02_Feature_Keywords')
-selected_style = build_curated_sheet(df, 'Style Keywords', '03_Style_Keywords')
+def build_face_filters_sheet(df_all, sheet_name):
+    eligible_buckets = ['Core Intent Final', 'Feature Keywords', 'Broad Expansion', 'Style Keywords', 'Consider Keywords']
+    df_face = df_all[
+        (df_all['Keyword'].str.contains('face', case=False, na=False)) &
+        (df_all['Bucket'].isin(eligible_buckets))
+    ]
+    df_sorted = df_face.sort_values(by=['BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'], ascending=[False, True, False, True]).head(30)
+    selected = []
+    for _, row in df_sorted.iterrows():
+        entry = row.to_dict()
+        entry['Section'] = 'Face Filter'
+        entry['QuotaStatus'] = 'EXACT'
+        entry['FillSource'] = ''
+        entry['FillReason'] = ''
+        selected.append(entry)
+    return selected
+
+def build_animal_filters_sheet(df_all, sheet_name):
+    eligible_buckets = ['Core Intent Final', 'Feature Keywords', 'Broad Expansion', 'Style Keywords', 'Consider Keywords']
+    rx_animal = re.compile(
+        r'\b(animal|animals|dog|dogs|cat|cats|horse|horses|rat|rats|husky|huskies|camel|camels|platypus|fox|foxes|deer|bunny|bunnies|puppy|puppies|rabbit|rabbits)\b',
+        re.I
+    )
+    df_animal = df_all[
+        (df_all['Keyword'].apply(lambda k: bool(rx_animal.search(str(k))))) &
+        (df_all['Bucket'].isin(eligible_buckets))
+    ]
+    df_sorted = df_animal.sort_values(by=['BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'], ascending=[False, True, False, True]).head(30)
+    selected = []
+    for _, row in df_sorted.iterrows():
+        entry = row.to_dict()
+        entry['Section'] = 'Animal Filter'
+        entry['QuotaStatus'] = 'EXACT'
+        entry['FillSource'] = ''
+        entry['FillReason'] = ''
+        selected.append(entry)
+    return selected
+
+selected_feature = build_curated_sheet(df, 'Feature Keywords', '02_Filter_Keyword')
+selected_style = build_face_filters_sheet(df, '03_face_filter')
+selected_animal = build_animal_filters_sheet(df, '03a_Animal_Filter')
 df_dedup_log = pd.DataFrame(_shared_text_dedup.normalize_log_entries(dedup_log_list))
 
 # Metadata assignment
@@ -1288,24 +1341,33 @@ for row_idx, entry in enumerate(all_shortlist, 2):
         ws_shortlist.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
 style_sheet(ws_shortlist, "01_Main_Keyword_Shortlist")
 
-# --- 02_Feature_Keywords ---
-ws_feature = wb.create_sheet(title="02_Feature_Keywords")
+# --- 02_Filter_Keyword ---
+ws_feature = wb.create_sheet(title="02_Filter_Keyword")
 cols_curated = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'Reason']
 for col_idx, col in enumerate(cols_curated, 1):
     ws_feature.cell(row=1, column=col_idx, value=col)
 for row_idx, entry in enumerate(selected_feature, 2):
     for col_idx, col in enumerate(cols_curated, 1):
         ws_feature.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
-style_sheet(ws_feature, "02_Feature_Keywords")
+style_sheet(ws_feature, "02_Filter_Keyword")
 
-# --- 03_Style_Keywords ---
-ws_style = wb.create_sheet(title="03_Style_Keywords")
+# --- 03_face_filter ---
+ws_style = wb.create_sheet(title="03_face_filter")
 for col_idx, col in enumerate(cols_curated, 1):
     ws_style.cell(row=1, column=col_idx, value=col)
 for row_idx, entry in enumerate(selected_style, 2):
     for col_idx, col in enumerate(cols_curated, 1):
         ws_style.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
-style_sheet(ws_style, "03_Style_Keywords")
+style_sheet(ws_style, "03_face_filter")
+
+# --- 03a_Animal_Filter ---
+ws_animal = wb.create_sheet(title="03a_Animal_Filter")
+for col_idx, col in enumerate(cols_curated, 1):
+    ws_animal.cell(row=1, column=col_idx, value=col)
+for row_idx, entry in enumerate(selected_animal, 2):
+    for col_idx, col in enumerate(cols_curated, 1):
+        ws_animal.cell(row=row_idx, column=col_idx, value=entry.get(col, ''))
+style_sheet(ws_animal, "03a_Animal_Filter")
 
 # --- 04_Dropped_Audit ---
 ws_dropped = wb.create_sheet(title="04_Dropped_Audit")
@@ -1331,8 +1393,9 @@ metrics = [
     ("Feature Selected (Main)", len(selected_core_feature)),
     ("Broad Expansion Selected", len(selected_broad)),
     ("Consider Selected", len(selected_consider)),
-    ("Feature Keywords Curated (02)", len(selected_feature)),
-    ("Style Keywords Curated (03)", len(selected_style)),
+    ("Filter Keywords Curated (02)", len(selected_feature)),
+    ("Face Filter Curated (03)", len(selected_style)),
+    ("Animal Filter Curated (03a)", len(selected_animal)),
     ("Main Shortlist Dedup Log Entries (PRUNED)", len(df_dedup_log))
 ]
 for idx, (lbl, val) in enumerate(metrics, 4):
@@ -1355,8 +1418,9 @@ ws_report.cell(row=3, column=4, value="Sheet Index").font = Font(size=12, bold=T
 sheets_info = [
     ("00_README_CONFIG", "App configuration parameters and run metadata"),
     ("01_Main_Keyword_Shortlist", "Top 20 Core + 5 Feature + 5 Broad + 10 Consider shortlist for metadata allocation"),
-    ("02_Feature_Keywords", "Curated feature and control center specific candidates (capped <= 30)"),
-    ("03_Style_Keywords", "Curated aesthetic, theme, and styling specific candidates (capped <= 30)"),
+    ("02_Filter_Keyword", "Curated different filter names (capped <= 30)"),
+    ("03_face_filter", "Curated filters related to face (capped <= 30)"),
+    ("03a_Animal_Filter", "Curated filters related to animals (capped <= 30)"),
     ("04_Dropped_Audit", "Dropped keywords with detailed reasons"),
     ("05_Report_Summary", "Summary stats, language breakdowns, and sheet indices"),
     ("06_All_Candidates", "Full candidate pool with detailed score and policy values"),
@@ -1486,7 +1550,7 @@ except Exception as exc:
 print(f"Saving stylized workbook to {OUTPUT_PATH}...")
 try:
     wb.save(OUTPUT_PATH)
-    print(f"Pipeline for {config.get('app_name', 'App Template')} complete!")
+    print(f"Pipeline for {config.get('app_name', 'FunVid')} complete!")
 except PermissionError:
     alt_path = OUTPUT_PATH.replace(".xlsx", "_temp.xlsx")
     print(f"WARNING: Permission denied to write to {OUTPUT_PATH} (file is likely open in another program).")

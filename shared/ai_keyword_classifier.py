@@ -140,7 +140,7 @@ def _strip_env_quotes(value):
 
 
 def load_project_env():
-    """Load project-local .env secrets without overriding existing environment."""
+    """Load the nearest project-local .env secrets without overriding existing environment."""
     loaded = []
     for path in _project_env_paths():
         if not os.path.exists(path):
@@ -156,6 +156,7 @@ def load_project_env():
                     continue
                 os.environ[key] = _strip_env_quotes(value)
         loaded.append(path)
+        break
     return loaded
 
 

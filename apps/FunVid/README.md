@@ -117,7 +117,7 @@ Quy tac quan trong:
 - `SECONDARY` giu o `Consider Keywords`.
 - Naturalness khong con drop non-Latin/script khac bang `LANGUAGE_BLEED`; ngon ngu do language detector xu ly.
 - Selection cache chi duoc dung lai khi metadata `app_id`, market, input hash, config hash va engine version khop run hien tai.
-- Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; Feature trong main shortlist doc quota rieng voi sheet `02_Feature_Keywords`.
+- Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; Feature trong main shortlist doc quota rieng voi sheet `02_Filter_Keyword`.
 - Workbook v4.4 co them sheet `13_Top_By_Volume` de audit nhanh top keyword sach theo Volume.
 - Low-volume keyword co the vao shortlist/Consider khi config dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.
 - Truncation v4.4 bao ve complete token va singular/plural: `battery emoji`, `battery icon`, `prank sound`, `ar filter`, `control widget` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.

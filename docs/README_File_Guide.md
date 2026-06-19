@@ -1,4 +1,4 @@
-# Huong dan cau truc file ASO Keyword Filter v4.3
+# Huong dan cau truc file ASO Keyword Filter v4.4
 
 ## Root
 
@@ -33,11 +33,13 @@ App da dang ky:
 - `apps/AR_Filter/`
 - `apps/Control_Widget/`
 - `apps/Emoji_Battery_Icon_Customize/`
+- `apps/FunVid/`
 - `apps/Game_Emulator/`
 - `apps/Prank_Sounds/`
 - `apps/App_Template/`
 
-`AR_Filter`, `Control_Widget`, `Game_Emulator` dung runner `*_v4_3.py`. `Emoji_Battery_Icon_Customize`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
+`AR_Filter`, `Control_Widget`, `Game_Emulator` dung runner `*_v4_3.py`. `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
+Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.csv` cung duoc route ve app `FunVid` qua registry alias.
 
 ## `shared/`
 
@@ -57,8 +59,16 @@ App da dang ky:
 - `tools/run_aso_batch.py`: batch implementation.
 - `tools/export_master_keywords.py`: Master Keywords exporter implementation.
 - `tools/warm_ai_keyword_cache.py`: lam nong AI cache bang DeepSeek truoc khi chay pipeline chinh, khong tao workbook.
+- `tools/generate_funvid_csv.py`, `tools/generate_animalface_csv.py`, `tools/generate_100_keywords_csv.py`: tao seed CSV mau cho app FunVid.
 
 Wrapper tai root duoc giu de cac lenh cu van chay.
+
+## `.agents/`
+
+- `.agents/skills/aso-keyword-research/SKILL.md`: skill noi bo huong dan Agent mo rong seed keyword set theo app, dua tren config/profile, competitor research, local search behavior va web research. Skill nay phuc vu buoc nghien cuu dau vao, khong thay the pipeline/filter runner.
+- `.agents/skills/aso-keyword-research/agents/openai.yaml`: metadata UI toi thieu cho skill, gom display name, short description va default prompt.
+
+Validation hien tai: parser cuc bo pass; skill khong con `file:///`, `search_web`, mismatch giua folder va skill name. `quick_validate.py` cua skill-creator can module Python `yaml`/`PyYAML`; neu moi truong chua cai PyYAML thi validator chuan se khong chay duoc, nhung cac rule form chinh da duoc kiem bang script cuc bo.
 
 ## `tracker/`
 
@@ -71,7 +81,7 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 
 ## `docs/`
 
-- `docs/ASO_Keyword_Planner_v4_3.md`: dac ta logic pipeline v4.3, gom DeepSeek AI classifier, `pre_ai_filter`, key pool va warm cache.
+- `docs/ASO_Keyword_Planner_v4_4.md`: dac ta logic pipeline v4.4, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid`, DeepSeek AI classifier, `pre_ai_filter`, key pool va warm cache.
 - `docs/SETUP_WINDOWS.md`: checklist phan mem, extension, Python packages va cach kiem tra moi truong Windows.
 - `docs/App_Config_Template.py`: template config.
 - `docs/App_Profile_Template.json`: template profile.

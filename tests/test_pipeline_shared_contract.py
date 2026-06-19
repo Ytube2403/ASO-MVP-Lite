@@ -11,6 +11,7 @@ RUNNER_PATHS = [
     "apps/Game_Emulator/run_game_emulator_v4_3.py",
     "apps/Emoji_Battery_Icon_Customize/run_pipeline.py",
     "apps/Prank_Sounds/run_pipeline.py",
+    "apps/FunVid/run_pipeline.py",
 ]
 
 ROW_AWARE_SHARED_CALLS = [
