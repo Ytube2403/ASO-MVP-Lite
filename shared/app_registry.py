@@ -39,6 +39,12 @@ APP_REGISTRY = {
         "config": "apps/Emoji_Battery_Icon_Customize/app_config.py",
         "aliases": ["EmojiBatteryIconCustomize", "Emoji_Battery_Icon_Customize", "EmojiBattery"],
     },
+    "fun_vid": {
+        "folder": "apps/FunVid",
+        "runner": "apps/FunVid/run_pipeline.py",
+        "config": "apps/FunVid/app_config.py",
+        "aliases": ["FunVid", "Fun_Vid", "FunnyFaceFilters", "FunVid_100_Keywords", "FunVid_AnimalFace"],
+    },
 }
 
 

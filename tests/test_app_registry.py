@@ -11,6 +11,9 @@ class AppRegistryTests(unittest.TestCase):
     def test_exact_registered_alias(self):
         self.assertEqual(resolve_app("Pranky")["folder"], "apps/Prank_Sounds")
         self.assertEqual(resolve_app("AR_Filter")["folder"], "apps/AR_Filter")
+        self.assertEqual(resolve_app("FunVid")["folder"], "apps/FunVid")
+        self.assertEqual(resolve_app("FunVid_100_Keywords")["folder"], "apps/FunVid")
+        self.assertEqual(resolve_app("FunVid_AnimalFace")["folder"], "apps/FunVid")
 
     def test_unknown_alias_does_not_fallback(self):
         with self.assertRaises(KeyError):

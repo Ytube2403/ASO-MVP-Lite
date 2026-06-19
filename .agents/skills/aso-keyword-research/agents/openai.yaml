@@ -1,0 +1,7 @@
+interface:
+  display_name: "ASO Keyword Research"
+  short_description: "Expand seed keywords for an app"
+  default_prompt: "Use $aso-keyword-research to research and expand seed keywords for an app."
+
+policy:
+  allow_implicit_invocation: true

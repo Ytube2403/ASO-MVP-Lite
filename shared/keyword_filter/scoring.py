@@ -7,7 +7,7 @@ from .matcher import has_any_term, normalize_filter_text, tokenize
 DEFAULT_VOLUME_SCORE_POLICY = {
     "search_popularity_floor": 5.0,
     "search_popularity_ceiling": 100.0,
-    "exponential_curve_factor": 0.0,
+    "exponential_curve_factor": 4.0,
     "current_volume_weight": 0.85,
     "historical_max_volume_weight": 0.15,
     "low_tier_threshold": 5.0,

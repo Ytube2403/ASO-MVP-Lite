@@ -1,4 +1,4 @@
-# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.3
+# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.4
 
 Ban Lite dung Google GTX mien phi de giam workload tren may yeu. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
 
@@ -12,6 +12,7 @@ ASO-MVP-Lite/
 |   |-- AR_Filter/
 |   |-- Control_Widget/
 |   |-- Emoji_Battery_Icon_Customize/
+|   |-- FunVid/
 |   |-- Game_Emulator/
 |   |-- Prank_Sounds/
 |   `-- App_Template/
@@ -37,12 +38,13 @@ ASO-MVP-Lite/
 |   `-- static/
 |
 |-- docs/                         # Dac ta, template, guide va tu dien
-|   |-- ASO_Keyword_Planner_v4_3.md
+|   |-- ASO_Keyword_Planner_v4_4.md
 |   |-- SETUP_WINDOWS.md
 |   |-- README_File_Guide.md
 |   `-- english_words_10k.txt
 |
 |-- .vscode/                      # Extension VS Code de xuat
+|-- .agents/                      # Skill noi bo cho workflow research keyword
 |-- requirements.txt              # Python packages cho moi truong day du
 |-- data/                         # Tai nguyen dung chung va output tong hop
 |   |-- google_play_country_language_map.xlsx
@@ -60,13 +62,15 @@ ASO-MVP-Lite/
 
 - Moi app giu `app_config.py`, `App_Profile.json`, `PROJECT_MEMORY.md`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
 - Logic loc, parser locale, dich, profile, project memory va dedup phai dung module trong `shared/`.
-- Truncation logic v4.3 duoc harden trong shared engine: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
-- DeepSeek AI classifier v4.3 chay sau `pre_ai_filter`: duplicate/noise/competitor/typo/irrelevant ro rang duoc skip truoc API, con keyword rong lien quan van duoc gui AI va cache de tai su dung.
+- Truncation logic v4.4 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
+- DeepSeek AI classifier v4.4 giu co che `pre_ai_filter`: duplicate/noise/competitor/typo/irrelevant ro rang duoc skip truoc API, con keyword rong lien quan van duoc gui AI va cache de tai su dung.
 - AI cache miss duoc xu ly theo batch song song co kiem soat, ho tro nhieu API key qua key pool va rate limit rieng tung key.
+- Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
+- App `FunVid` da duoc dang ky trong registry voi alias `FunVid`, `Fun_Vid`, `FunnyFaceFilters`, `FunVid_100_Keywords` va `FunVid_AnimalFace`.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
-## AI keyword classifier v4.3
+## AI keyword classifier v4.4
 
 Khuyen nghi tao file `.env` tu template va dien key local:
 
@@ -190,7 +194,7 @@ python -m compileall -q .
 
 ## Tai lieu
 
-- [Dac ta pipeline v4.3](docs/ASO_Keyword_Planner_v4_3.md)
+- [Dac ta pipeline v4.4](docs/ASO_Keyword_Planner_v4_4.md)
 - [Cai dat Windows day du](docs/SETUP_WINDOWS.md)
 - [Huong dan cac file](docs/README_File_Guide.md)
 - [Template app moi](apps/App_Template/README.md)
