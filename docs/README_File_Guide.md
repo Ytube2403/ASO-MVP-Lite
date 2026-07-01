@@ -32,13 +32,14 @@ App da dang ky:
 
 - `apps/AR_Filter/`
 - `apps/Control_Widget/`
+- `apps/ElectricGun/`
 - `apps/Emoji_Battery_Icon_Customize/`
 - `apps/FunVid/`
 - `apps/Game_Emulator/`
 - `apps/Prank_Sounds/`
 - `apps/App_Template/`
 
-`AR_Filter` va `Control_Widget` van dung runner `*_v4_3.py`. `Game_Emulator` dung runner `run_game_emulator_v4_4.py` de dong bo flow agentic cache-only. `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
+`AR_Filter` va `Control_Widget` van dung runner `*_v4_3.py`. `Game_Emulator` dung runner `run_game_emulator_v4_4.py`. `ElectricGun`, `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
 Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.csv` cung duoc route ve app `FunVid` qua registry alias.
 
 ## `shared/`
@@ -48,10 +49,11 @@ Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.
 - `shared/effective_config.py`: load effective app config giong runtime, gom ca legacy runner config va `FILTER_POLICY`.
 - `shared/locale_parser.py`: parser locale dung chung cho orchestrator, exporter, tracker va batch.
 - `shared/language_detector.py`: nhan dien ngon ngu theo market policy.
-- `shared/ai_keyword_classifier.py`: classifier/cache runtime. Game Emulator dung `agentic_keyword_classifier` cache-only voi provider `antigravity_subagent`; cac app legacy van co the dung DeepSeek path cu.
+- `shared/agentic_keyword_classifier.py`: classifier/cache-only runtime dung provider `antigravity_subagent`; runner fail-fast neu thieu cache.
+- `shared/ai_keyword_classifier.py`: shim tuong thich, re-export sang `agentic_keyword_classifier`.
+- `shared/en_gloss_resolver.py`: resolve cot `EN` tu CSV hoac `AIEnglishGloss`, khong goi translation network.
 - `shared/keyword_filter/`: matcher precompiled, hard filter, classifier, validator, audit, cache atomic va truncation hardening complete-token aware.
 - `shared/text_dedup.py`: dedup Unicode cho `01_Main_Keyword_Shortlist`.
-- `shared/translation_service.py`: dich EN bang Google GTX mien phi, SQLite WAL cache, retry, rate limit va TLS verification.
 - `shared/profile_service.py`: custom/generated profile cache va stale fallback.
 - `shared/project_memory.py`: doc `app_config.py` va `App_Profile.json` de render Project Memory cho Dashboard, workbook va `PROJECT_MEMORY.md`.
 
@@ -59,8 +61,7 @@ Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.
 
 - `tools/run_aso_batch.py`: batch implementation.
 - `tools/export_master_keywords.py`: Master Keywords exporter implementation.
-- `tools/warm_cache_helper.py`: workflow chinh thuc cho Game Emulator agentic cache: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`.
-- `tools/warm_ai_keyword_cache.py`: lam nong AI cache bang DeepSeek truoc khi chay pipeline chinh, khong tao workbook.
+- `tools/warm_cache_helper.py`: workflow chinh thuc cho agentic cache toan du an: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`.
 - `tools/generate_funvid_csv.py`, `tools/generate_animalface_csv.py`, `tools/generate_100_keywords_csv.py`: tao seed CSV mau cho app FunVid.
 
 Wrapper tai root duoc giu de cac lenh cu van chay.
@@ -83,14 +84,14 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 
 ## `docs/`
 
-- `docs/ASO_Keyword_Planner_v4_4.md`: dac ta logic pipeline v4.4, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid`, legacy DeepSeek classifier va Game Emulator agentic cache-only.
+- `docs/ASO_Keyword_Planner_v4_4.md`: dac ta logic pipeline v4.4, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid` va agentic cache-only.
 - `apps/Game_Emulator/AGENTIC_CACHE_WORKFLOW.md`: huong dan flow cache-only moi cho Game Emulator, thay cho cac script scratch.
 - `docs/SETUP_WINDOWS.md`: checklist phan mem, extension, Python packages va cach kiem tra moi truong Windows.
 - `docs/App_Config_Template.py`: template config.
 - `docs/App_Profile_Template.json`: template profile.
 - `docs/english_words_10k.txt`: whitelist tieng Anh.
 - `docs/DESIGN.md`: design system cua dashboard.
-- `.env.example`: template key DeepSeek local; copy thanh `.env` de chay may ca nhan, ho tro `DEEPSEEK_API_KEY` hoac `DEEPSEEK_API_KEYS`, `.env` khong commit.
+- `.env.example`: template bien moi truong local neu can cho tooling phu; runner ASO khong doc API key AI runtime.
 
 ## `data/`
 
@@ -99,8 +100,9 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 
 ## `tests/`
 
-Regression test cho registry, parser locale, hard filter, truncation false positive, dedup, translation, profile, project memory, exporter va batch runner.
-`tests/test_ai_keyword_classifier.py` bao phu cache hit, API call, canonical duplicate reuse, pre-AI skip/preserve rule, key pool round-robin va failover.
+Regression test cho registry, parser locale, hard filter, truncation false positive, dedup, EN gloss resolver, profile, project memory, exporter va batch runner.
+`tests/test_ai_keyword_classifier.py` bao phu cache-only hit/miss, canonical duplicate reuse va pre-AI skip/preserve rule.
+`tests/test_en_gloss_resolver.py` bao phu uu tien cot `EN`, fallback `AIEnglishGloss` va fail-fast khi keyword non-English thieu gloss.
 `tests/test_warm_cache_helper.py` bao phu effective config, batch contract va validation result cua agentic cache.
 
 ## `releases/`

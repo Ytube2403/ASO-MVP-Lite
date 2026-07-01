@@ -1,8 +1,8 @@
-# Game Emulator Agentic Cache Workflow
+# Agentic Cache Workflow
 
-Game Emulator no longer calls DeepSeek at runtime. The runner uses
-`agentic_keyword_classifier` in cache-only mode. If a keyword is not already in
-the SQLite cache, the pipeline fails fast and prints sample misses.
+Registered app runners use `agentic_keyword_classifier` in cache-only mode. If a
+keyword is not already in the SQLite cache, or a non-English keyword lacks
+`english_gloss`, the pipeline fails fast and prints sample misses.
 
 ## Standard sequence
 

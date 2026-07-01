@@ -2190,33 +2190,26 @@ Dedup chi chay cho `01_Main_Keyword_Shortlist`. Cac sheet tinh nang, style, syst
 
 Winner priority va `MergedVariants` van duoc giu. Bien the chi gan giong khong tao `ReviewVariants`; chung duoc giu lai de danh gia nhu keyword doc lap.
 
-### 28.6 Shared translation service
+### 28.6 Shared EN gloss resolver
 
-`shared/translation_service.py` gom toan bo logic dich keyword sang EN:
+`shared/en_gloss_resolver.py` gom logic resolve cot EN ma khong goi translation network. Resolver chi doc du lieu co san theo thu tu:
 
 ```text
-Provider: Google GTX mien phi, khong chinh thuc
-Endpoint: https://translate.googleapis.com/translate_a/single
-Cache: .cache/translations.sqlite3
-SQLite mode: WAL
-TLS verification: bat buoc
-Retry: toi da 3 lan
-Backoff: 0.5s, 1s, 2s
-Timeout mac dinh: 5s
-Global rate limit mac dinh: 5 request/giay
-DataFrame translation workers mac dinh: 10
+1. Cot EN trong CSV neu da co san.
+2. AIEnglishGloss tu agentic cache.
+3. Keyword goc neu keyword duoc xac dinh la tieng Anh.
 ```
 
-Cache key gom provider, source language, target language va normalized keyword. `unknown`, chuoi rong va mixed language nhu `fil+en`, `pt+en` duoc gui bang `auto`. Cac cache key mixed cu van duoc doc de tai su dung cache Google GTX tu phien ban truoc.
+Neu keyword non-English khong co `english_gloss`, runner fail-fast truoc scoring va yeu cau nap agentic cache bang `tools/warm_cache_helper.py`.
 
-Service van ghi trang thai noi bo de test:
+Resolver van ghi trang thai noi bo de audit:
 
 | Column | Values |
 |---|---|
-| `TranslationStatus` | `NOT_REQUIRED`, `PROVIDED_EN`, `CACHE_HIT`, `TRANSLATED` |
+| `TranslationStatus` | `NOT_REQUIRED`, `PROVIDED_EN`, `AGENTIC_GLOSS` |
 | `TranslationError` | De trong khi thanh cong |
 
-GTX la endpoint mien phi khong chinh thuc. Neu dich loi sau retry, service nem `TranslationUnavailableError` de dung locale dang xu ly thay vi tao workbook thieu ban dich. `TranslationStatus` va `TranslationError` khong hien thi trong workbook review thong thuong.
+`TranslationStatus` va `TranslationError` duoc giu de khong pha schema workbook/cu phap test cu, nhung runtime khong con tao translated network call.
 ### 28.7 Shared profile service
 
 `shared/profile_service.py` gom logic profile va Google Play scraping:
@@ -2737,26 +2730,29 @@ python -m unittest discover -s tests -v
 
 ---
 
-## 34. Cap nhat v4.4 hien hanh - Game Emulator agentic cache va scoring sync
+## 34. Cap nhat v4.4 hien hanh - Agentic cache toan du an va scoring sync
 
-Muc nay la contract hien hanh cho `Game_Emulator` sau khi migrate khoi DeepSeek runtime.
+Muc nay la contract hien hanh cho toan bo app registered sau khi migrate sang agentic cache-only runtime.
 
 ### 34.1 Runner va provider
 
-`Game_Emulator` dung runner:
+Tat ca runner trong registry dung module chung:
 
 ```text
-apps/Game_Emulator/run_game_emulator_v4_4.py
+shared/agentic_keyword_classifier.py
+shared/en_gloss_resolver.py
 ```
 
-Registry tro app nay ve runner v4.4. Config runtime dung:
+Config runtime dung:
 
 ```text
 agentic_keyword_classifier.provider = antigravity_subagent
 agentic_keyword_classifier.cache_only = true
+agentic_keyword_classifier.model = subagent-cache-v1
+agentic_keyword_classifier.cache_path = .cache/agentic_keyword_analysis.sqlite3
 ```
 
-Runner chi doc SQLite cache. Neu keyword hoac ban dich EN chua co trong cache, pipeline fail-fast truoc khi goi network. DeepSeek van con trong repo cho app legacy, nhung khong nam trong runtime flow cua `Game_Emulator`.
+Runner chi doc SQLite cache. Neu keyword hoac `english_gloss` cho keyword non-English chua co trong cache, pipeline fail-fast truoc scoring va in sample miss. Runtime khong doc API key AI va khong tao request translation network.
 
 ### 34.2 Agentic cache sequence
 
@@ -2766,7 +2762,7 @@ Sequence chuan:
 find-misses -> prepare-batches -> Antigravity subagents -> save-results -> verify-cache -> run_aso_filter
 ```
 
-`verify-cache` phai pass theo tung market truoc khi chay pipeline that. Neu MX_ES hoac market nao con miss, helper phai xuat danh sach/batch miss ro rang va return non-zero, khong duoc bao pass sai.
+`verify-cache` phai pass theo tung market truoc khi chay pipeline that. Neu MX_ES hoac market nao con miss intent/gloss, helper phai xuat danh sach/batch miss ro rang va return non-zero, khong duoc bao pass sai.
 
 ### 34.3 Shortlist quota khong tron bucket
 
@@ -2812,6 +2808,6 @@ Neu subagent tra `Core Intent Final` nhung keyword bi flag IP/brand/platform, cl
 Regression toi thieu cho thay doi nay:
 
 ```powershell
-python -m unittest tests.test_pipeline_shared_contract tests.test_volume_score tests.test_keyword_filter tests.test_warm_cache_helper tests.test_ai_keyword_classifier tests.test_translation_service -v
-python -m compileall -q shared tools apps\Game_Emulator tests
+python -m unittest tests.test_pipeline_shared_contract tests.test_volume_score tests.test_keyword_filter tests.test_warm_cache_helper tests.test_ai_keyword_classifier tests.test_en_gloss_resolver -v
+python -m compileall -q shared tools apps tests
 ```

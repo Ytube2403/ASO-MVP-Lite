@@ -1,6 +1,6 @@
 # ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.4
 
-Ban Lite dung Google GTX mien phi de giam workload tren may yeu. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
+Ban Lite dung agentic cache do Antigravity subagents nap truoc runtime. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
 
 Can chat luong local va kha nang chay offline sau khi tai model? Dung [ASO-MVP-Max](https://github.com/Ytube2403/ASO-MVP-Max).
 
@@ -23,7 +23,8 @@ ASO-MVP-Lite/
 |   |-- paths.py                  # Nguon path tap trung cho workspace
 |   |-- locale_parser.py
 |   |-- language_detector.py
-|   |-- translation_service.py
+|   |-- agentic_keyword_classifier.py
+|   |-- en_gloss_resolver.py
 |   |-- profile_service.py
 |   |-- project_memory.py          # Snapshot setup cho Dashboard, workbook va handoff MD
 |   `-- text_dedup.py
@@ -31,7 +32,6 @@ ASO-MVP-Lite/
 |-- tools/                        # Cong cu van hanh
 |   |-- run_aso_batch.py
 |   |-- warm_cache_helper.py
-|   |-- warm_ai_keyword_cache.py
 |   `-- export_master_keywords.py
 |
 |-- tracker/                      # Dashboard Flask va SQLite local
@@ -62,52 +62,21 @@ ASO-MVP-Lite/
 ## Nguyen tac
 
 - Moi app giu `app_config.py`, `App_Profile.json`, `PROJECT_MEMORY.md`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
-- Logic loc, parser locale, dich, profile, project memory va dedup phai dung module trong `shared/`.
+- Logic loc, parser locale, agentic cache, EN gloss, profile, project memory va dedup phai dung module trong `shared/`.
 - Truncation logic v4.4 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
-- Legacy DeepSeek classifier van giu co che `pre_ai_filter` cho cac app chua migrate; rieng `Game_Emulator` dung `agentic_keyword_classifier` cache-only va khong goi API AI runtime.
-- AI cache miss cua Game Emulator duoc xu ly ngoai runner bang Antigravity subagents qua `tools/warm_cache_helper.py`.
+- Tat ca app registered dung `agentic_keyword_classifier` cache-only va khong goi AI/translation network trong runner.
+- Cache miss duoc xu ly ngoai runner bang Antigravity subagents qua `tools/warm_cache_helper.py`.
 - Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
 - App `FunVid` da duoc dang ky trong registry voi alias `FunVid`, `Fun_Vid`, `FunnyFaceFilters`, `FunVid_100_Keywords` va `FunVid_AnimalFace`.
-- App `Game_Emulator` dung flow agentic cache-only: Antigravity subagents ghi intent/dich vao SQLite truoc, runner chi doc cache va fail-fast neu con miss.
+- Moi runner dung flow agentic cache-only: Antigravity subagents ghi intent/language/`english_gloss` vao SQLite truoc, runner chi doc cache va fail-fast neu con miss.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
-## AI keyword classifier va agentic cache v4.4
+## Agentic cache v4.4
 
-Khuyen nghi tao file `.env` tu template va dien key local:
+Ket qua agentic duoc cache tai `.cache/agentic_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus`, `AIEnglishGloss` de biet keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc agentic batch.
 
-```powershell
-Copy-Item .env.example .env
-notepad .env
-```
-
-Noi dung `.env`:
-
-```env
-DEEPSEEK_API_KEY=your_key_here
-DEEPSEEK_API_KEYS=
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_MAX_WORKERS=2
-DEEPSEEK_REQUESTS_PER_SECOND_PER_KEY=1.0
-```
-
-File `.env` da nam trong `.gitignore`, khong commit len repo. Neu co nhieu key, dien vao `DEEPSEEK_API_KEYS` theo dang `key_1,key_2`; neu chi co mot key thi `DEEPSEEK_API_KEY` van hoat dong nhu cu. Neu khong dung `.env`, co the set key tam thoi trong terminal:
-
-```powershell
-$env:DEEPSEEK_API_KEY = "your_key_here"
-```
-
-Ket qua AI/agentic duoc cache tai `.cache/ai_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus` de biet keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc API.
-
-Voi cac app legacy con dung DeepSeek, lam nong cache truoc khi chay pipeline chinh:
-
-```powershell
-python tools/warm_ai_keyword_cache.py --csv apps/AR_Filter/Input/052026/ARFilter_US_EN.csv --app ARFilter
-```
-
-Lenh nay chi chay `pre_ai_filter -> cache lookup -> DeepSeek for cache miss` va luu vao SQLite cache, khong tao workbook. Khi chay pipeline that sau do, cac keyword da xu ly se vao `AI_CACHE_HIT`.
-
-Voi `Game_Emulator`, dung flow chinh thuc:
+Dung flow chinh thuc cho moi app:
 
 ```powershell
 python tools/warm_cache_helper.py find-misses --app Game_Emulator --csv "apps/Game_Emulator/Input/072026/Game Emulator_MX_ES.csv" --market MX_ES
@@ -115,6 +84,8 @@ python tools/warm_cache_helper.py prepare-batches --misses .cache/game_emulator_
 python tools/warm_cache_helper.py save-results --app Game_Emulator --batch .cache/agentic_batches/mx_es_batch_1.json --results .cache/agentic_batches/mx_es_batch_1_result.json
 python tools/warm_cache_helper.py verify-cache --app Game_Emulator --csv "apps/Game_Emulator/Input/072026/Game Emulator_MX_ES.csv" --market MX_ES
 ```
+
+Co the thay `--csv` bang `--input-dir apps/<App>/Input/<MMYYYY>` de quet nhieu market cung luc. Runner chi doc cache; neu con thieu intent hoac `english_gloss` cho keyword non-English, pipeline fail-fast va in sample miss de nap cache truoc.
 
 ## Cai dat
 

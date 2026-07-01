@@ -45,6 +45,12 @@ APP_REGISTRY = {
         "config": "apps/FunVid/app_config.py",
         "aliases": ["FunVid", "Fun_Vid", "FunnyFaceFilters", "FunVid_100_Keywords", "FunVid_AnimalFace"],
     },
+    "electric_gun": {
+        "folder": "apps/ElectricGun",
+        "runner": "apps/ElectricGun/run_pipeline.py",
+        "config": "apps/ElectricGun/app_config.py",
+        "aliases": ["ElectricGun", "Electric_Gun", "StunGun", "TaserPrank", "electric_gun"],
+    },
 }
 
 

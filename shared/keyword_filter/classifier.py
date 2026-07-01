@@ -74,7 +74,6 @@ def _ai_classification_result(row, config):
         confidence = 0.0
     classifier_config = (
         config.get("agentic_keyword_classifier", {})
-        or config.get("ai_keyword_classifier", {})
         or {}
     )
     minimum = float((classifier_config.get("min_confidence", 0.55)) or 0.55)

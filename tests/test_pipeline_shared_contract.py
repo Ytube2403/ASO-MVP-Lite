@@ -1,6 +1,8 @@
 import os
 import unittest
 
+from shared.app_registry import APP_REGISTRY
+from shared.effective_config import resolve_effective_app
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,6 +14,7 @@ RUNNER_PATHS = [
     "apps/Emoji_Battery_Icon_Customize/run_pipeline.py",
     "apps/Prank_Sounds/run_pipeline.py",
     "apps/FunVid/run_pipeline.py",
+    "apps/ElectricGun/run_pipeline.py",
 ]
 
 ROW_AWARE_SHARED_CALLS = [
@@ -41,7 +44,15 @@ class PipelineSharedContractTests(unittest.TestCase):
                 self.assertNotIn("Falling back to legacy filter logic", source)
                 self.assertNotIn("ssl.CERT_NONE", source)
                 self.assertNotIn("_create_unverified_context", source)
-                self.assertIn("_shared_translation_service.translate_dataframe(", source)
+                self.assertIn("from shared import agentic_keyword_classifier as _shared_ai_keyword_classifier", source)
+                self.assertIn("agentic_keyword_analysis.sqlite3", source)
+                self.assertNotIn('"ai_keyword_analysis.sqlite3"', source)
+                self.assertIn("from shared import en_gloss_resolver as _shared_en_gloss_resolver", source)
+                self.assertIn("_shared_en_gloss_resolver.resolve_dataframe(", source)
+                self.assertNotIn("translation_service", source)
+                self.assertNotIn("translate_dataframe(", source)
+                self.assertNotIn("DEEPSEEK", source)
+                self.assertNotIn("deepseek", source.lower())
                 self.assertIn('market=config.get("market", "")', source)
                 self.assertIn("_shared_profile_service.get_app_profile(", source)
                 self.assertEqual(source.count("_shared_text_dedup.prepare_dataframe("), 1)
@@ -72,6 +83,16 @@ class PipelineSharedContractTests(unittest.TestCase):
 
         self.assertIn('"runner": "apps/Game_Emulator/run_game_emulator_v4_4.py"', source)
         self.assertNotIn('"runner": "apps/Game_Emulator/run_game_emulator_v4_3.py"', source)
+
+    def test_all_registered_apps_use_agentic_cache_only_config(self):
+        for app_key in APP_REGISTRY:
+            with self.subTest(app=app_key):
+                _, _, config, _ = resolve_effective_app(app_key, PROJECT_ROOT, "US_EN")
+                classifier = config.get("agentic_keyword_classifier", {})
+                self.assertEqual(classifier.get("provider"), "antigravity_subagent")
+                self.assertTrue(classifier.get("cache_only"))
+                self.assertEqual(classifier.get("cache_path"), ".cache/agentic_keyword_analysis.sqlite3")
+                self.assertNotIn("ai_keyword_classifier", config)
 
 
 if __name__ == "__main__":

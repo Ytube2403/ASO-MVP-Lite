@@ -9,8 +9,8 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from shared import ai_keyword_classifier
-from shared.ai_keyword_classifier import (
+from shared import agentic_keyword_classifier
+from shared.agentic_keyword_classifier import (
     AIKeywordAnalysis,
     AIKeywordClassifier,
     LANGUAGE_GROUPS,
@@ -18,6 +18,7 @@ from shared.ai_keyword_classifier import (
 )
 from shared.app_registry import registered_aliases
 from shared.effective_config import resolve_effective_app
+from shared.language_detector import detect_keyword_language
 from shared.locale_parser import extract_locale_from_filename
 
 
@@ -50,15 +51,15 @@ def _resolve_cache_path(config, explicit_cache_path=""):
     if explicit_cache_path:
         cache_path = explicit_cache_path
     else:
-        classifier_config = ai_keyword_classifier._classifier_config(config)
-        cache_path = classifier_config.get("cache_path") or ".cache/ai_keyword_analysis.sqlite3"
+        classifier_config = agentic_keyword_classifier._classifier_config(config)
+        cache_path = classifier_config.get("cache_path") or ".cache/agentic_keyword_analysis.sqlite3"
     if not os.path.isabs(cache_path):
         cache_path = os.path.join(PROJECT_ROOT, cache_path)
     return cache_path
 
 
 def _context_hash(config, app_profile):
-    return ai_keyword_classifier._context_hash(config, app_profile)
+    return agentic_keyword_classifier._context_hash(config, app_profile)
 
 
 def _scan_misses(app_alias, csv_path, market, cache_path=""):
@@ -69,18 +70,33 @@ def _scan_misses(app_alias, csv_path, market, cache_path=""):
     frame = _read_csv(csv_path)
     resolved_cache_path = _resolve_cache_path(config, cache_path)
     service = AIKeywordClassifier(resolved_cache_path, config=config, app_profile=app_profile, market=market)
-    classifier_config = ai_keyword_classifier._classifier_config(config)
+    classifier_config = agentic_keyword_classifier._classifier_config(config)
 
     rows = [row.to_dict() for _, row in frame.iterrows()]
-    pre_ai_items = ai_keyword_classifier._build_pre_ai_items(rows, config, classifier_config)
+    pre_ai_items = agentic_keyword_classifier._build_pre_ai_items(rows, config, classifier_config)
 
     missing = []
     for item in pre_ai_items:
-        if item.needs_ai and service._get_cached(item.keyword) is None:
+        cached = service._get_cached(item.keyword)
+        provided_en = str(item.row.get("EN", "") or "").strip()
+        if cached is None:
+            detected_language, _ = detect_keyword_language(item.keyword, market, config)
+            requires_cache = item.needs_ai or (not provided_en and detected_language != "en")
+            if not requires_cache:
+                continue
             missing.append({
                 "keyword": item.keyword,
                 "volume": int(item.row.get("Volume", 0) or 0),
                 "rank": str(item.row.get("Rank", "") or ""),
+                "reason": "missing_agentic_cache",
+            })
+            continue
+        if cached.detected_language.lower() != "en" and not str(cached.english_gloss or "").strip():
+            missing.append({
+                "keyword": item.keyword,
+                "volume": int(item.row.get("Volume", 0) or 0),
+                "rank": str(item.row.get("Rank", "") or ""),
+                "reason": "missing_english_gloss",
             })
 
     return {
@@ -243,6 +259,25 @@ def _save_validated_results(args):
 
 
 def cmd_find_misses(args):
+    if args.input_dir:
+        payload = {}
+        total_missing = 0
+        for filename in sorted(os.listdir(args.input_dir)):
+            if not filename.lower().endswith(".csv"):
+                continue
+            csv_path = os.path.join(args.input_dir, filename)
+            market = extract_locale_from_filename(filename, "")
+            market_payload = _scan_misses(args.app, csv_path, market, args.cache_path)
+            payload[market_payload["market"]] = market_payload
+            total_missing += market_payload["missing_count"]
+        output_path = args.output or os.path.join(PROJECT_ROOT, ".cache", f"{args.app}_missing.json")
+        _write_json(output_path, payload)
+        print(f"Found {total_missing} missing keywords/gloss entries across {len(payload)} market(s).")
+        print(f"Details saved to: {output_path}")
+        return
+
+    if not args.csv:
+        raise SystemExit("find-misses requires either --csv or --input-dir")
     market = args.market or extract_locale_from_filename(args.csv, "")
     payload = _scan_misses(args.app, args.csv, market, args.cache_path)
     output_path = args.output
@@ -250,7 +285,7 @@ def cmd_find_misses(args):
         clean_market = (payload["market"] or "default").replace("_", "-").lower()
         output_path = os.path.join(PROJECT_ROOT, ".cache", f"{args.app}_{clean_market}_missing.json")
     _write_json(output_path, payload)
-    print(f"Found {payload['missing_count']} missing keywords (after pre-AI filtering).")
+    print(f"Found {payload['missing_count']} missing keywords/gloss entries.")
     print(f"Details saved to: {output_path}")
 
 
@@ -325,7 +360,8 @@ def _build_parser():
 
     p_find = subparsers.add_parser("find-misses", help="Find keywords missing from the agentic cache")
     p_find.add_argument("--app", required=True, help="App alias, e.g. Game_Emulator")
-    p_find.add_argument("--csv", required=True, help="Input CSV path")
+    p_find.add_argument("--csv", default="", help="Input CSV path")
+    p_find.add_argument("--input-dir", default="", help="Directory of CSV files to scan")
     p_find.add_argument("--market", default="", help="Optional market override")
     p_find.add_argument("--cache-path", default="", help="Optional SQLite cache override")
     p_find.add_argument("--output", default="", help="Optional JSON output path")

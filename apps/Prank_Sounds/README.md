@@ -81,7 +81,7 @@ Pipeline hiện sử dụng các module chung trong `ASO-MVP-Lite/shared/`:
 - `shared/language_detector.py`: detect ngôn ngữ theo market policy và phân nhóm `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache và version.
 - `shared/text_dedup.py`: dedup Unicode indexed `NFKC` + `casefold()`, stemming theo locale, và ghi `MergedVariants` cho main shortlist.
-- `shared/translation_service.py`: dịch EN với SQLite WAL cache, retry, global rate limit và TLS verification.
+- `shared/en_gloss_resolver.py`: resolve EN từ CSV hoặc `AIEnglishGloss` đã được nạp bằng agentic cache.
 - `shared/profile_service.py`: ưu tiên tuyệt đối `App_Profile.json`, generated cache atomic và stale fallback.
 - `shared/project_memory.py`: tạo setup overview cho Tracker tab `Setup`, sheet `00_Project_Memory` và `PROJECT_MEMORY.md`.
 

@@ -23,8 +23,8 @@ if _SHARED_ROOT not in sys.path:
 from shared import text_dedup as _shared_text_dedup
 from shared import profile_service as _shared_profile_service
 from shared import project_memory as _shared_project_memory
-from shared import translation_service as _shared_translation_service
-from shared import ai_keyword_classifier as _shared_ai_keyword_classifier
+from shared import en_gloss_resolver as _shared_en_gloss_resolver
+from shared import agentic_keyword_classifier as _shared_ai_keyword_classifier
 from shared.paths import COUNTRY_LANGUAGE_MAP_PATH, DOCS_DIR
 
 # Resolve script and project root directories
@@ -490,22 +490,19 @@ ai_language_frame = _shared_ai_keyword_classifier.analyze_dataframe(
     df,
     config,
     app_profile=app_profile,
-    cache_path=os.path.join(PROJECT_ROOT, ".cache", "ai_keyword_analysis.sqlite3"),
+    cache_path=os.path.join(PROJECT_ROOT, ".cache", "agentic_keyword_analysis.sqlite3"),
     market=config.get("market", ""),
     english_vocab=english_vocab,
 )
 for column in _shared_ai_keyword_classifier.OUTPUT_COLUMNS:
     df[column] = ai_language_frame[column]
 
-# Translate non-English keywords to English
-print("[Step 2.5] Translating non-English keywords to English...")
+# Resolve English gloss from CSV or agentic cache
+print("[Step 2.5] Resolving English gloss from CSV or agentic cache...")
 provided_en = df_raw['EN'].fillna('').astype(str) if 'EN' in df_raw.columns else pd.Series("", index=df.index)
 provided_en = provided_en.where(provided_en.str.strip() != "", df['AIEnglishGloss'].fillna('').astype(str))
-translation_frame = _shared_translation_service.translate_dataframe(
-    df, provided_en=provided_en, cache_path=os.path.join(PROJECT_ROOT, ".cache", "translations.sqlite3"),
-    market=config.get("market", ""),
-)
-df[['EN', 'TranslationStatus', 'TranslationError']] = translation_frame
+gloss_frame = _shared_en_gloss_resolver.resolve_dataframe(df, provided_en=provided_en)
+df[['EN', 'TranslationStatus', 'TranslationError']] = gloss_frame
 
 from shared import keyword_filter as _shared_keyword_filter
 

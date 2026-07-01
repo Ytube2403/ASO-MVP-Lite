@@ -1,157 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 ASO Keyword Planner - App Configuration File
-Version: 4.1
-Purpose: Configuration file for deploying ASO Keyword Planner on Emoji Battery Icon Customize.
+Version: 4.4
+Purpose: Configuration file for deploying ASO Keyword Planner on ElectricGun (Electric Stun Gun Simulator - Taser prank).
 """
-import sys
-
-# Determine the market from sys.argv
-_market = "US_EN"
-for _i, _arg in enumerate(sys.argv):
-    if _arg == "--market" and _i + 1 < len(sys.argv):
-        _market = sys.argv[_i+1].upper()
-        break
-    elif "--csv" in _arg and _i + 1 < len(sys.argv):
-        _csv_path = sys.argv[_i+1]
-        if "ES-US" in _csv_path or "ES_US" in _csv_path:
-            _market = "ES_US"
-
-# If running for a Spanish market, make Spanish primary and English secondary
-if "ES" in _market or "MX" in _market:
-    _primary = ["es"]
-    _secondary = ["en"]
-    _core_intent = [
-        "batería emoji", "widget de batería", "icono de batería", "personalizar batería",
-        "estado de la batería", "barra de estado emoji", "stickers emoji", "calcomanías emoji",
-        "emoji battery", "emoji battery widget", "emoji battery status bar", "emoji battery icon",
-        "custom battery icon", "battery icon customize", "emoji widget", "funny status bar",
-        "custom status bar", "emoji status bar", "emoji sticker", "emoji stickers"
-    ]
-    _feature = [
-        "emojis animados", "nivel de batería", "barra de notificaciones",
-        "personalizar ícono", "muesca", "gestos de deslizamiento",
-        "personalizar notch", "animated emojis", "gesture shortcuts", "notch customizer",
-        "status bar stickers", "battery level"
-    ]
-    _style = [
-        "lindos", "divertidos", "diseño lindo", "temas emojis", "kawaii faces", "pastel style"
-    ]
-    _visual = [
-        "esquinas redondeadas", "diseño de corazón", "notch personalizado",
-        "rounded corners", "heart shapes", "custom notch"
-    ]
-elif "VI" in _market or "VN" in _market:
-    _primary = ["vi"]
-    _secondary = ["en"]
-    _core_intent = [
-        "pin emoji", "widget pin", "ti?n �ch pin", "icon pin", "d?i icon pin", "thanh tr?ng th�i",
-        "nh�n d�n emoji", "sticker emoji", "emoji battery", "emoji battery widget", "emoji battery status bar",
-        "emoji battery icon", "custom battery icon", "battery icon customize", "emoji widget",
-        "funny status bar", "custom status bar", "emoji status bar", "emoji sticker", "emoji stickers"
-    ]
-    _feature = [
-        "hi?u ?ng s?c", "animated emojis", "gesture shortcuts", "notch customizer",
-        "status bar stickers", "battery level"
-    ]
-    _style = [
-        "d? thuong", "kawaii", "cute bear", "pastel style"
-    ]
-    _visual = [
-        "rounded corners", "heart shapes", "custom notch"
-    ]
-elif "ID" in _market:
-    _primary = ["id"]
-    _secondary = ["en"]
-    _core_intent = [
-        "baterai emoji", "widget baterai", "ikon baterai", "kustomisasi baterai",
-        "stiker emoji", "emoji battery", "emoji battery widget", "emoji battery status bar",
-        "emoji battery icon", "custom battery icon", "battery icon customize", "emoji widget",
-        "funny status bar", "custom status bar", "emoji status bar", "emoji sticker", "emoji stickers"
-    ]
-    _feature = [
-        "animated emojis", "gesture shortcuts", "notch customizer", "status bar stickers", "battery level"
-    ]
-    _style = [
-        "lucu", "imut", "kawaii", "pastel style"
-    ]
-    _visual = [
-        "rounded corners", "heart shapes", "custom notch"
-    ]
-elif "PT" in _market or "BR" in _market:
-    _primary = ["pt"]
-    _secondary = ["en"]
-    _core_intent = [
-        "bateria emoji", "widget de bateria", "ícone de bateria", "personalizar bateria",
-        "adesivo emoji", "adesivos emoji", "emoji battery", "emoji battery widget",
-        "emoji battery status bar", "emoji battery icon", "custom battery icon", "battery icon customize",
-        "emoji widget", "funny status bar", "custom status bar", "emoji status bar", "emoji sticker", "emoji stickers"
-    ]
-    _feature = [
-        "emojis animados", "atalhos de gestos", "animated emojis", "gesture shortcuts", "notch customizer",
-        "status bar stickers", "battery level"
-    ]
-    _style = [
-        "fofo", "bonito", "lindos", "kawaii", "pastel style"
-    ]
-    _visual = [
-        "rounded corners", "heart shapes", "custom notch"
-    ]
-elif "FIL" in _market or "TL" in _market or "PH" in _market:
-    _primary = ["fil", "tl"]
-    _secondary = ["en"]
-    _core_intent = [
-        "emoji baterya", "widget ng baterya", "sticker ng emoji", "emoji battery", "emoji battery widget",
-        "emoji battery status bar", "emoji battery icon", "custom battery icon", "battery icon customize",
-        "emoji widget", "funny status bar", "custom status bar", "emoji status bar", "emoji sticker", "emoji stickers"
-    ]
-    _feature = [
-        "animated emojis", "gesture shortcuts", "notch customizer", "status bar stickers", "battery level"
-    ]
-    _style = [
-        "kawaii faces", "pastel style", "cute bear", "sleepy cat"
-    ]
-    _visual = [
-        "rounded corners", "heart shapes", "custom notch"
-    ]
-else:
-    _primary = ["en"]
-    _secondary = ["es", "es-MX"]
-    _core_intent = [
-        "emoji battery", "emoji battery widget", "emoji battery status bar", "emoji battery icon",
-        "cute battery widget", "cute battery icon", "emoji battery widget bar", "custom battery icon",
-        "battery icon customize", "emoji widget", "funny status bar", "custom status bar",
-        "emoji status bar", "emoji battery stickers", "custom battery widget", "cute battery theme",
-        "emoji sticker", "emoji stickers"
-    ]
-    _feature = [
-        "animated emojis", "battery level", "battery status", "customization app", "customize detail",
-        "gesture shortcuts", "notch customizer", "accessibility services", "status bar stickers",
-        "battery widget styles", "notch overlay", "troll effects", "charging animation",
-        "real-time display", "custom wifi icon", "pastel clock", "signal strength indicator",
-        "rounded edges", "double tap shortcut"
-    ]
-    _style = [
-        "kawaii faces", "pastel style", "cute bear", "sleepy cat", "sparkly star", "magic emoji",
-        "funny themes", "vivid emojis", "aesthetic stickers", "pastel themes", "bold sparkly",
-        "cute characters"
-    ]
-    _visual = [
-        "rounded corners", "heart shapes", "custom notch", "status bar background", "battery colors",
-        "battery templates", "battery icons", "icon customization", "pink theme", "aesthetic status bar"
-    ]
 
 APP_CONFIG = {
     # =========================================================================
     # 1. IDENTITY & META (Thông tin định danh)
     # =========================================================================
-    "app_id": "com.cute.emoji.battery.icon.widget.customize.emojisticker.statusbar",
-    "app_name": "Emoji Battery Icon Customize",
-    "category": "Personalization",
-    "category_slug": "emoji_battery_customize",
-    "market": "US_EN",
-    "platform_mode": "google_play",
-    "semantic_mode": "emoji_battery_customize",
+    "app_id": "com.real.electric.stun.gun.simulator.taser.prank",  # Package ID / Bundle ID của ứng dụng
+    "app_name": "Electric Stun Gun Simulator - Taser prank",       # Tên ứng dụng đầy đủ hiển thị trên Store
+    "category": "Entertainment",                                   # Danh mục ứng dụng
+    "category_slug": "electric_gun",                               # Slug dùng cho đường dẫn (viết thường, không dấu, phân cách bởi gạch dưới)
+    "market": "US_EN",                                             # Mã thị trường mặc định (VD: US_EN, BR_PT, VN_VI...)
+    "platform_mode": "google_play",                                # Nền tảng: 'google_play' hoặc 'app_store'
+    "semantic_mode": "electric_gun",
 
     # =========================================================================
     # 2. MARKET LANGUAGE POLICY (Chính sách ngôn ngữ)
@@ -159,8 +23,8 @@ APP_CONFIG = {
     "market_language_policy": {
         "enabled": True,
         "required": True,
-        "primary_languages": _primary,
-        "secondary_languages": _secondary,
+        "primary_languages": ["en"],              # Ngôn ngữ chính được phép xuất hiện trong Top 20 Core
+        "secondary_languages": ["es", "es-MX"],   # Ngôn ngữ phụ (VD: Tiếng Tây Ban Nha ở thị trường Mỹ), đưa vào Consider
         "optional_secondary_languages": [],
 
         "primary_language_action": "keep",
@@ -211,38 +75,70 @@ APP_CONFIG = {
         }
     },
 
-    "intent_core_terms": _core_intent,
-    "feature_terms": _feature,
-    "style_terms": _style,
-    "visual_terms": _visual,
+    "intent_core_terms": [
+        # Các từ khóa cốt lõi thể hiện ý định tìm kiếm chính của ứng dụng
+        "electric stun gun", "stun gun simulator", "taser simulator", "taser prank",
+        "electric stun gun simulator", "stun gun", "taser", "shock gun", "shock gun prank",
+        "electric taser", "shock taser", "stun gun prank", "taser stun gun", "taser gun",
+        "electric shocker", "shocker prank", "electric shock prank", "stun simulator",
+        "taser zapper", "electric zap", "shock simulator", "stun gun sound", "taser sound"
+    ],
+
+    "feature_terms": [
+        # Các từ khóa mô tả tính năng / chức năng cụ thể của ứng dụng
+        "flashlight strobe", "flashlight flash", "strobe light", "camera flash", "camera stun gun",
+        "vibration shock", "vibrate taser", "electric shock sounds", "stun gun sounds",
+        "spark sounds", "lightning sparks", "electric arc", "hair clipper prank", "haircut prank",
+        "hair clipper sounds", "laser gun simulator", "laser gun sounds", "time bomb prank",
+        "screaming sound", "scary pranks", "prank sounds", "shock effects", "gun soundboard"
+    ],
+
+    "style_terms": [
+        # Các từ khóa mô tả phong cách, giao diện, IP hoặc theme thẩm mỹ
+        # LƯU Ý: style_terms chỉ được phân bổ vào Full Description, không dùng ở Title/Subtitle để tránh vi phạm IP
+        "funny", "joke", "jokes", "troll", "trolls", "crazy", "silly", "hilarious",
+        "realistic simulator", "virtual stun gun", "prankster", "fake taser", "prank app",
+        "funny jokes", "troll friends", "shock game", "3d simulator"
+    ],
+
+    "visual_terms": [
+        # Các từ khóa mô tả giao diện phụ trợ, hiệu ứng hình ảnh
+        "skin", "skins", "gun skins", "taser skins", "lightning effect", "led flash",
+        "color themes", "sparks animation", "camera feed", "live camera background"
+    ],
 
     # =========================================================================
     # 4. BỘ LỌC VÀ DANH SÁCH ĐEN (FILTERS & BLACKLIST)
     # =========================================================================
     "competitor_brands": [
-        "hoangsi", "zappsolution", "rikatech", "bralyvn", "diy battery", "hoang devops", "feedback pirates"
+        # Tên các đối thủ cạnh tranh nổi tiếng. Keyword chứa các từ này sẽ bị cấm dùng trong metadata chính
+        "dmitsoft", "strategimws", "smart utilities", "smart utilities hub"
     ],
 
     "noise_terms": [
+        # Các từ khóa chung chung, generic quá rộng không mang ý định tìm app cụ thể
         "app", "apps", "free", "download", "android", "for android", "new", "best", "top"
     ],
 
     "typo_blacklist": [
-        "emojibattery", "emoji batery", "emojibatery"
+        # Các từ khóa gõ sai chính tả phổ biến hoặc các từ khóa vô nghĩa thu được từ auto-suggest
+        "tazer", "taser simulator free", "tasser", "teser", "stugun", "tasor", "taser prank sound"
     ],
 
     "irrelevant_intent_terms": [
-        "zipper lock screen", "ziplock screen", "zipper lock", "ziplocker", "retro games",
-        "voice changer", "voice effects", "ar filter", "face filter", "calculator lock", "app lock"
+        # Từ khóa thuộc danh mục khác, hoàn toàn không liên quan đến ứng dụng của bạn
+        "widget", "widgets", "launcher", "theme launcher", "calculator", "photo editor",
+        "photo frame", "vpn", "wallpapers", "keyboard theme"
     ],
 
     "risky_ip_terms": [
-        "disney", "kitty", "hello kitty", "barbie", "marvel"
+        # Từ khóa chứa IP hoặc bản quyền nhạy cảm cần hạn chế
+        "brandname"
     ],
 
-    "risky_platform_terms": ["iphone", "ios", "ipad", "apple"],
+    "risky_platform_terms": ["iphone", "ios", "ipad", "apple", "android", "tiktok", "snapchat", "instagram"],
     "ambiguous_brand_terms": [],
-    "platform_affiliation_terms": [],
+    "platform_affiliation_terms": ["official tiktok", "official snapchat", "official instagram"],
     "truncation_policy": {
         "enabled": True,
         "min_prefix_length": 2,
@@ -264,7 +160,7 @@ APP_CONFIG = {
         "platform_only_action": "drop",
         "platform_affiliation_action": "drop",
         "style_only_action": "reserve",
-        "core_intent_override": True
+        "core_intent_override": True  # Nếu chứa core intent mạnh, không tự động loại khi dính lỗi nhẹ
     },
 
     # =========================================================================
@@ -272,9 +168,10 @@ APP_CONFIG = {
     # =========================================================================
     "keyword_quota": {
         "main_file": {
-            "core_intent": 25,
-            "broad_expansion": 5,
-            "consider": 10
+            "core_intent": 20,       # Số lượng keyword core chính (Top 20)
+            "core_feature": 5,       # Số lượng keyword feature (Top 5)
+            "broad_expansion": 5,    # Số lượng keyword mở rộng rộng hơn (Top 5)
+            "consider": 10,          # Số lượng keyword đưa vào danh sách Consider
         },
         "feature_file": {
             "max_keywords": 30,
@@ -302,8 +199,8 @@ APP_CONFIG = {
     # =========================================================================
     "language_naturalness": {
         "enabled": True,
-        "penalty_unnatural": -0.35,
-        "auto_drop_score_below": 0.15,
+        "penalty_unnatural": -0.35,      # Điểm phạt khi cụm từ kém tự nhiên
+        "auto_drop_score_below": 0.15,   # Tự động loại nếu điểm Relevancy sau phạt dưới mức này
         "rules": {
             "grammar_violation": {
                 "patterns": [
@@ -345,12 +242,12 @@ APP_CONFIG = {
     },
 
     "balanced_weights": {
-        "VolumeN": 0.35,
-        "DifficultyN": 0.10,
-        "KEIN": 0.10,
-        "RelevancyScore": 0.25,
-        "CurrentRankN": 0.10,
-        "ExpansionValue": 0.10
+        "VolumeN": 0.35,          # Trọng số điểm Volume (Lượng tìm kiếm)
+        "DifficultyN": 0.10,      # Trọng số điểm Difficulty (Độ cạnh tranh - càng thấp điểm càng cao)
+        "KEIN": 0.10,             # Trọng số điểm KEI (Hiệu quả từ khóa)
+        "RelevancyScore": 0.25,   # Trọng số điểm liên quan (Relevancy - Quan trọng nhất)
+        "CurrentRankN": 0.10,     # Trọng số điểm thứ hạng hiện tại của app
+        "ExpansionValue": 0.10    # Trọng số điểm mở rộng semantic
     },
 
     "scoring_normalization": {
@@ -363,7 +260,7 @@ APP_CONFIG = {
 
     "volume_score_policy": {
         "search_popularity_floor": 5.0,
-        "search_popularity_ceiling": 45.0,
+        "search_popularity_ceiling": 100.0,
         "exponential_curve_factor": 4.0,
         "current_volume_weight": 0.85,
         "historical_max_volume_weight": 0.15,
@@ -390,7 +287,7 @@ APP_CONFIG = {
         }
     },
 
-    "max_word_overlap": 0.5,
+    "max_word_overlap": 0.5,  # Tỷ lệ trùng lặp từ tối đa giữa các keyword trong Top N (tránh lặp ý)
     "dedup_policy": {
         "auto_merge_token_bag": False,
         "review_overlap_threshold": 0.80,
@@ -417,7 +314,8 @@ APP_CONFIG = {
             "03_Style_Keywords",
             "04_Dropped_Audit",
             "05_Report_Summary",
-            "06_All_Candidates"
+            "06_All_Candidates",
+            "13_Top_By_Volume"
         ],
         "optional_sheets": [
             "07_Language_Mismatch",

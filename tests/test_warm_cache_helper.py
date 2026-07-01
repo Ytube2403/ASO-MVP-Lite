@@ -50,6 +50,47 @@ class WarmCacheHelperTests(unittest.TestCase):
             self.assertEqual(batch["context_hash"], "ctx")
             self.assertEqual(len(batch["keywords"]), 1)
 
+    def test_find_misses_supports_input_dir(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            input_dir = os.path.join(temp_dir, "Input")
+            os.makedirs(input_dir)
+            csv_path = os.path.join(input_dir, "App_Template_US_EN.csv")
+            cache_path = os.path.join(temp_dir, "agentic.sqlite3")
+            output_path = os.path.join(temp_dir, "missing.json")
+            with open(csv_path, "w", encoding="utf-8") as csv_file:
+                csv_file.write("Keyword,Volume,Rank\nphoto editor,10,\n")
+
+            warm_cache_helper.main([
+                "find-misses",
+                "--app", "App_Template",
+                "--input-dir", input_dir,
+                "--cache-path", cache_path,
+                "--output", output_path,
+            ])
+
+            with open(output_path, "r", encoding="utf-8") as output_file:
+                payload = json.load(output_file)
+            self.assertIn("US_EN", payload)
+            self.assertEqual(payload["US_EN"]["missing_count"], 1)
+
+    def test_verify_cache_returns_nonzero_when_intent_cache_is_missing(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            csv_path = os.path.join(temp_dir, "App_Template_US_EN.csv")
+            cache_path = os.path.join(temp_dir, "agentic.sqlite3")
+            with open(csv_path, "w", encoding="utf-8") as csv_file:
+                csv_file.write("Keyword,Volume,Rank\nphoto editor,10,\n")
+
+            with self.assertRaises(SystemExit) as raised:
+                warm_cache_helper.main([
+                    "verify-cache",
+                    "--app", "App_Template",
+                    "--csv", csv_path,
+                    "--market", "US_EN",
+                    "--cache-path", cache_path,
+                ])
+
+            self.assertEqual(raised.exception.code, 1)
+
     def test_validate_result_rejects_keyword_outside_batch(self):
         batch = {
             "batch_id": "mx_es_batch_1",

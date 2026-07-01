@@ -104,7 +104,7 @@ Template pipeline hien su dung cac module chung trong `ASO-MVP-Lite/shared/`:
 - `shared/language_detector.py`: detect ngon ngu theo market policy va phan nhom `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache va version.
 - `shared/text_dedup.py`: dedup Unicode indexed `NFKC` + `casefold()`, stemming theo locale, va ghi `MergedVariants` cho main shortlist.
-- `shared/translation_service.py`: dich EN voi SQLite WAL cache, retry, global rate limit va TLS verification.
+- `shared/en_gloss_resolver.py`: resolve EN tu CSV hoac `AIEnglishGloss` da duoc nap bang agentic cache.
 - `shared/profile_service.py`: doc custom profile uu tien tuyet doi, generated cache atomic va stale fallback.
 - `shared/project_memory.py`: tao setup overview cho Tracker tab `Setup`, sheet `00_Project_Memory` va `PROJECT_MEMORY.md`.
 - `shared/locale_parser.py`: parse locale dung chung cho orchestrator, exporter, tracker va batch runner.
