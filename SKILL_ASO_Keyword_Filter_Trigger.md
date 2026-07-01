@@ -61,7 +61,7 @@ Pipeline hien dung shared logic:
 - `shared/keyword_filter/` cho matcher precompiled, hard filter raw + EN, classification, validator, audit va selection cache metadata. Keyword volume thap (Volume <= 5) khong bi auto-drop ma nhan diem VolumeN bang 0.
 - Truncation logic trong `shared/keyword_filter/` da harden: complete token va singular/plural nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi hard-drop; prefix thieu anchor vao `possible_truncated_keyword` va Manual Review.
 - `shared/text_dedup.py` cho indexed Unicode `NFKC` + `casefold()`, stemming theo locale, va `MergedVariants` trong main shortlist. Cac hoan vi tu duoc giu lai khi tat option gop token bag (`auto_merge_token_bag = False`).
-- `shared/translation_service.py` cho dich EN voi SQLite WAL cache, retry, global rate limit va TLS verification.
+- `shared/en_gloss_resolver.py` cho resolve EN tu CSV hoac `AIEnglishGloss` da nap trong agentic cache, khong goi translation network runtime.
 - `shared/profile_service.py` cho custom/generated profile, atomic cache va stale fallback.
 - `shared/project_memory.py` cho Project Memory read-only tu `app_config.py` + `App_Profile.json`, render ra Dashboard tab `Setup`, sheet `00_Project_Memory` va `PROJECT_MEMORY.md`.
 - `shared/app_registry.py` cho routing alias app chinh xac; app chua dang ky phai fail ro rang.

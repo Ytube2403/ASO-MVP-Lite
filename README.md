@@ -108,17 +108,11 @@ Kiem tra nhanh:
 python -c "import flask, langdetect, numpy, openpyxl, pandas, snowballstemmer; print('Python environment OK')"
 ```
 
-## Dich keyword
+## English gloss
 
-Pipeline dich keyword moi sang English bang Google GTX. Ban Lite khong can cai model, khong chay translation service rieng va khong chiem RAM nen vi dich local.
+Pipeline khong dich keyword qua network trong runtime. Cot `EN` duoc lay theo thu tu: cot `EN` co san trong CSV, `AIEnglishGloss` tu agentic cache, hoac keyword goc neu keyword la tieng Anh.
 
-GTX la endpoint Google khong chinh thuc, nen can Internet va co the thay doi ma khong bao truoc. Translation cache SQLite giup han che request. Neu GTX loi sau retry, pipeline dung locale dang xu ly de tranh tao workbook thieu ban dich.
-
-Neu muon dich lai toan bo keyword, xoa cache local:
-
-```powershell
-Remove-Item .cache\translations.sqlite3*
-```
+Neu keyword non-English chua co `english_gloss`, runner fail-fast va yeu cau nap cache bang `tools/warm_cache_helper.py` truoc khi chay pipeline.
 
 ## Chay pipeline
 
@@ -157,7 +151,7 @@ Manifest mau:
 python run_aso_batch.py --manifest path\to\manifest.json
 ```
 
-Batch mac dinh toi da `2` locale song song de tranh tao qua nhieu request GTX cung luc tren may yeu.
+Batch mac dinh toi da `2` locale song song de tranh tranh chap CPU/disk tren may yeu.
 
 ## Xuat Master Keywords
 

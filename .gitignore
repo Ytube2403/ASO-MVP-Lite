@@ -56,3 +56,8 @@ Desktop.ini
 
 # ── Logs ──
 *.log
+
+# Scratch experiments are local-only. Official operational tools live in tools/.
+scratch/*.py
+/batch_*.json
+/C*Users*AppData*Local*Temp*scratchpad*.diff

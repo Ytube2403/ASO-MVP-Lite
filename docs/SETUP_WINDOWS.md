@@ -11,7 +11,7 @@ Tai lieu nay danh cho may Windows moi. Muc tieu la chay day du pipeline ASO, wor
 | Windows 10/11 64-bit | Moi truong chay | PowerShell co san trong Windows |
 | [Python](https://www.python.org/downloads/windows/) 3.11+ 64-bit | Chay pipeline va test | Khi cai dat, dam bao lenh `python` hoat dong trong terminal |
 | Python packages trong `requirements.txt` | Xu ly CSV, Excel, dashboard, detect ngon ngu va stemming | Cai bang `python -m pip install -r requirements.txt` |
-| Ket noi Internet | Dich keyword moi chua co cache bang Google GTX | GTX la endpoint mien phi khong chinh thuc |
+| Ket noi Internet | Refresh profile tu Google Play va chay tooling research ngoai repo khi can | Runner pipeline khong goi AI/translation network |
 | Trinh duyet web hien dai | Mo dashboard va interactive selector | Microsoft Edge hoac Google Chrome deu duoc |
 | Microsoft Excel hoac [LibreOffice Calc](https://www.libreoffice.org/download/download-libreoffice/) | Mo va review workbook `.xlsx` | Excel duoc khuyen nghi de xem format chinh xac nhat |
 
@@ -36,7 +36,7 @@ Khi mo workspace bang VS Code, file `.vscode/extensions.json` se de xuat ba exte
 ## 2. Nhung thu khong can cai rieng
 
 - Khong can Node.js, npm, Java, Docker hoac database server.
-- SQLite da nam trong Python standard library. Pipeline dung SQLite cho translation cache va tracker database local.
+- SQLite da nam trong Python standard library. Pipeline dung SQLite cho agentic cache va tracker database local.
 - Khong can cai LibreTranslate, model dich local hoac translation service rieng.
 - PowerShell va Microsoft Edge thuong da co san tren Windows.
 - AppTweak hoac Sensor Tower chi la nguon xuat CSV. Pipeline khong bat buoc cai extension hay SDK cua cac dich vu nay.
@@ -85,11 +85,11 @@ python -m compileall -q .
 
 Test suite phai ket thuc bang `OK` va khong con dong Snowball `skipped`.
 
-## 6. Dich keyword tren ban Lite
+## 6. Agentic cache va English gloss
 
-Ban Lite dung Google GTX mien phi qua HTTPS. Khong can khoi dong service local hoac mo them terminal. Cache SQLite tai `.cache/translations.sqlite3` duoc uu tien truoc khi gui request mang.
+Ban Lite khong dich keyword qua network trong runtime. Runner chi doc cot `EN` co san trong CSV hoac `AIEnglishGloss` da duoc Antigravity subagents nap vao `.cache/agentic_keyword_analysis.sqlite3`.
 
-GTX la endpoint khong chinh thuc. Neu dich loi sau retry, pipeline dung locale dang xu ly de tranh tao workbook thieu ban dich. Thu lai khi ket noi mang on dinh, hoac dung [ASO-MVP-Max](https://github.com/Ytube2403/ASO-MVP-Max) neu can LibreTranslate local.
+Neu keyword non-English thieu `english_gloss`, pipeline fail-fast truoc scoring. Chay `tools/warm_cache_helper.py find-misses -> prepare-batches -> save-results -> verify-cache` truoc khi chay pipeline that.
 
 ## 7. Dang nhap GitHub cho Sync.bat
 
@@ -115,8 +115,8 @@ Dashboard mo tai `http://127.0.0.1:5100`. Sau khi chay pipeline, workbook phai c
 
 ## 9. Ket noi mang
 
-- Can Internet khi dich keyword chua co cache hoac refresh profile tu Google Play.
-- Translation cache SQLite giam request GTX, nhung ban Lite khong dam bao dich offline khi cache thieu.
+- Can Internet khi refresh profile tu Google Play hoac khi ban tu chay Antigravity/research tool ben ngoai repo.
+- Agentic cache SQLite phai du intent va `english_gloss`; runner khong fallback sang translation network khi cache thieu.
 - Neu dung GitHub clone, pull hoac push thi can internet va quyen truy cap repository.
 
 ## 10. Xu ly loi nhanh
@@ -150,5 +150,5 @@ Dong file `.xlsx` trong Excel hoac truyen `--output` voi ten file moi.
 Dung pipeline, sau do xoa cache local:
 
 ```powershell
-Remove-Item .cache\translations.sqlite3*
+Remove-Item .cache\agentic_keyword_analysis.sqlite3*
 ```
