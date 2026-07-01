@@ -81,6 +81,23 @@ class TranslationServiceTests(unittest.TestCase):
                 service.translate("broma", "es")
             self.assertEqual(len(calls), 3)
 
+    def test_cache_only_translation_fails_before_network_request(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            calls = []
+
+            def opener(*args, **kwargs):
+                calls.append(1)
+                raise OSError("network should not be used")
+
+            service = TranslationService(
+                os.path.join(temp_dir, "translations.sqlite3"),
+                opener=opener,
+                cache_only=True,
+            )
+            with self.assertRaisesRegex(TranslationUnavailableError, "cache_only mode"):
+                service.translate("broma", "es")
+            self.assertEqual(calls, [])
+
     def test_mixed_and_unknown_sources_use_auto(self):
         self.assertEqual(normalize_source_language("fil+en"), "auto")
         self.assertEqual(normalize_source_language("pt+en"), "auto")

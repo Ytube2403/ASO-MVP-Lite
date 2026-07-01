@@ -45,9 +45,10 @@ Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.
 
 - `shared/paths.py`: nguon path tap trung cho `apps`, `docs`, `data` va `data/master_keywords`.
 - `shared/app_registry.py`: map alias app chinh xac toi folder, runner va config.
+- `shared/effective_config.py`: load effective app config giong runtime, gom ca legacy runner config va `FILTER_POLICY`.
 - `shared/locale_parser.py`: parser locale dung chung cho orchestrator, exporter, tracker va batch.
 - `shared/language_detector.py`: nhan dien ngon ngu theo market policy.
-- `shared/ai_keyword_classifier.py`: DeepSeek classifier, SQLite cache, `pre_ai_filter` conservative truoc API, key pool va batch song song co rate limit rieng tung key.
+- `shared/ai_keyword_classifier.py`: classifier/cache runtime. Game Emulator dung `agentic_keyword_classifier` cache-only voi provider `antigravity_subagent`; cac app legacy van co the dung DeepSeek path cu.
 - `shared/keyword_filter/`: matcher precompiled, hard filter, classifier, validator, audit, cache atomic va truncation hardening complete-token aware.
 - `shared/text_dedup.py`: dedup Unicode cho `01_Main_Keyword_Shortlist`.
 - `shared/translation_service.py`: dich EN bang Google GTX mien phi, SQLite WAL cache, retry, rate limit va TLS verification.
@@ -58,6 +59,7 @@ Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.
 
 - `tools/run_aso_batch.py`: batch implementation.
 - `tools/export_master_keywords.py`: Master Keywords exporter implementation.
+- `tools/warm_cache_helper.py`: workflow chinh thuc cho Game Emulator agentic cache: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`.
 - `tools/warm_ai_keyword_cache.py`: lam nong AI cache bang DeepSeek truoc khi chay pipeline chinh, khong tao workbook.
 - `tools/generate_funvid_csv.py`, `tools/generate_animalface_csv.py`, `tools/generate_100_keywords_csv.py`: tao seed CSV mau cho app FunVid.
 
@@ -82,6 +84,7 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 ## `docs/`
 
 - `docs/ASO_Keyword_Planner_v4_4.md`: dac ta logic pipeline v4.4, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid`, DeepSeek AI classifier, `pre_ai_filter`, key pool va warm cache.
+- `apps/Game_Emulator/AGENTIC_CACHE_WORKFLOW.md`: huong dan flow cache-only moi cho Game Emulator, thay cho cac script scratch.
 - `docs/SETUP_WINDOWS.md`: checklist phan mem, extension, Python packages va cach kiem tra moi truong Windows.
 - `docs/App_Config_Template.py`: template config.
 - `docs/App_Profile_Template.json`: template profile.
@@ -98,6 +101,7 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 
 Regression test cho registry, parser locale, hard filter, truncation false positive, dedup, translation, profile, project memory, exporter va batch runner.
 `tests/test_ai_keyword_classifier.py` bao phu cache hit, API call, canonical duplicate reuse, pre-AI skip/preserve rule, key pool round-robin va failover.
+`tests/test_warm_cache_helper.py` bao phu effective config, batch contract va validation result cua agentic cache.
 
 ## `releases/`
 

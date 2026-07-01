@@ -48,6 +48,7 @@ class TranslationService:
         sleep=None,
         clock=None,
         market="",
+        cache_only=False,
     ):
         self.cache_path = os.path.abspath(cache_path)
         configured_rps = (
@@ -62,6 +63,7 @@ class TranslationService:
         self.sleep = sleep or time.sleep
         self.clock = clock or time.time
         self.market = str(market or "")
+        self.cache_only = bool(cache_only)
         self._initialize_cache()
 
     def _connect(self):
@@ -197,6 +199,11 @@ class TranslationService:
         cached = self._get_cached(keyword, source_language, target_language)
         if cached is not None:
             return TranslationResult(cached, "CACHE_HIT")
+        if self.cache_only:
+            raise TranslationUnavailableError(
+                "Translation service is running in cache_only mode, but this keyword "
+                f"is missing an English gloss/cache entry: {keyword!r}"
+            )
         errors = []
         for attempt in range(self.retries):
             try:
@@ -214,14 +221,15 @@ class TranslationService:
         )
 
 
-def translate_dataframe(df, provided_en=None, cache_path=None, max_workers=None, service=None, market=""):
+def translate_dataframe(df, provided_en=None, cache_path=None, max_workers=None, service=None, market="", cache_only=False):
     import pandas as pd
 
     if cache_path is None:
         cache_path = os.path.join(os.getcwd(), ".cache", "translations.sqlite3")
-    service = service or TranslationService(cache_path, market=market)
+    service = service or TranslationService(cache_path, market=market, cache_only=cache_only)
     if market:
         service.market = str(market)
+    service.cache_only = bool(cache_only)
     configured_workers = (
         max_workers
         if max_workers is not None

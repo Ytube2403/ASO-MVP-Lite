@@ -109,6 +109,15 @@ class AIKeywordClassifierTests(unittest.TestCase):
             with self.assertRaises(AIKeywordClassifierError):
                 analyze_dataframe(df, BASE_CONFIG, cache_path=service.cache_path, market="VN_VI", service=service)
 
+    def test_cache_only_fails_before_api_for_uncached_keywords(self):
+        config = copy.deepcopy(BASE_CONFIG)
+        config["ai_keyword_classifier"]["cache_only"] = True
+        with tempfile.TemporaryDirectory() as temp_dir:
+            df = pd.DataFrame({"Keyword": ["cache only miss"], "Volume": [1], "Rank": [""]})
+            service = AIKeywordClassifier(os.path.join(temp_dir, "ai.sqlite3"), config, market="VN_VI", api_key="secret")
+            with self.assertRaisesRegex(AIKeywordClassifierError, "cache-only mode"):
+                analyze_dataframe(df, config, cache_path=service.cache_path, market="VN_VI", service=service)
+
     def test_loads_deepseek_credentials_from_project_env_file(self):
         previous_key = os.environ.pop("DEEPSEEK_API_KEY", None)
         previous_keys = os.environ.pop("DEEPSEEK_API_KEYS", None)

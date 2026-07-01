@@ -30,6 +30,7 @@ DEFAULT_REQUESTS_PER_SECOND = 2.0
 DEFAULT_REQUESTS_PER_SECOND_PER_KEY = 1.0
 DEFAULT_MAX_WORKERS = 2
 DEFAULT_TIMEOUT = 60
+AGENTIC_PROVIDER = "antigravity_subagent"
 DOTENV_KEYS = {
     "DEEPSEEK_API_KEY",
     "DEEPSEEK_API_KEYS",
@@ -112,8 +113,16 @@ class PreAIItem:
 
 
 def enabled(config):
-    classifier_config = (config or {}).get("ai_keyword_classifier", {})
+    classifier_config = _configured_classifier(config)
     return bool(classifier_config.get("enabled", False))
+
+
+def _configured_classifier(config):
+    config = config or {}
+    agentic_config = config.get("agentic_keyword_classifier")
+    if isinstance(agentic_config, dict):
+        return agentic_config
+    return config.get("ai_keyword_classifier", {}) or {}
 
 
 def _project_env_paths():
@@ -161,27 +170,41 @@ def load_project_env():
 
 
 def _classifier_config(config):
-    load_project_env()
-    configured = dict((config or {}).get("ai_keyword_classifier", {}) or {})
+    configured = dict(_configured_classifier(config) or {})
+    provider = str(configured.get("provider", PROVIDER) or PROVIDER)
+    if provider != AGENTIC_PROVIDER:
+        load_project_env()
+    default_rps_per_key = (
+        DEFAULT_REQUESTS_PER_SECOND_PER_KEY
+        if provider == AGENTIC_PROVIDER
+        else os.environ.get("DEEPSEEK_REQUESTS_PER_SECOND_PER_KEY", DEFAULT_REQUESTS_PER_SECOND_PER_KEY)
+    )
+    default_max_workers = (
+        DEFAULT_MAX_WORKERS
+        if provider == AGENTIC_PROVIDER
+        else os.environ.get("DEEPSEEK_MAX_WORKERS", DEFAULT_MAX_WORKERS)
+    )
     pre_filter_config = dict(DEFAULT_PRE_FILTER_CONFIG)
     pre_filter_config.update(dict(configured.get("pre_filter", {}) or {}))
     return {
-        "provider": str(configured.get("provider", PROVIDER) or PROVIDER),
+        "provider": provider,
         "model": str(configured.get("model", DEFAULT_MODEL) or DEFAULT_MODEL),
         "prompt_version": str(configured.get("prompt_version", DEFAULT_PROMPT_VERSION) or DEFAULT_PROMPT_VERSION),
         "batch_size": int(configured.get("batch_size", DEFAULT_BATCH_SIZE) or DEFAULT_BATCH_SIZE),
         "cache_path": str(configured.get("cache_path", ".cache/ai_keyword_analysis.sqlite3") or ".cache/ai_keyword_analysis.sqlite3"),
+        "cache_only": bool(configured.get("cache_only", False)),
+        "cache_aliases": list(configured.get("cache_aliases", []) or []),
         "fail_on_api_error": bool(configured.get("fail_on_api_error", True)),
         "requests_per_second": float(configured.get("requests_per_second", DEFAULT_REQUESTS_PER_SECOND) or DEFAULT_REQUESTS_PER_SECOND),
         "requests_per_second_per_key": float(
             configured.get(
                 "requests_per_second_per_key",
-                os.environ.get("DEEPSEEK_REQUESTS_PER_SECOND_PER_KEY", DEFAULT_REQUESTS_PER_SECOND_PER_KEY),
+                default_rps_per_key,
             )
             or DEFAULT_REQUESTS_PER_SECOND_PER_KEY
         ),
         "max_workers": int(
-            configured.get("max_workers", os.environ.get("DEEPSEEK_MAX_WORKERS", DEFAULT_MAX_WORKERS))
+            configured.get("max_workers", default_max_workers)
             or DEFAULT_MAX_WORKERS
         ),
         "key_strategy": str(configured.get("key_strategy", "round_robin") or "round_robin"),
@@ -223,6 +246,24 @@ def _cache_key(keyword, config, market, app_profile=None, classifier_config=None
         _context_hash(config, app_profile),
         normalize_filter_text(keyword),
     )
+
+
+def _cache_lookup_keys(keyword, config, market, app_profile=None, classifier_config=None):
+    classifier_config = classifier_config or _classifier_config(config)
+    current = _cache_key(keyword, config, market, app_profile, classifier_config)
+    keys = [current]
+    for alias in classifier_config.get("cache_aliases", []) or []:
+        if not isinstance(alias, dict):
+            continue
+        alias_key = (
+            str(alias.get("provider", current[0]) or current[0]),
+            str(alias.get("model", current[1]) or current[1]),
+            str(alias.get("prompt_version", current[2]) or current[2]),
+            *current[3:],
+        )
+        if alias_key not in keys:
+            keys.append(alias_key)
+    return keys
 
 
 def _pre_filter_config(classifier_config):
@@ -430,14 +471,20 @@ class AIKeywordClassifier:
         clock=None,
     ):
         self.config = config or {}
-        load_project_env()
         self.classifier_config = _classifier_config(self.config)
         self.app_profile = app_profile or {}
         self.market = str(market or self.config.get("market", ""))
         self.cache_path = os.path.abspath(cache_path)
-        self.api_keys = _parse_api_keys(api_key)
+        if self.classifier_config["provider"] == AGENTIC_PROVIDER:
+            self.api_keys = []
+        else:
+            self.api_keys = _parse_api_keys(api_key)
         self.api_key = self.api_keys[0] if self.api_keys else ""
-        self.base_url = str(base_url or os.environ.get("DEEPSEEK_BASE_URL") or DEFAULT_BASE_URL).rstrip("/")
+        self.base_url = (
+            ""
+            if self.classifier_config["provider"] == AGENTIC_PROVIDER
+            else str(base_url or os.environ.get("DEEPSEEK_BASE_URL") or DEFAULT_BASE_URL).rstrip("/")
+        )
         self.opener = opener or urllib.request.urlopen
         self.sleep = sleep or time.sleep
         self.clock = clock or time.time
@@ -534,19 +581,23 @@ class AIKeywordClassifier:
             connection.commit()
 
     def _get_cached(self, keyword):
-        key = _cache_key(keyword, self.config, self.market, self.app_profile, self.classifier_config)
+        keys = _cache_lookup_keys(keyword, self.config, self.market, self.app_profile, self.classifier_config)
         with closing(self._connect()) as connection:
-            row = connection.execute(
-                """
-                SELECT keyword, detected_language, language_group, semantic_bucket,
-                       decision_rule, reason, confidence, english_gloss
-                FROM ai_keyword_analysis
-                WHERE provider = ? AND model = ? AND prompt_version = ?
-                  AND app_id = ? AND market = ? AND context_hash = ?
-                  AND normalized_keyword = ?
-                """,
-                key,
-            ).fetchone()
+            row = None
+            for key in keys:
+                row = connection.execute(
+                    """
+                    SELECT keyword, detected_language, language_group, semantic_bucket,
+                           decision_rule, reason, confidence, english_gloss
+                    FROM ai_keyword_analysis
+                    WHERE provider = ? AND model = ? AND prompt_version = ?
+                      AND app_id = ? AND market = ? AND context_hash = ?
+                      AND normalized_keyword = ?
+                    """,
+                    key,
+                ).fetchone()
+                if row:
+                    break
         if not row:
             return None
         return AIKeywordAnalysis(
@@ -813,6 +864,9 @@ class AIKeywordClassifier:
             detected_language = str(item.get("detected_language", "") or "unknown").strip().lower()
             language_group = str(item.get("language_group", "") or "").strip().upper()
             semantic_bucket = str(item.get("semantic_bucket", "") or "").strip()
+            if semantic_bucket in ["Visual Keywords", "Visual", "Visuals", "UI Keywords"]:
+                semantic_bucket = "Feature Keywords"
+
             if language_group not in LANGUAGE_GROUPS:
                 raise AIKeywordClassifierError(f"Invalid language_group for {keyword!r}: {language_group!r}")
             if semantic_bucket not in SEMANTIC_BUCKETS:
@@ -849,6 +903,17 @@ class AIKeywordClassifier:
             else:
                 missing.append(row)
         self.stats["api_candidates"] = len(missing)
+        if missing and (
+            self.classifier_config.get("cache_only", False)
+            or self.classifier_config["provider"] == AGENTIC_PROVIDER
+        ):
+            sample = ", ".join(str(row.get("Keyword", "") or "") for row in missing[:5])
+            raise AIKeywordClassifierError(
+                "Agentic keyword classifier is running in cache-only mode, but "
+                f"{len(missing)} uncached keyword(s) need classification. "
+                "Run the Antigravity subagent cache flow first. "
+                f"Sample misses: {sample}"
+            )
         batch_size = max(1, int(self.classifier_config["batch_size"]))
         batches = [missing[start:start + batch_size] for start in range(0, len(missing), batch_size)]
         self.stats["api_batches"] = len(batches)
@@ -981,7 +1046,7 @@ def analyze_dataframe(df, config, app_profile=None, cache_path=None, market="", 
     slowest_batch_seconds = max(batch_seconds) if batch_seconds else 0.0
     print(
         "AI keyword classification summary: "
-        f"provider={PROVIDER}, model={classifier_config['model']}, "
+        f"provider={classifier_config['provider']}, model={classifier_config['model']}, "
         f"total_rows={len(df)}, "
         f"cache_hit={status_counts.get('AI_CACHE_HIT', 0)}, "
         f"classified={status_counts.get('AI_CLASSIFIED', 0)}, "

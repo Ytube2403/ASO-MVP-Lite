@@ -57,20 +57,22 @@ config = {
         "accent_fold_auto_merge_locales": [],
         "enable_review_log": True,
     },
-    "ai_keyword_classifier": {
+    "agentic_keyword_classifier": {
         "enabled": True,
-        "provider": "deepseek",
-        "model": "deepseek-v4-flash",
-        "batch_size": 50,
-        "requests_per_second": 2.0,
-        "requests_per_second_per_key": 1.0,
-        "max_workers": 2,
-        "key_strategy": "round_robin",
-        "failover_on_key_error": True,
-        "prompt_version": "aso-keyword-classifier-v1",
+        "provider": "antigravity_subagent",
+        "model": "subagent-cache-v1",
+        "cache_only": True,
+        "prompt_version": "agentic-keyword-classifier-v1",
         "fail_on_api_error": True,
         "min_confidence": 0.55,
         "cache_path": ".cache/ai_keyword_analysis.sqlite3",
+        "cache_aliases": [
+            {
+                "provider": "deepseek",
+                "model": "deepseek-v4-flash",
+                "prompt_version": "aso-keyword-classifier-v1"
+            }
+        ],
         "pre_filter": {
             "enabled": True,
             "duplicate_strategy": "canonical_reuse",
@@ -770,6 +772,7 @@ provided_en = provided_en.where(provided_en.str.strip() != "", df['AIEnglishGlos
 translation_frame = _shared_translation_service.translate_dataframe(
     df, provided_en=provided_en, cache_path=os.path.join(_SHARED_ROOT, ".cache", "translations.sqlite3"),
     market=config.get("market", ""),
+    cache_only=True,
 )
 df[['EN', 'TranslationStatus', 'TranslationError']] = translation_frame
 

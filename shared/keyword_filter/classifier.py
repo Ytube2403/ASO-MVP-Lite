@@ -72,7 +72,12 @@ def _ai_classification_result(row, config):
         confidence = float(row.get("AIConfidence", 0.0) or 0.0)
     except (TypeError, ValueError):
         confidence = 0.0
-    minimum = float(((config.get("ai_keyword_classifier", {}) or {}).get("min_confidence", 0.55)) or 0.55)
+    classifier_config = (
+        config.get("agentic_keyword_classifier", {})
+        or config.get("ai_keyword_classifier", {})
+        or {}
+    )
+    minimum = float((classifier_config.get("min_confidence", 0.55)) or 0.55)
     if confidence < minimum:
         return None
 

@@ -30,6 +30,7 @@ ASO-MVP-Lite/
 |
 |-- tools/                        # Cong cu van hanh
 |   |-- run_aso_batch.py
+|   |-- warm_cache_helper.py
 |   |-- warm_ai_keyword_cache.py
 |   `-- export_master_keywords.py
 |
@@ -67,6 +68,7 @@ ASO-MVP-Lite/
 - AI cache miss duoc xu ly theo batch song song co kiem soat, ho tro nhieu API key qua key pool va rate limit rieng tung key.
 - Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
 - App `FunVid` da duoc dang ky trong registry voi alias `FunVid`, `Fun_Vid`, `FunnyFaceFilters`, `FunVid_100_Keywords` va `FunVid_AnimalFace`.
+- App `Game_Emulator` dung flow agentic cache-only: Antigravity subagents ghi intent/dich vao SQLite truoc, runner chi doc cache va fail-fast neu con miss.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
