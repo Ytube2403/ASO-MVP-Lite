@@ -64,15 +64,15 @@ ASO-MVP-Lite/
 - Moi app giu `app_config.py`, `App_Profile.json`, `PROJECT_MEMORY.md`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
 - Logic loc, parser locale, dich, profile, project memory va dedup phai dung module trong `shared/`.
 - Truncation logic v4.4 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
-- DeepSeek AI classifier v4.4 giu co che `pre_ai_filter`: duplicate/noise/competitor/typo/irrelevant ro rang duoc skip truoc API, con keyword rong lien quan van duoc gui AI va cache de tai su dung.
-- AI cache miss duoc xu ly theo batch song song co kiem soat, ho tro nhieu API key qua key pool va rate limit rieng tung key.
+- Legacy DeepSeek classifier van giu co che `pre_ai_filter` cho cac app chua migrate; rieng `Game_Emulator` dung `agentic_keyword_classifier` cache-only va khong goi API AI runtime.
+- AI cache miss cua Game Emulator duoc xu ly ngoai runner bang Antigravity subagents qua `tools/warm_cache_helper.py`.
 - Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
 - App `FunVid` da duoc dang ky trong registry voi alias `FunVid`, `Fun_Vid`, `FunnyFaceFilters`, `FunVid_100_Keywords` va `FunVid_AnimalFace`.
 - App `Game_Emulator` dung flow agentic cache-only: Antigravity subagents ghi intent/dich vao SQLite truoc, runner chi doc cache va fail-fast neu con miss.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
-## AI keyword classifier v4.4
+## AI keyword classifier va agentic cache v4.4
 
 Khuyen nghi tao file `.env` tu template va dien key local:
 
@@ -97,15 +97,24 @@ File `.env` da nam trong `.gitignore`, khong commit len repo. Neu co nhieu key, 
 $env:DEEPSEEK_API_KEY = "your_key_here"
 ```
 
-Ket qua AI duoc cache tai `.cache/ai_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus` de biet keyword nao duoc goi AI, keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc API.
+Ket qua AI/agentic duoc cache tai `.cache/ai_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus` de biet keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc API.
 
-Lam nong cache truoc khi chay pipeline chinh:
+Voi cac app legacy con dung DeepSeek, lam nong cache truoc khi chay pipeline chinh:
 
 ```powershell
 python tools/warm_ai_keyword_cache.py --csv apps/AR_Filter/Input/052026/ARFilter_US_EN.csv --app ARFilter
 ```
 
 Lenh nay chi chay `pre_ai_filter -> cache lookup -> DeepSeek for cache miss` va luu vao SQLite cache, khong tao workbook. Khi chay pipeline that sau do, cac keyword da xu ly se vao `AI_CACHE_HIT`.
+
+Voi `Game_Emulator`, dung flow chinh thuc:
+
+```powershell
+python tools/warm_cache_helper.py find-misses --app Game_Emulator --csv "apps/Game_Emulator/Input/072026/Game Emulator_MX_ES.csv" --market MX_ES
+python tools/warm_cache_helper.py prepare-batches --misses .cache/game_emulator_mx_es_missing.json
+python tools/warm_cache_helper.py save-results --app Game_Emulator --batch .cache/agentic_batches/mx_es_batch_1.json --results .cache/agentic_batches/mx_es_batch_1_result.json
+python tools/warm_cache_helper.py verify-cache --app Game_Emulator --csv "apps/Game_Emulator/Input/072026/Game Emulator_MX_ES.csv" --market MX_ES
+```
 
 ## Cai dat
 

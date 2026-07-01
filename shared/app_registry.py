@@ -11,7 +11,7 @@ APP_REGISTRY = {
     },
     "game_emulator": {
         "folder": "apps/Game_Emulator",
-        "runner": "apps/Game_Emulator/run_game_emulator_v4_3.py",
+        "runner": "apps/Game_Emulator/run_game_emulator_v4_4.py",
         "config": "apps/Game_Emulator/app_config.py",
         "aliases": ["GameEmulator", "GameRetro", "Game_Emulator"],
     },

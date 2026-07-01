@@ -38,7 +38,7 @@ App da dang ky:
 - `apps/Prank_Sounds/`
 - `apps/App_Template/`
 
-`AR_Filter`, `Control_Widget`, `Game_Emulator` dung runner `*_v4_3.py`. `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
+`AR_Filter` va `Control_Widget` van dung runner `*_v4_3.py`. `Game_Emulator` dung runner `run_game_emulator_v4_4.py` de dong bo flow agentic cache-only. `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
 Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.csv` cung duoc route ve app `FunVid` qua registry alias.
 
 ## `shared/`
@@ -83,7 +83,7 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 
 ## `docs/`
 
-- `docs/ASO_Keyword_Planner_v4_4.md`: dac ta logic pipeline v4.4, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid`, DeepSeek AI classifier, `pre_ai_filter`, key pool va warm cache.
+- `docs/ASO_Keyword_Planner_v4_4.md`: dac ta logic pipeline v4.4, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid`, legacy DeepSeek classifier va Game Emulator agentic cache-only.
 - `apps/Game_Emulator/AGENTIC_CACHE_WORKFLOW.md`: huong dan flow cache-only moi cho Game Emulator, thay cho cac script scratch.
 - `docs/SETUP_WINDOWS.md`: checklist phan mem, extension, Python packages va cach kiem tra moi truong Windows.
 - `docs/App_Config_Template.py`: template config.

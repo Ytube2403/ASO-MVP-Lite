@@ -52,18 +52,21 @@ def _normalize_search_popularity(value, policy):
 
 
 def calculate_volume_score(volume, max_volume=None, maximum_reach=0, max_maximum_reach=0, config=None):
-    """Score AppTweak popularity without treating its exponential scale as raw traffic."""
+    """Score AppTweak volume, preferring real reach when the CSV provides it."""
     policy = volume_score_policy(config)
     current_volume = number(volume)
     historical_volume = max(current_volume, number(max_volume, current_volume))
     reach = max(0.0, number(maximum_reach))
     reach_ceiling = max(0.0, number(max_maximum_reach))
-    current_score = _normalize_search_popularity(current_volume, policy)
-    historical_score = _normalize_search_popularity(historical_volume, policy)
-    current_weight = max(0.0, number(policy.get("current_volume_weight"), 0.85))
-    historical_weight = max(0.0, number(policy.get("historical_max_volume_weight"), 0.15))
-    total_weight = current_weight + historical_weight
-    score = current_score if total_weight <= 0 else ((current_weight * current_score) + (historical_weight * historical_score)) / total_weight
+    if reach > 0 and reach_ceiling > 0:
+        score = reach / reach_ceiling
+    else:
+        current_score = _normalize_search_popularity(current_volume, policy)
+        historical_score = _normalize_search_popularity(historical_volume, policy)
+        current_weight = max(0.0, number(policy.get("current_volume_weight"), 0.85))
+        historical_weight = max(0.0, number(policy.get("historical_max_volume_weight"), 0.15))
+        total_weight = current_weight + historical_weight
+        score = current_score if total_weight <= 0 else ((current_weight * current_score) + (historical_weight * historical_score)) / total_weight
     if current_volume <= number(policy.get("low_tier_threshold"), 5.0):
         score = min(score, number(policy.get("low_tier_score_cap"), 0.05))
     return max(0.0, min(1.0, score))

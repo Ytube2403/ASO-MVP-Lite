@@ -2025,7 +2025,7 @@ Khi sua logic shared, can chay:
 
 ```powershell
 python -m unittest discover -s ASO-MVP-Lite\tests -p "test_*.py"
-python -m py_compile ASO-MVP-Lite\shared\language_detector.py ASO-MVP-Lite\shared\text_dedup.py ASO-MVP-Lite\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Lite\apps\App_Template\run_pipeline.py ASO-MVP-Lite\apps\Emoji_Battery_Icon_Customize\run_pipeline.py ASO-MVP-Lite\apps\FunVid\run_pipeline.py ASO-MVP-Lite\apps\AR_Filter\run_ar_filter_v4_3.py ASO-MVP-Lite\apps\Control_Widget\run_control_widget_v4_3.py ASO-MVP-Lite\apps\Game_Emulator\run_game_emulator_v4_3.py
+python -m py_compile ASO-MVP-Lite\shared\language_detector.py ASO-MVP-Lite\shared\text_dedup.py ASO-MVP-Lite\apps\Prank_Sounds\run_pipeline.py ASO-MVP-Lite\apps\App_Template\run_pipeline.py ASO-MVP-Lite\apps\Emoji_Battery_Icon_Customize\run_pipeline.py ASO-MVP-Lite\apps\FunVid\run_pipeline.py ASO-MVP-Lite\apps\AR_Filter\run_ar_filter_v4_3.py ASO-MVP-Lite\apps\Control_Widget\run_control_widget_v4_3.py ASO-MVP-Lite\apps\Game_Emulator\run_game_emulator_v4_4.py
 ```
 
 ---
@@ -2340,7 +2340,7 @@ Control Widget: US_EN
 Batch: it nhat 3 locale chay dong thoi
 ```
 
-Runner hien tai da dong bo ten file `*_v4_3.py` cho `AR_Filter`, `Control_Widget` va `Game_Emulator`. `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` tiep tuc dung ten trung tinh `run_pipeline.py`.
+Runner hien tai: `AR_Filter` va `Control_Widget` van dung ten file `*_v4_3.py`; `Game_Emulator` da migrate sang `run_game_emulator_v4_4.py` de dong bo flow agentic cache-only. `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` tiep tuc dung ten trung tinh `run_pipeline.py`.
 
 ---
 
@@ -2733,4 +2733,85 @@ Regression toi thieu:
 ```powershell
 python -m py_compile apps/App_Template/run_pipeline.py apps/FunVid/run_pipeline.py docs/App_Config_Template.py
 python -m unittest discover -s tests -v
+```
+
+---
+
+## 34. Cap nhat v4.4 hien hanh - Game Emulator agentic cache va scoring sync
+
+Muc nay la contract hien hanh cho `Game_Emulator` sau khi migrate khoi DeepSeek runtime.
+
+### 34.1 Runner va provider
+
+`Game_Emulator` dung runner:
+
+```text
+apps/Game_Emulator/run_game_emulator_v4_4.py
+```
+
+Registry tro app nay ve runner v4.4. Config runtime dung:
+
+```text
+agentic_keyword_classifier.provider = antigravity_subagent
+agentic_keyword_classifier.cache_only = true
+```
+
+Runner chi doc SQLite cache. Neu keyword hoac ban dich EN chua co trong cache, pipeline fail-fast truoc khi goi network. DeepSeek van con trong repo cho app legacy, nhung khong nam trong runtime flow cua `Game_Emulator`.
+
+### 34.2 Agentic cache sequence
+
+Sequence chuan:
+
+```text
+find-misses -> prepare-batches -> Antigravity subagents -> save-results -> verify-cache -> run_aso_filter
+```
+
+`verify-cache` phai pass theo tung market truoc khi chay pipeline that. Neu MX_ES hoac market nao con miss, helper phai xuat danh sach/batch miss ro rang va return non-zero, khong duoc bao pass sai.
+
+### 34.3 Shortlist quota khong tron bucket
+
+`01_Main_Keyword_Shortlist` phai lap quota bang candidate dung bucket:
+
+```text
+Core quota     -> Bucket == Core Intent Final
+Broad quota    -> Bucket == Broad Expansion
+Consider quota -> Bucket == Consider Keywords
+```
+
+Fallback moi duoc muon bucket khac va phai ghi `QuotaStatus = FILLED`, `FillSource` la bucket goc, `Section` la quota thuc su ma keyword lap vao. Vi vay `Section` khong duoc gan bang bucket goc trong duong chon chinh/fallback.
+
+### 34.4 Volume scoring
+
+`shared/keyword_filter/scoring.py` la source of truth duy nhat cho `VolumeN`.
+
+- Neu CSV co `MaximumReach` va max reach cua file > 0, `VolumeN = MaximumReach / max(MaximumReach)`.
+- Neu khong co reach hop le, fallback sang exponential Search Popularity tren `Volume` va `Max. Volume`.
+- Low-tier cap (`Volume <= low_tier_threshold`) chi ap dung mot lan trong shared scoring qua `low_tier_score_cap`.
+- Runner khong duoc tru them penalty rieng vao `BalancedScore` cho `Volume <= 5`.
+
+Balanced weights hien hanh cua `Game_Emulator`:
+
+```text
+VolumeN=0.35, DifficultyN=0.10, KEIN=0.10,
+RelevancyScore=0.25, CurrentRankN=0.10, ExpansionValue=0.10
+```
+
+### 34.5 Risk gate truoc AI/subagent bucket
+
+Risk flags la hard gate truoc `AISemanticBucket`/agentic result:
+
+```text
+platform_affiliation, platform_only, risky_ip,
+ambiguous_brand, platform_style_risk
+```
+
+Neu subagent tra `Core Intent Final` nhung keyword bi flag IP/brand/platform, classifier van phai dung action trong `risk_policy`.
+
+### 34.6 Regression tests
+
+Regression toi thieu cho thay doi nay:
+
+```powershell
+python -m unittest tests.test_pipeline_shared_contract tests.test_volume_score tests.test_keyword_filter tests.test_warm_cache_helper tests.test_ai_keyword_classifier tests.test_translation_service -v
+python -m compileall -q shared tools apps\Game_Emulator tests
 ```

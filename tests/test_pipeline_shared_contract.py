@@ -8,7 +8,7 @@ RUNNER_PATHS = [
     "apps/App_Template/run_pipeline.py",
     "apps/AR_Filter/run_ar_filter_v4_3.py",
     "apps/Control_Widget/run_control_widget_v4_3.py",
-    "apps/Game_Emulator/run_game_emulator_v4_3.py",
+    "apps/Game_Emulator/run_game_emulator_v4_4.py",
     "apps/Emoji_Battery_Icon_Customize/run_pipeline.py",
     "apps/Prank_Sounds/run_pipeline.py",
     "apps/FunVid/run_pipeline.py",
@@ -50,6 +50,28 @@ class PipelineSharedContractTests(unittest.TestCase):
                     "cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore'",
                     source,
                 )
+
+    def test_game_emulator_shortlist_quotas_do_not_mix_candidate_buckets(self):
+        runner_path = os.path.join(PROJECT_ROOT, "apps", "Game_Emulator", "run_game_emulator_v4_4.py")
+        with open(runner_path, "r", encoding="utf-8") as runner_file:
+            source = runner_file.read()
+
+        self.assertIn("entry['Section'] = section", source)
+        self.assertNotIn("def apply_volume_penalty", source)
+        self.assertIn("core_candidates = df_sorted[df_sorted['Bucket'] == 'Core Intent Final']", source)
+        self.assertIn("broad_candidates = df_sorted[df_sorted['Bucket'] == 'Broad Expansion']", source)
+        self.assertIn("consider_candidates = df_sorted[df_sorted['Bucket'] == 'Consider Keywords'].copy()", source)
+        self.assertNotIn("core_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]", source)
+        self.assertNotIn("broad_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]", source)
+        self.assertNotIn("consider_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)].copy()", source)
+
+    def test_game_emulator_runner_is_registered_as_v4_4(self):
+        registry_path = os.path.join(PROJECT_ROOT, "shared", "app_registry.py")
+        with open(registry_path, "r", encoding="utf-8") as registry_file:
+            source = registry_file.read()
+
+        self.assertIn('"runner": "apps/Game_Emulator/run_game_emulator_v4_4.py"', source)
+        self.assertNotIn('"runner": "apps/Game_Emulator/run_game_emulator_v4_3.py"', source)
 
 
 if __name__ == "__main__":

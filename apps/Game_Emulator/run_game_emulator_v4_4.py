@@ -1019,16 +1019,7 @@ def get_language_bonus(row):
         return 0.01
     return 0.0
 
-df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
-
-# Apply low volume penalty (Volume <= 5)
-def apply_volume_penalty(row):
-    score = row['BalancedScore']
-    if float(row['Volume']) <= 5.0:
-        score -= 0.15
-    return max(0.0, score)
-
-df['BalancedScore'] = df.apply(apply_volume_penalty, axis=1).round(4)
+df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).clip(0.0, 1.0).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)
 
 # Bucket classification (Game Emulator Mode)
@@ -1144,14 +1135,14 @@ def build_shortlist(df_all, config):
         selected_normalized.add(norm)
         selected_tokens.add(tokens)
         entry = item.to_dict()
-        entry['Section'] = item['Bucket']
+        entry['Section'] = section
         entry['QuotaStatus'] = 'EXACT'
         entry['FillSource'] = ''
         entry['FillReason'] = ''
         return entry
 
     # Core (Quota: 25)
-    core_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]
+    core_candidates = df_sorted[df_sorted['Bucket'] == 'Core Intent Final']
     for _, row in core_candidates.iterrows():
         if len(selected_core) >= 25:
             break
@@ -1197,7 +1188,7 @@ def build_shortlist(df_all, config):
                 selected_core.append(entry)
 
     # Broad (Quota: 5)
-    broad_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]
+    broad_candidates = df_sorted[df_sorted['Bucket'] == 'Broad Expansion']
     for _, row in broad_candidates.iterrows():
         if len(selected_broad) >= 5:
             break
@@ -1243,7 +1234,7 @@ def build_shortlist(df_all, config):
                 selected_broad.append(entry)
 
     # Consider (quality-ranked review pool)
-    consider_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)].copy()
+    consider_candidates = df_sorted[df_sorted['Bucket'] == 'Consider Keywords'].copy()
     consider_sort_cols = [col for col in ['RelevancyScore', 'VolumeN', 'BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'] if col in consider_candidates.columns]
     consider_ascending = [col in {'Rank_numeric', 'Difficulty'} for col in consider_sort_cols]
     if consider_sort_cols:

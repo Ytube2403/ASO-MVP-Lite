@@ -142,6 +142,27 @@ class KeywordFilterTests(unittest.TestCase):
         self.assertEqual(keyword_filter.classify_keyword(row("iphone"), BASE_CONFIG)[1], "platform_only")
         self.assertEqual(keyword_filter.classify_keyword(row("iphone prank"), BASE_CONFIG)[1], "platform_style_risk")
 
+    def test_risk_flags_override_ai_classification(self):
+        config = dict(
+            BASE_CONFIG,
+            agentic_keyword_classifier={"min_confidence": 0.55},
+        )
+        ai_core_fields = {
+            "AISemanticBucket": "Core Intent Final",
+            "AIDecisionRule": "agentic_core_intent",
+            "AIReason": "Agentic classifier thinks this is core.",
+            "AIConfidence": 0.99,
+        }
+
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("pokemon prank", **ai_core_fields), config)[1],
+            "risky_ip",
+        )
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("official tiktok prank", **ai_core_fields), config)[1],
+            "platform_affiliation",
+        )
+
     def test_conservative_truncation_detection(self):
         self.assertTrue(keyword_filter.is_truncated_keyword(row("prank so"), BASE_CONFIG))
         self.assertTrue(keyword_filter.is_truncated_keyword(row("prank sou"), BASE_CONFIG))
