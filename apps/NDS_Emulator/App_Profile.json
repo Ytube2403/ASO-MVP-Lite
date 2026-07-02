@@ -1,0 +1,135 @@
+{
+  "schema_version": "2.0",
+  "profile_type": "aso_app_profile",
+  "last_checked": "2026-07-01",
+  "source_url": "https://play.google.com/store/apps/details?id=com.emulator.nds.super.game.console.handheld",
+  "app_identity": {
+    "app_id": "com.emulator.nds.super.game.console.handheld",
+    "package_id": "com.emulator.nds.super.game.console.handheld",
+    "title": "SuperNDS: Retro Games Emulator",
+    "developer": "Emulator Developer",
+    "category": "Games / Action / Arcade / Emulators",
+    "content_rating": "Rated for 3+",
+    "monetization": {
+      "contains_ads": true,
+      "in_app_purchases": false
+    },
+    "installs": "10,000+",
+    "updated_on": "2026-07-01"
+  },
+  "live_store_metadata": {
+    "short_description": "All-in-one NDS, GBA, SNES, N64 & PSP emulator on mobile - Advance Version",
+    "full_description_digest": {
+      "one_sentence_summary": "Bản nâng cấp trình giả lập trò chơi retro đa năng (All-in-one) tối ưu nhất cho hệ máy Nintendo DS (NDS) kèm kho skin tay cầm ảo độc đáo trên di động Android.",
+      "description_sections": [
+        "Giới thiệu ứng dụng",
+        "Hệ máy hỗ trợ chủ đạo",
+        "Tính năng nổi bật - Bản nâng cấp",
+        "Hướng dẫn thiết lập và bắt đầu chơi"
+      ],
+      "main_feature_claims": [
+        "Khả năng tương thích cực cao với các dòng game NDS",
+        "Bộ sưu tập skin tay cầm (controller skins) ảo thiết kế đẹp mắt, phong phú",
+        "Tích hợp lõi giả lập đa hệ máy: GBA, SNES, N64, PSP, NES",
+        "Lưu trạng thái (Save State) và tải lại tức thì (Load State)",
+        "Tính năng Fast Forward giúp tăng tốc trò chơi",
+        "Hỗ trợ kết nối tay cầm Bluetooth ngoài (Gamepad mapping)"
+      ],
+      "how_to_use_flow": [
+        "Bước 1: Cài đặt ứng dụng SuperNDS nâng cấp từ Google Play",
+        "Bước 2: Chuẩn bị tệp game ROMs (.nds, .gba, v.v.) của bạn vào bộ nhớ máy",
+        "Bước 3: Mở ứng dụng, quét bộ nhớ để tự động nhận dạng thư viện game",
+        "Bước 4: Chọn skin tay cầm yêu thích, nhấp vào game và thưởng thức"
+      ]
+    }
+  },
+  "corrected_positioning": {
+    "primary_positioning": "Bản giả lập NDS (Nintendo DS) nâng cấp toàn diện, mượt mà, chuyên sâu kết hợp kho skin tay cầm ảo (controller skin) độc quyền siêu đẹp.",
+    "secondary_positioning": [
+      "Trình giả lập đa hệ máy All-in-one hỗ trợ chơi tất cả các hệ máy game retro cổ điển (NES, GBA, SNES, N64, PSP).",
+      "Trung tâm lưu trữ và trải nghiệm game console retro cầm tay cho di động."
+    ],
+    "not_the_right_positioning": [
+      "Không bao gồm sẵn bất kỳ tệp ROM game thương mại có bản quyền nào.",
+      "Không hỗ trợ giả lập các hệ máy hiện đại đời mới như 3DS, Switch, PS2, PS3."
+    ],
+    "strongest_differentiators": [
+      "Kho giao diện nút bấm ảo/skin tay cầm cực kỳ đẹp mắt, tinh tế so với các đối thủ thô ráp.",
+      "Hiệu năng tối ưu mượt mà cho hệ máy NDS kết hợp khả năng All-in-one linh hoạt."
+    ]
+  },
+  "competitor_strategy": {
+    "recommended_competitor_types": [
+      {
+        "type": "Direct NDS Emulator",
+        "description": "Các trình giả lập chuyên biệt cho Nintendo DS trên Google Play."
+      },
+      {
+        "type": "All-in-one Emulator",
+        "description": "Các trình giả lập đa hệ máy retro có hỗ trợ lõi NDS."
+      }
+    ],
+    "suggested_competitors": [
+      {
+        "package_id": "com.supernds.free",
+        "title": "SuperNDS Emulator",
+        "developer": "SuperNDS",
+        "relationship": "direct competitor",
+        "why_relevant": "Đối thủ trực tiếp cùng phân khúc giả lập NDS có tên thương hiệu giống nhau.",
+        "short_description": "This is a high quality emulator with many cool features.",
+        "desc200": "This is a high quality emulator with many cool features. You need to download your own game ROMs first.",
+        "overlap_keywords": [
+          "supernds",
+          "nds emulator",
+          "ds emulator",
+          "super nds"
+        ]
+      },
+      {
+        "package_id": "com.superds64.plus",
+        "title": "Super3DS Multi Emulator",
+        "developer": "Super3DS",
+        "relationship": "direct competitor",
+        "why_relevant": "Trình giả lập đa hệ máy có lượt tải cao, cùng phân khúc từ khóa giả lập NDS và 3DS.",
+        "short_description": "This app is a very fast emulator.",
+        "desc200": "This app is a very fast emulator. Enjoy playing retro games on your android device.",
+        "overlap_keywords": [
+          "super3ds",
+          "ds emulator",
+          "nintendo ds emulator",
+          "multi emulator"
+        ]
+      },
+      {
+        "package_id": "com.swordfish.lemuroid",
+        "title": "Lemuroid",
+        "developer": "Swordfish",
+        "relationship": "direct competitor",
+        "why_relevant": "Giả lập retro all-in-one mã nguồn mở hỗ trợ chơi mượt mà NDS, GBA, v.v. giao diện thân thiện.",
+        "short_description": "Lemuroid is an open-source emulator based on Libretro.",
+        "desc200": "All in one emulator for NES, SNES, GB, GBA, DS, N64, PSX, PSP and more. Highly optimized open source player.",
+        "overlap_keywords": [
+          "lemuroid",
+          "all in one emulator",
+          "nds emulator",
+          "retro game emulator"
+        ]
+      },
+      {
+        "package_id": "com.moniqtap.emulator.gba.game.retro",
+        "title": "Emulator Pro: Retro Game Roms",
+        "developer": "Moniqtap",
+        "relationship": "direct competitor",
+        "why_relevant": "Trình giả lập đa năng All-in-one có chứa thư viện ROMs và quản lý game retro tốt.",
+        "short_description": "Game emulator for retro classic video games.",
+        "desc200": "Game emulator for retro classic video games. Play old console games and ROMs directly from the dashboard.",
+        "overlap_keywords": [
+          "emulator pro",
+          "game emulator pro",
+          "retro game roms",
+          "play retro games"
+        ]
+      }
+    ]
+  }
+}

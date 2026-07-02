@@ -1,5 +1,13 @@
 ﻿FILTER_POLICY = {
     "semantic_mode": "ar_filter",
+    "keyword_quota": {
+        "main_file": {
+            "core_intent": 25,
+            "core_feature": 5,
+            "broad_expansion": 5,
+            "consider": 5,
+        },
+    },
     "risky_ip_terms": [],
     "ambiguous_brand_terms": ["snow"],
     "platform_affiliation_terms": ["official snapchat", "official tiktok", "official instagram", "snapchat filter"],

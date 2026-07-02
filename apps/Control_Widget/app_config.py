@@ -1,5 +1,13 @@
 ﻿FILTER_POLICY = {
     "semantic_mode": "personalization_widget",
+    "keyword_quota": {
+        "main_file": {
+            "core_intent": 25,
+            "core_feature": 5,
+            "broad_expansion": 5,
+            "consider": 5,
+        },
+    },
     "risky_ip_terms": ["assistive touch", "dynamic island"],
     "ambiguous_brand_terms": ["sidebar"],
     "platform_affiliation_terms": [],

@@ -11,7 +11,7 @@ APP_REGISTRY = {
     },
     "game_emulator": {
         "folder": "apps/Game_Emulator",
-        "runner": "apps/Game_Emulator/run_game_emulator_v4_3.py",
+        "runner": "apps/Game_Emulator/run_game_emulator_v4_4.py",
         "config": "apps/Game_Emulator/app_config.py",
         "aliases": ["GameEmulator", "GameRetro", "Game_Emulator"],
     },
@@ -44,6 +44,18 @@ APP_REGISTRY = {
         "runner": "apps/FunVid/run_pipeline.py",
         "config": "apps/FunVid/app_config.py",
         "aliases": ["FunVid", "Fun_Vid", "FunnyFaceFilters", "FunVid_100_Keywords", "FunVid_AnimalFace"],
+    },
+    "electric_gun": {
+        "folder": "apps/ElectricGun",
+        "runner": "apps/ElectricGun/run_pipeline.py",
+        "config": "apps/ElectricGun/app_config.py",
+        "aliases": ["ElectricGun", "Electric_Gun", "StunGun", "TaserPrank", "electric_gun"],
+    },
+    "nds_emulator": {
+        "folder": "apps/NDS_Emulator",
+        "runner": "apps/NDS_Emulator/run_pipeline.py",
+        "config": "apps/NDS_Emulator/app_config.py",
+        "aliases": ["NDSEmulator", "NDS_Emulator", "SuperNDS", "com.emulator.nds.super.game.console.handheld"],
     },
 }
 

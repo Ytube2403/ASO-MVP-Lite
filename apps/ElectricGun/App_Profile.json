@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0",
+  "profile_type": "aso_app_profile",
+  "last_checked": "2026-06-29",
+  "source_url": "https://play.google.com/store/apps/details?id=com.real.electric.stun.gun.simulator.taser.prank",
+  "app_identity": {
+    "app_id": "com.real.electric.stun.gun.simulator.taser.prank",
+    "package_id": "com.real.electric.stun.gun.simulator.taser.prank",
+    "title": "Electric Stun Gun Simulator - Taser prank",
+    "developer": "Smart Utilities Hub",
+    "category": "Entertainment",
+    "content_rating": "Rated for 3+",
+    "monetization": {
+      "contains_ads": true,
+      "in_app_purchases": false
+    },
+    "installs": "5,000,000+",
+    "updated_on": "2026-06-29"
+  },
+  "live_store_metadata": {
+    "short_description": "Stun gun prank simulator: realistic electric shock sounds, strobe flash & vibration.",
+    "full_description_digest": {
+      "one_sentence_summary": "A prank simulator app mimicking the look, sounds, and physical sensations of an electric stun gun taser.",
+      "description_sections": [
+        "Electric Stun Gun Prank Mode",
+        "Hair Clipper Prank Mode",
+        "Realistic electrical stun sound & flashing strobe effects"
+      ],
+      "main_feature_claims": [
+        "Realistic electrical shock simulation with arc sparks",
+        "Synchronized LED camera flash/strobe and haptic vibration feedback",
+        "Multiple creative taser weapon skins and haircut clipper sound pranks"
+      ],
+      "how_to_use_flow": [
+        "Step 1: Choose a stun gun weapon skin or hair clipper prank mode.",
+        "Step 2: Tap the stun gun image on screen or press the virtual trigger.",
+        "Step 3: Watch the camera flash strobe, feel the vibration, and hear the shock sounds to scare your friends."
+      ]
+    }
+  },
+  "corrected_positioning": {
+    "primary_positioning": "An interactive prank tool that simulates stun gun taser shocks and haircut clippers using physical smartphone feedback (strobe, haptic vibration, high quality audio).",
+    "secondary_positioning": [
+      "A soundboard of weapon sounds and funny prank effects.",
+      "An offline joke simulator app for friends and family gatherings."
+    ],
+    "not_the_right_positioning": [
+      "A real self-defense tool or weapon app (must include safety disclaimers).",
+      "A weapon crafting or shooting action game."
+    ],
+    "strongest_differentiators": [
+      "High-fidelity synced LED strobe and haptic physical feedback.",
+      "Multiple creative design skins for the electric stun guns."
+    ]
+  },
+  "competitor_strategy": {
+    "recommended_competitor_types": [
+      {
+        "type": "Direct taser simulator",
+        "description": "Apps focusing purely on stun gun shock pranks."
+      },
+      {
+        "type": "Generic prank toolkit",
+        "description": "Apps combining taser simulators, air horns, and razor clippers."
+      }
+    ],
+    "suggested_competitors": [
+      {
+        "package_id": "com.dmitsoft.stungun",
+        "title": "Stun Gun Simulator",
+        "developer": "Dmitsoft",
+        "relationship": "direct competitor",
+        "why_relevant": "A top downloaded and simple stun gun simulation app.",
+        "short_description": "Turn your phone into a simulated stun gun with realistic sounds and sparks!",
+        "desc200": "Stun Gun Simulator is an entertaining app that simulates the sound and noise of different Stun Guns. It displays an image of a stun gun on screen.",
+        "overlap_keywords": [
+          "stun gun simulator",
+          "stun gun sound"
+        ]
+      },
+      {
+        "package_id": "com.strategimws.stungunsimulator",
+        "title": "Stun Gun Simulator - Shock",
+        "developer": "Strategimws",
+        "relationship": "direct competitor",
+        "why_relevant": "Popular competitor offering camera feed stun simulation.",
+        "short_description": "Scare your friends with stun gun simulator shocks, flash and vibrations.",
+        "desc200": "Simulate an electric stun gun on your phone with this taser prank app. Tap the weapon image to trigger electrical sounds, strobe lights, and haptic feedback.",
+        "overlap_keywords": [
+          "taser simulator",
+          "taser prank",
+          "shock gun"
+        ]
+      }
+    ]
+  }
+}

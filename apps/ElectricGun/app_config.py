@@ -1,0 +1,339 @@
+# -*- coding: utf-8 -*-
+"""
+ASO Keyword Planner - App Configuration File
+Version: 4.5
+Purpose: Configuration file for deploying ASO Keyword Planner on ElectricGun (Electric Stun Gun Simulator - Taser prank).
+"""
+
+APP_CONFIG = {
+    # =========================================================================
+    # 1. IDENTITY & META (Thông tin định danh)
+    # =========================================================================
+    "app_id": "com.real.electric.stun.gun.simulator.taser.prank",  # Package ID / Bundle ID của ứng dụng
+    "app_name": "Electric Stun Gun Simulator - Taser prank",       # Tên ứng dụng đầy đủ hiển thị trên Store
+    "category": "Entertainment",                                   # Danh mục ứng dụng
+    "category_slug": "electric_gun",                               # Slug dùng cho đường dẫn (viết thường, không dấu, phân cách bởi gạch dưới)
+    "market": "US_EN",                                             # Mã thị trường mặc định (VD: US_EN, BR_PT, VN_VI...)
+    "platform_mode": "google_play",                                # Nền tảng: 'google_play' hoặc 'app_store'
+    "semantic_mode": "electric_gun",
+
+    # =========================================================================
+    # 2. MARKET LANGUAGE POLICY (Chính sách ngôn ngữ)
+    # =========================================================================
+    "market_language_policy": {
+        "enabled": True,
+        "required": True,
+        "primary_languages": ["en"],              # Ngôn ngữ chính được phép xuất hiện trong Top 25 Core
+        "secondary_languages": ["es", "es-MX"],   # Ngôn ngữ phụ (VD: Tiếng Tây Ban Nha ở thị trường Mỹ), đưa vào Consider
+        "optional_secondary_languages": [],
+
+        "primary_language_action": "keep",
+        "secondary_language_action": "consider",
+        "optional_secondary_action": "audit_or_consider",
+        "foreign_language_action": "drop_to_audit",
+
+        "allow_secondary_in_top25_core": False,
+        "allow_secondary_in_broad_expansion": False,
+        "secondary_max_quota_in_broad": 0,
+        "secondary_max_quota_in_consider": 3,
+        "allow_secondary_in_feature_file": False,
+        "allow_secondary_in_style_file": False,
+
+        "mixed_language_action": "manual_review",
+        "unknown_language_action": "manual_review_if_high_score"
+    },
+
+    # =========================================================================
+    # 3. PHÂN NHÓM TỪ KHÓA NGỮ NGHĨA (SEMANTIC GROUPS)
+    # =========================================================================
+    "agentic_keyword_classifier": {
+        "enabled": True,
+        "provider": "antigravity_subagent",
+        "model": "subagent-cache-v1",
+        "cache_only": True,
+        "batch_size": 200,
+        "prompt_version": "agentic-keyword-classifier-v1",
+        "fail_on_api_error": True,
+        "min_confidence": 0.55,
+        "cache_path": ".cache/agentic_keyword_analysis.sqlite3",
+        "pre_filter": {
+            "enabled": True,
+            "duplicate_strategy": "canonical_reuse",
+            "preserve_if_matches_intent": True,
+            "allow_possible_truncated_to_ai": True,
+            "skip_rules": [
+                "empty_keyword",
+                "duplicate_keyword",
+                "competitor_brand",
+                "typo_blacklist",
+                "truncated_keyword",
+                "irrelevant_intent",
+                "noise_only",
+                "platform_affiliation",
+                "platform_only"
+            ]
+        }
+    },
+
+    "intent_core_terms": [
+        # Các từ khóa cốt lõi thể hiện ý định tìm kiếm chính của ứng dụng
+        "electric stun gun", "stun gun simulator", "taser simulator", "taser prank",
+        "electric stun gun simulator", "stun gun", "taser", "shock gun", "shock gun prank",
+        "electric taser", "shock taser", "stun gun prank", "taser stun gun", "taser gun",
+        "electric shocker", "shocker prank", "electric shock prank", "stun simulator",
+        "taser zapper", "electric zap", "shock simulator", "stun gun sound", "taser sound"
+    ],
+
+    "feature_terms": [
+        # Các từ khóa mô tả tính năng / chức năng cụ thể của ứng dụng
+        "flashlight strobe", "flashlight flash", "strobe light", "camera flash", "camera stun gun",
+        "vibration shock", "vibrate taser", "electric shock sounds", "stun gun sounds",
+        "spark sounds", "lightning sparks", "electric arc", "hair clipper prank", "haircut prank",
+        "hair clipper sounds", "laser gun simulator", "laser gun sounds", "time bomb prank",
+        "screaming sound", "scary pranks", "prank sounds", "shock effects", "gun soundboard"
+    ],
+
+    "style_terms": [
+        # Các từ khóa mô tả phong cách, giao diện, IP hoặc theme thẩm mỹ
+        # LƯU Ý: style_terms chỉ được phân bổ vào Full Description, không dùng ở Title/Subtitle để tránh vi phạm IP
+        "funny", "joke", "jokes", "troll", "trolls", "crazy", "silly", "hilarious",
+        "realistic simulator", "virtual stun gun", "prankster", "fake taser", "prank app",
+        "funny jokes", "troll friends", "shock game", "3d simulator"
+    ],
+
+    "visual_terms": [
+        # Các từ khóa mô tả giao diện phụ trợ, hiệu ứng hình ảnh
+        "skin", "skins", "gun skins", "taser skins", "lightning effect", "led flash",
+        "color themes", "sparks animation", "camera feed", "live camera background"
+    ],
+
+    # =========================================================================
+    # 4. BỘ LỌC VÀ DANH SÁCH ĐEN (FILTERS & BLACKLIST)
+    # =========================================================================
+    "competitor_brands": [
+        # Tên các đối thủ cạnh tranh nổi tiếng. Keyword chứa các từ này sẽ bị cấm dùng trong metadata chính
+        "dmitsoft", "strategimws", "smart utilities", "smart utilities hub"
+    ],
+
+    "noise_terms": [
+        # Các từ khóa chung chung, generic quá rộng không mang ý định tìm app cụ thể
+        "app", "apps", "free", "download", "android", "for android", "new", "best", "top"
+    ],
+
+    "typo_blacklist": [
+        # Các từ khóa gõ sai chính tả phổ biến hoặc các từ khóa vô nghĩa thu được từ auto-suggest
+        "tazer", "taser simulator free", "tasser", "teser", "stugun", "tasor", "taser prank sound"
+    ],
+
+    "irrelevant_intent_terms": [
+        # Từ khóa thuộc danh mục khác, hoàn toàn không liên quan đến ứng dụng của bạn
+        "widget", "widgets", "launcher", "theme launcher", "calculator", "photo editor",
+        "photo frame", "vpn", "wallpapers", "keyboard theme"
+    ],
+
+    "risky_ip_terms": [
+        # Từ khóa chứa IP hoặc bản quyền nhạy cảm cần hạn chế
+        "brandname"
+    ],
+
+    "risky_platform_terms": ["iphone", "ios", "ipad", "apple", "android", "tiktok", "snapchat", "instagram"],
+    "ambiguous_brand_terms": [],
+    "platform_affiliation_terms": ["official tiktok", "official snapchat", "official instagram"],
+    "truncation_policy": {
+        "enabled": True,
+        "min_prefix_length": 2,
+        "allowed_partial_terms": [],
+        "protect_complete_tokens": True,
+        "ignore_inflection_prefix": True,
+        "low_confidence_action": "manual_review",
+        "dangling_action": "manual_review"
+    },
+
+    # =========================================================================
+    # 5. RISK HANDLING & PRECEDENCE (Chính sách rủi ro & Thứ tự ưu tiên)
+    # =========================================================================
+    "risk_policy": {
+        "competitor_brand_action": "drop",
+        "ambiguous_brand_action": "consider",
+        "risky_ip_action": "consider",
+        "platform_context_action": "consider",
+        "platform_only_action": "drop",
+        "platform_affiliation_action": "drop",
+        "style_only_action": "reserve",
+        "core_intent_override": True  # Nếu chứa core intent mạnh, không tự động loại khi dính lỗi nhẹ
+    },
+
+    # =========================================================================
+    # 6. KEYWORD QUOTA (Hạn ngạch phân bổ từ khóa)
+    # =========================================================================
+    "keyword_quota": {
+        "main_file": {
+            "core_intent": 25,       # Số lượng keyword core chính (Top 25)
+            "core_feature": 5,       # Số lượng keyword feature (Top 5)
+            "broad_expansion": 5,    # Số lượng keyword mở rộng rộng hơn (Top 5)
+            "consider": 5,           # Số lượng keyword đưa vào danh sách Consider
+        },
+        "feature_file": {
+            "max_keywords": 30,
+            "core_feature": 20,
+            "feature_expansion": 5,
+            "feature_test": 5
+        },
+        "style_file": {
+            "max_keywords": 30,
+            "intent_linked_style": 15,
+            "broad_style": 10,
+            "platform_style_consider": 5
+        },
+        "fallback_policy": {
+            "allow_under_quota": True,
+            "fill_from_next_best_eligible_bucket": True,
+            "do_not_force_weak_keywords": True,
+            "min_relevancy_for_fill": 0.45,
+            "add_fill_reason_column": True
+        }
+    },
+
+    # =========================================================================
+    # 7. LANGUAGE NATURALNESS (Độ tự nhiên ngôn ngữ)
+    # =========================================================================
+    "language_naturalness": {
+        "enabled": True,
+        "penalty_unnatural": -0.35,      # Điểm phạt khi cụm từ kém tự nhiên
+        "auto_drop_score_below": 0.15,   # Tự động loại nếu điểm Relevancy sau phạt dưới mức này
+        "rules": {
+            "grammar_violation": {
+                "patterns": [
+                    r"\b(app app|widget widget|theme theme)\b",
+                    r"\b(what is|how to|why do|when is|where is)\b"
+                ],
+                "flag": "UNNATURAL"
+            },
+            "redundancy": {
+                "max_word_repeat_ratio": 0.5,
+                "flag": "STUFFING"
+            },
+            "length_anomaly": {
+                "max_natural_words": 6,
+                "exception_if_contains_core": True,
+                "flag": "TOO_LONG"
+            },
+            "cross_language_bleed": {
+                "note": "Chỉ dùng để loại bỏ ngôn ngữ lạ, không flag nhầm secondary language",
+                "forbidden_foreign_in_market": {},
+                "flag": "LANGUAGE_BLEED"
+            }
+        }
+    },
+
+    # =========================================================================
+    # 8. SCORING WEIGHTS (Trọng số Relevancy & Balanced Score)
+    # =========================================================================
+    "relevancy_weights": {
+        "base": 0.30,
+        "intent_core": 0.40,
+        "feature_specific": 0.15,
+        "style_theme": 0.10,
+        "visual_extra": 0.05,
+        "penalty_competitor": -0.25,
+        "penalty_noise": -0.20,
+        "penalty_language_mismatch": -0.35,
+        "penalty_unnatural": -0.35
+    },
+
+    "balanced_weights": {
+        "VolumeN": 0.35,          # Trọng số điểm Volume (Lượng tìm kiếm)
+        "DifficultyN": 0.10,      # Trọng số điểm Difficulty (Độ cạnh tranh - càng thấp điểm càng cao)
+        "KEIN": 0.10,             # Trọng số điểm KEI (Hiệu quả từ khóa)
+        "RelevancyScore": 0.25,   # Trọng số điểm liên quan (Relevancy - Quan trọng nhất)
+        "CurrentRankN": 0.10,     # Trọng số điểm thứ hạng hiện tại của app
+        "ExpansionValue": 0.10    # Trọng số điểm mở rộng semantic
+    },
+
+    "scoring_normalization": {
+        "volume": "maximum_reach_or_exponential_search_popularity",
+        "difficulty": "inverse_0_100",
+        "kei": "log_minmax",
+        "rank": "tiered_rank_score",
+        "unranked_rank_score": 0.0
+    },
+
+    "volume_score_policy": {
+        "search_popularity_floor": 5.0,
+        "search_popularity_ceiling": 100.0,
+        "exponential_curve_factor": 4.0,
+        "current_volume_weight": 0.85,
+        "historical_max_volume_weight": 0.15,
+        "low_tier_threshold": 5.0,
+        "low_tier_score_cap": 0.05,
+        "exclude_low_tier_from_metadata_shortlist": False,
+        "max_low_tier_consider_keywords": 999
+    },
+
+    # =========================================================================
+    # 9. METADATA SLOTS & OUTPUT (Phân bổ & Định dạng đầu ra)
+    # =========================================================================
+    "metadata_slots": {
+        "google_play": {
+            "Title": 2,
+            "Short Description": 7,
+            "Full Description": 21
+        },
+        "app_store": {
+            "Title": 2,
+            "Subtitle": 5,
+            "Keyword Field": 15,
+            "Promotional Text": 5
+        }
+    },
+
+    "max_word_overlap": 0.5,  # Tỷ lệ trùng lặp từ tối đa giữa các keyword trong Top N (tránh lặp ý)
+    "dedup_policy": {
+        "auto_merge_token_bag": False,
+        "review_overlap_threshold": 0.80,
+        "accent_fold_auto_merge_locales": [],
+        "enable_review_log": True,
+    },
+    "output_prefix": "ASO_Keyword_Planner",
+    "output_mode": "excel_workbook",
+    "output_workbook": {
+        "enabled": True,
+        "filename_pattern": "ASO_Keyword_Planner_{app_name}_{market}.xlsx",
+        "export_csv_package": False,
+        "export_markdown_report": False,
+        "include_all_candidates_sheet": True,
+        "include_optional_audit_sheets": True,
+        "freeze_header_rows": True,
+        "enable_filters": True,
+        "format_as_tables": True,
+        "wrap_text_columns": ["Keyword", "Reason", "DecisionReason", "LanguageReason", "FillReason"],
+        "required_sheets": [
+            "00_README_CONFIG",
+            "01_Main_Keyword_Shortlist",
+            "02_Feature_Keywords",
+            "03_Style_Keywords",
+            "04_Dropped_Audit",
+            "05_Report_Summary",
+            "06_All_Candidates",
+            "13_Top_By_Volume"
+        ],
+        "optional_sheets": [
+            "07_Language_Mismatch",
+            "08_Generic_Style_Reserve",
+            "09_Manual_Review",
+            "10_Top_By_Score",
+            "11_Secondary_Language"
+        ]
+    },
+
+    # =========================================================================
+    # 10. USER OVERRIDES (Ghi đè thủ công từ User)
+    # =========================================================================
+    "user_overrides": {
+        "do_not_auto_drop_terms": [],
+        "force_consider_terms": [],
+        "force_drop_terms": [],
+        "force_top30_terms": [],
+        "notes": []
+    }
+}

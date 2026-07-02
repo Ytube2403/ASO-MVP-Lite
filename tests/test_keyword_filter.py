@@ -142,6 +142,76 @@ class KeywordFilterTests(unittest.TestCase):
         self.assertEqual(keyword_filter.classify_keyword(row("iphone"), BASE_CONFIG)[1], "platform_only")
         self.assertEqual(keyword_filter.classify_keyword(row("iphone prank"), BASE_CONFIG)[1], "platform_style_risk")
 
+    def test_core_declared_risk_override_requires_whole_word_match(self):
+        # "nintendo" is declared whole-word inside the app's own core-intent phrase,
+        # so a keyword hitting risky_platform_terms via "nintendo" should be rescued.
+        rescued_config = dict(
+            BASE_CONFIG,
+            intent_core_terms=["nintendo ds emulator"],
+            risky_platform_terms=["nintendo"],
+        )
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("nintendo ds emulator"), rescued_config)[1],
+            "platform_risk_core_override",
+        )
+
+        # "cod" is only an accidental substring of "decode xyz" (a core term), not a
+        # whole-word declaration -- must NOT be rescued from its risky_ip Drop.
+        substring_config = dict(
+            BASE_CONFIG,
+            intent_core_terms=["decode xyz"],
+            risky_ip_terms=["cod"],
+        )
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("cod emulator"), substring_config)[1],
+            "risky_ip",
+        )
+
+    def test_declared_safe_term_does_not_leak_across_risk_lists(self):
+        # "nintendo" is declared safe (in feature_terms) and sits in
+        # risky_platform_terms. "mario" sits in risky_ip_terms and is NOT declared
+        # anywhere. A keyword whose EN gloss mentions "nintendo" only as incidental
+        # context ("Super Mario (Nintendo franchise)") must still Drop for risky_ip --
+        # the declared-safe "nintendo" must not rescue the unrelated "mario" hit.
+        config = dict(
+            BASE_CONFIG,
+            feature_terms=["nintendo"],
+            risky_ip_terms=["mario"],
+            risky_platform_terms=["nintendo"],
+        )
+        self.assertEqual(
+            keyword_filter.classify_keyword(
+                row("super mario", EN="Super Mario (Nintendo franchise)"), config
+            )[1],
+            "risky_ip",
+        )
+        # But a keyword actually about the declared-safe platform still gets rescued.
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("nintendo emulator"), config)[1],
+            "platform_risk_core_override",
+        )
+
+    def test_risk_flags_override_ai_classification(self):
+        config = dict(
+            BASE_CONFIG,
+            agentic_keyword_classifier={"min_confidence": 0.55},
+        )
+        ai_core_fields = {
+            "AISemanticBucket": "Core Intent Final",
+            "AIDecisionRule": "agentic_core_intent",
+            "AIReason": "Agentic classifier thinks this is core.",
+            "AIConfidence": 0.99,
+        }
+
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("pokemon prank", **ai_core_fields), config)[1],
+            "risky_ip",
+        )
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("official tiktok prank", **ai_core_fields), config)[1],
+            "platform_affiliation",
+        )
+
     def test_conservative_truncation_detection(self):
         self.assertTrue(keyword_filter.is_truncated_keyword(row("prank so"), BASE_CONFIG))
         self.assertTrue(keyword_filter.is_truncated_keyword(row("prank sou"), BASE_CONFIG))

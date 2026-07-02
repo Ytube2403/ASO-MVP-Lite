@@ -70,18 +70,18 @@ python run_aso_filter.py --csv C:\duong-dan-den\PrankSounds_US_EN.csv
 python run_aso_filter.py --csv C:\duong-dan-den\Pranky_PH_FIL.csv --interactive
 ```
 
-Kết quả sẽ được xuất thành một file Excel duy nhất chứa đầy đủ báo cáo, shortlist Top 30, danh sách Consider, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.
+Kết quả sẽ được xuất thành một file Excel duy nhất chứa đầy đủ báo cáo, shortlist `target 40 utility + diversity`, sheet `13_Top_By_Volume`, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.
 
 ---
 
-## Shared platform logic v4.1
+## Shared platform logic v4.5
 
 Pipeline hiện sử dụng các module chung trong `ASO-MVP-Lite/shared/`:
 
 - `shared/language_detector.py`: detect ngôn ngữ theo market policy và phân nhóm `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache và version.
 - `shared/text_dedup.py`: dedup Unicode indexed `NFKC` + `casefold()`, stemming theo locale, và ghi `MergedVariants` cho main shortlist.
-- `shared/translation_service.py`: dịch EN với SQLite WAL cache, retry, global rate limit và TLS verification.
+- `shared/en_gloss_resolver.py`: resolve EN từ CSV hoặc `AIEnglishGloss` đã được nạp bằng agentic cache.
 - `shared/profile_service.py`: ưu tiên tuyệt đối `App_Profile.json`, generated cache atomic và stale fallback.
 - `shared/project_memory.py`: tạo setup overview cho Tracker tab `Setup`, sheet `00_Project_Memory` và `PROJECT_MEMORY.md`.
 
@@ -93,8 +93,8 @@ Quy tắc cần nhớ:
 - `SECONDARY` mặc định giữ ở `Consider Keywords`; raw keyword khớp chính xác `intent_core_terms` vẫn giữ vai trò Core.
 - Naturalness không hard-drop non-Latin/script khác bằng `LANGUAGE_BLEED`; ngôn ngữ do language detector xử lý.
 - Selection cache chỉ được dùng lại khi metadata `app_id`, market, input hash, config hash và engine version khớp run hiện tại.
-- Low-volume keyword co the vao shortlist/Consider khi config v4.1 dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.
-- Truncation v4.1 bao ve complete token va singular/plural: `prank sound`, `hair clipper prank`, `battery icon`, `emoji` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.
+- Low-volume keyword co the vao shortlist/Consider khi config v4.5 dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.
+- Truncation v4.5 bao ve complete token va singular/plural: `prank sound`, `hair clipper prank`, `battery icon`, `emoji` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.
 - Hoan vi thu tu tu duoc giu nhu keyword doc lap khi `auto_merge_token_bag=False`.
 - Dedup chỉ áp dụng cho `01_Main_Keyword_Shortlist`. Các sheet âm thanh chỉ sort theo ưu tiên thông thường.
 - Accent-fold và keyword chỉ gần giống được giữ như keyword độc lập; không còn `ReviewVariants`.

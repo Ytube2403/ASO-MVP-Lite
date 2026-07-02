@@ -20,19 +20,30 @@ from .hard_filters import (
     is_typo_keyword,
 )
 from .matcher import has_any_term, has_term, normalize_filter_text, tokenize
+from .report_export import write_quality_log_sheet
 from .runtime import FilterRuntime, build_filter_runtime
 from .scoring import (
+    DEFAULT_RELEVANCY_STACKING_POLICY,
     DEFAULT_VOLUME_SCORE_POLICY,
     calculate_expansion,
     calculate_relevancy,
     calculate_volume_score,
     check_naturalness,
+    dampen_stacked_relevancy,
     get_language_bonus,
     has_core_intent,
     has_feature_intent,
     has_style_intent,
     is_low_volume_tier,
     is_shortlist_volume_eligible,
+    safe_reach_ceiling,
+)
+from .shortlist import (
+    NOT_SELECTED_LOG_COLUMNS,
+    QUALITY_LOG_COLUMNS,
+    MainKeywordShortlistBuilder,
+    MainShortlistResult,
+    build_main_keyword_shortlist,
 )
 from .validator import FilterConfigError, validate_filter_config
 from .version import FILTER_LOGIC_VERSION
@@ -40,21 +51,28 @@ from .version import FILTER_LOGIC_VERSION
 
 __all__ = [
     "DEFAULT_NOISE_TERMS",
+    "DEFAULT_RELEVANCY_STACKING_POLICY",
     "DEFAULT_VOLUME_SCORE_POLICY",
     "FILTER_LOGIC_VERSION",
     "FilterConfigError",
     "FilterRuntime",
     "HARD_FILTER_COLUMNS",
+    "MainKeywordShortlistBuilder",
+    "MainShortlistResult",
+    "NOT_SELECTED_LOG_COLUMNS",
+    "QUALITY_LOG_COLUMNS",
     "apply_user_overrides",
     "atomic_write_json",
     "build_selection_cache_meta",
     "build_filter_runtime",
+    "build_main_keyword_shortlist",
     "calculate_expansion",
     "calculate_relevancy",
     "calculate_volume_score",
     "check_naturalness",
     "classify_keyword",
     "config_hash",
+    "dampen_stacked_relevancy",
     "evaluate_hard_filters",
     "file_md5",
     "get_language_bonus",
@@ -72,9 +90,11 @@ __all__ = [
     "is_truncated_keyword",
     "is_typo_keyword",
     "normalize_filter_text",
+    "safe_reach_ceiling",
     "selection_cache_path",
     "tokenize",
     "unwrap_selection_payload",
     "validate_filter_config",
     "wrap_selection_payload",
+    "write_quality_log_sheet",
 ]

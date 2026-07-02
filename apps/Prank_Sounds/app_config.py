@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ASO Keyword Planner - App Configuration File for Pranky
-Version: 4.1
+Version: 4.5
 Purpose: Configuration file for deploying ASO Keyword Planner on Pranky (Prank Sounds: Haircut & Taser).
 """
 
@@ -46,20 +46,16 @@ APP_CONFIG = {
     # =========================================================================
     # 3. PHÂN NHÓM TỪ KHÓA NGỮ NGHĨA (SEMANTIC GROUPS)
     # =========================================================================
-    "ai_keyword_classifier": {
+    "agentic_keyword_classifier": {
         "enabled": True,
-        "provider": "deepseek",
-        "model": "deepseek-v4-flash",
-        "batch_size": 50,
-        "requests_per_second": 2.0,
-        "requests_per_second_per_key": 1.0,
-        "max_workers": 2,
-        "key_strategy": "round_robin",
-        "failover_on_key_error": True,
-        "prompt_version": "aso-keyword-classifier-v1",
+        "provider": "antigravity_subagent",
+        "model": "subagent-cache-v1",
+        "cache_only": True,
+        "batch_size": 200,
+        "prompt_version": "agentic-keyword-classifier-v1",
         "fail_on_api_error": True,
         "min_confidence": 0.55,
-        "cache_path": ".cache/ai_keyword_analysis.sqlite3",
+        "cache_path": ".cache/agentic_keyword_analysis.sqlite3",
         "pre_filter": {
             "enabled": True,
             "duplicate_strategy": "canonical_reuse",
@@ -187,8 +183,9 @@ APP_CONFIG = {
     "keyword_quota": {
         "main_file": {
             "core_intent": 25,       # Số lượng keyword core chính (Top 25)
+            "core_feature": 5,
             "broad_expansion": 5,    # Số lượng keyword mở rộng rộng hơn (Top 5)
-            "consider": 10,          # Số lượng keyword đưa vào danh sách Consider
+            "consider": 5,           # Số lượng keyword đưa vào danh sách Consider
         },
         "feature_file": {
             "max_keywords": 30,

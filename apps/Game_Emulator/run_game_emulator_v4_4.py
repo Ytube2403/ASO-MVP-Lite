@@ -1,4 +1,4 @@
-import pandas as pd
+﻿import pandas as pd
 import numpy as np
 import re
 import os
@@ -20,16 +20,17 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 _SHARED_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if _SHARED_ROOT not in sys.path:
     sys.path.insert(0, _SHARED_ROOT)
+from shared import effective_config as _shared_effective_config
 from shared import text_dedup as _shared_text_dedup
 from shared import profile_service as _shared_profile_service
 from shared import project_memory as _shared_project_memory
-from shared import translation_service as _shared_translation_service
-from shared import ai_keyword_classifier as _shared_ai_keyword_classifier
+from shared import en_gloss_resolver as _shared_en_gloss_resolver
+from shared import agentic_keyword_classifier as _shared_ai_keyword_classifier
 from shared.paths import COUNTRY_LANGUAGE_MAP_PATH, DOCS_DIR
 
 # Parse arguments
 parser = argparse.ArgumentParser(description="ASO Keyword Planner for Game Emulator")
-parser.add_argument("--csv", type=str, default=None, help="Path to input CSV")
+parser.add_argument("--csv", type=str, required=True, help="Path to input CSV")
 parser.add_argument("--market", type=str, default="US_EN", help="Market code (e.g. US_EN)")
 parser.add_argument("--output", type=str, default="", help="Path to output Excel file")
 parser.add_argument("--interactive", action="store_true", help="Run interactive Web UI selector")
@@ -57,20 +58,16 @@ config = {
         "accent_fold_auto_merge_locales": [],
         "enable_review_log": True,
     },
-    "ai_keyword_classifier": {
+    "agentic_keyword_classifier": {
         "enabled": True,
-        "provider": "deepseek",
-        "model": "deepseek-v4-flash",
-        "batch_size": 50,
-        "requests_per_second": 2.0,
-        "requests_per_second_per_key": 1.0,
-        "max_workers": 2,
-        "key_strategy": "round_robin",
-        "failover_on_key_error": True,
-        "prompt_version": "aso-keyword-classifier-v1",
+        "provider": "antigravity_subagent",
+        "model": "subagent-cache-v1",
+        "cache_only": True,
+        "batch_size": 200,
+        "prompt_version": "agentic-keyword-classifier-v1",
         "fail_on_api_error": True,
         "min_confidence": 0.55,
-        "cache_path": ".cache/ai_keyword_analysis.sqlite3",
+        "cache_path": ".cache/agentic_keyword_analysis.sqlite3",
         "pre_filter": {
             "enabled": True,
             "duplicate_strategy": "canonical_reuse",
@@ -288,7 +285,10 @@ config = {
         "ios", "iphone", "apple", "os 17", "os 18", "os17", "os18", "ipad"
     ],
 
-    "risky_ip_terms": ["pokemon", "mario", "zelda", "nintendo", "playstation"],
+    # Trademark platform/console-maker names (nintendo, playstation, ...) live in
+    # risky_platform_terms (see FILTER_POLICY in app_config.py) -- they're functional
+    # emulator vocabulary, not specific copyrighted game titles.
+    "risky_ip_terms": ["pokemon", "mario", "zelda"],
     "ambiguous_brand_terms": ["dolphin", "delta", "play"],
     "platform_affiliation_terms": [],
     "truncation_policy": {
@@ -327,7 +327,7 @@ config = {
 }
 
 from app_config import FILTER_POLICY
-config.update(FILTER_POLICY)
+config = _shared_effective_config.deep_merge_config(config, FILTER_POLICY)
 
 # --- Shared Google Play profile service ---
 # Build or load App Profile using seed query 'Game Emulator'
@@ -756,22 +756,19 @@ ai_language_frame = _shared_ai_keyword_classifier.analyze_dataframe(
     df,
     config,
     app_profile=app_profile,
-    cache_path=os.path.join(_SHARED_ROOT, ".cache", "ai_keyword_analysis.sqlite3"),
+    cache_path=os.path.join(_SHARED_ROOT, ".cache", "agentic_keyword_analysis.sqlite3"),
     market=config.get("market", ""),
     english_vocab=english_vocab,
 )
 for column in _shared_ai_keyword_classifier.OUTPUT_COLUMNS:
     df[column] = ai_language_frame[column]
 
-# Translate non-English keywords to English
-print("[Step 2.5] Translating non-English keywords to English...")
+# Resolve English gloss from CSV or agentic cache
+print("[Step 2.5] Resolving English gloss from CSV or agentic cache...")
 provided_en = df_raw['EN'].fillna('').astype(str) if 'EN' in df_raw.columns else pd.Series("", index=df.index)
 provided_en = provided_en.where(provided_en.str.strip() != "", df['AIEnglishGloss'].fillna('').astype(str))
-translation_frame = _shared_translation_service.translate_dataframe(
-    df, provided_en=provided_en, cache_path=os.path.join(_SHARED_ROOT, ".cache", "translations.sqlite3"),
-    market=config.get("market", ""),
-)
-df[['EN', 'TranslationStatus', 'TranslationError']] = translation_frame
+gloss_frame = _shared_en_gloss_resolver.resolve_dataframe(df, provided_en=provided_en)
+df[['EN', 'TranslationStatus', 'TranslationError']] = gloss_frame
 
 from shared import keyword_filter as _shared_keyword_filter
 
@@ -945,9 +942,17 @@ if 'RelevancyScore' in df_raw.columns:
 else:
     df['RelevancyScore'] = df.apply(lambda r: _shared_keyword_filter.calculate_relevancy(r, config), axis=1)
 
+# Dampen relevancy stacking for keyword-stuffed long-tail phrases with weak real demand
+# (shared/keyword_filter/scoring.py::dampen_stacked_relevancy -- see its docstring).
+df['RelevancyScore'] = df.apply(lambda r: _shared_keyword_filter.dampen_stacked_relevancy(r, config), axis=1)
+df['RelevancyScore'] = df['RelevancyScore'].clip(0.0, 1.0)
+
 # Normalization & Balanced Score
 print("[Step 6] Balanced Score Normalization...")
-max_reach = df['MaximumReach'].max()
+# Reach ceiling excludes competitor/irrelevant outliers (e.g. a blocked brand term with
+# a huge MaximumReach) so it doesn't crush VolumeN to ~0 for every legitimate keyword
+# (shared/keyword_filter/scoring.py::safe_reach_ceiling -- see its docstring).
+max_reach = _shared_keyword_filter.safe_reach_ceiling(df, config)
 max_kei = df['KEI'].max()
 
 df['VolumeN'] = df.apply(
@@ -1016,16 +1021,7 @@ def get_language_bonus(row):
         return 0.01
     return 0.0
 
-df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
-
-# Apply low volume penalty (Volume <= 5)
-def apply_volume_penalty(row):
-    score = row['BalancedScore']
-    if float(row['Volume']) <= 5.0:
-        score -= 0.15
-    return max(0.0, score)
-
-df['BalancedScore'] = df.apply(apply_volume_penalty, axis=1).round(4)
+df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).clip(0.0, 1.0).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)
 
 # Bucket classification (Game Emulator Mode)
@@ -1097,203 +1093,12 @@ df[['Bucket', 'DecisionRule', 'Reason']] = df.apply(override_row, axis=1)
 
 # Shortlist building & duplicate checking
 print("[Step 8] Main Shortlist Equivalent-Variant Cleanup & Shortlist building...")
-def build_shortlist(df_all, config):
-    eligible_buckets = ['Core Intent Final', 'System Keywords', 'Broad Expansion', 'Game Keywords', 'Consider Keywords']
-    df_candidates = df_all[df_all['Bucket'].isin(eligible_buckets)]
-    df_sorted, dedup_log = _shared_text_dedup.prepare_dataframe(df_candidates, '01_Main_Keyword_Shortlist', config)
-    df_sorted = df_sorted.sort_values(by=['BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'], ascending=[False, True, False, True]).copy()
-    selected_core, selected_broad, selected_consider = [], [], []
-    main_quota = (config.get('keyword_quota', {}) or {}).get('main_file', {}) or {}
-    consider_quota = int(main_quota.get('consider', 10) or 10)
-    selected_normalized, selected_tokens = set(), set()
-
-    def volume_eligible(row, section):
-        low_tier_count = sum(_shared_keyword_filter.is_low_volume_tier(item, config) for item in selected_consider)
-        return _shared_keyword_filter.is_shortlist_volume_eligible(row, section, low_tier_count, config)
-
-    def check_duplicate(kw, original_bucket):
-        norm = normalize_text(kw)
-        tokens = " ".join(sorted(norm.split()))
-        if not norm:
-            return True, "Empty normalized keyword", ""
-        if norm in selected_normalized:
-            all_selected = selected_core + selected_broad + selected_consider
-            kept_kw = ""
-            for item in all_selected:
-                if normalize_text(item['Keyword']) == norm:
-                    kept_kw = item['Keyword']
-                    break
-            return True, f"Exact normalized duplicate of '{kept_kw}'", kept_kw
-        if tokens in selected_tokens:
-            all_selected = selected_core + selected_broad + selected_consider
-            kept_kw = ""
-            for item in all_selected:
-                t = " ".join(sorted(normalize_text(item['Keyword']).split()))
-                if t == tokens:
-                    kept_kw = item['Keyword']
-                    break
-            return True, f"Same normalized token set as '{kept_kw}'", kept_kw
-        return False, "", ""
-
-    def add_to_shortlist(item, section):
-        norm = normalize_text(item['Keyword'])
-        tokens = " ".join(sorted(norm.split()))
-        selected_normalized.add(norm)
-        selected_tokens.add(tokens)
-        entry = item.to_dict()
-        entry['Section'] = item['Bucket']
-        entry['QuotaStatus'] = 'EXACT'
-        entry['FillSource'] = ''
-        entry['FillReason'] = ''
-        return entry
-
-    # Core (Quota: 25)
-    core_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]
-    for _, row in core_candidates.iterrows():
-        if len(selected_core) >= 25:
-            break
-        if not volume_eligible(row, 'Core Intent Final'):
-            continue
-        is_dup, reason, kept_kw = check_duplicate(row['Keyword'], 'Core Intent Final')
-        if is_dup:
-            dedup_log.append({
-                'Table': '01_Main_Keyword_Shortlist', 'RemovedKeyword': row['Keyword'],
-                'OriginalSection': 'Core Intent Final', 'KeptKeyword': kept_kw,
-                'DedupReason': reason, 'BalancedScore': row['BalancedScore'],
-                'Note': 'Keyword remains in All Candidates pool'
-            })
-        else:
-            selected_core.append(add_to_shortlist(row, 'Core Intent Final'))
-
-    # Core Fallback
-    if len(selected_core) < 25:
-        fallback_candidates = df_sorted[df_sorted['Bucket'].isin(['System Keywords', 'Broad Expansion'])]
-        for _, row in fallback_candidates.iterrows():
-            if len(selected_core) >= 25:
-                break
-            if not volume_eligible(row, 'Core Intent Final'):
-                continue
-            norm = normalize_text(row['Keyword'])
-            if norm in selected_normalized:
-                continue
-            if row['RelevancyScore'] < 0.45:
-                continue
-            is_dup, reason, kept_kw = check_duplicate(row['Keyword'], 'Core Intent Final (Fallback)')
-            if is_dup:
-                dedup_log.append({
-                    'Table': '01_Main_Keyword_Shortlist', 'RemovedKeyword': row['Keyword'],
-                    'OriginalSection': 'Core Intent Final (Fallback)', 'KeptKeyword': kept_kw,
-                    'DedupReason': reason, 'BalancedScore': row['BalancedScore'],
-                    'Note': 'Keyword remains in All Candidates pool'
-                })
-            else:
-                entry = add_to_shortlist(row, 'Core Intent Final')
-                entry['QuotaStatus'] = 'FILLED'
-                entry['FillSource'] = row['Bucket']
-                entry['FillReason'] = 'Core Intent Quota Fallback'
-                selected_core.append(entry)
-
-    # Broad (Quota: 5)
-    broad_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]
-    for _, row in broad_candidates.iterrows():
-        if len(selected_broad) >= 5:
-            break
-        if not volume_eligible(row, 'Broad Expansion'):
-            continue
-        is_dup, reason, kept_kw = check_duplicate(row['Keyword'], 'Broad Expansion')
-        if is_dup:
-            dedup_log.append({
-                'Table': '01_Main_Keyword_Shortlist', 'OriginalSection': 'Broad Expansion',
-                'RemovedKeyword': row['Keyword'], 'KeptKeyword': kept_kw,
-                'DedupReason': reason, 'BalancedScore': row['BalancedScore'],
-                'Note': 'Keyword remains in All Candidates pool'
-            })
-        else:
-            selected_broad.append(add_to_shortlist(row, 'Broad Expansion'))
-
-    # Broad Fallback
-    if len(selected_broad) < 5:
-        fallback_candidates = df_sorted[df_sorted['Bucket'].isin(['System Keywords', 'Game Keywords'])]
-        for _, row in fallback_candidates.iterrows():
-            if len(selected_broad) >= 5:
-                break
-            if not volume_eligible(row, 'Broad Expansion'):
-                continue
-            norm = normalize_text(row['Keyword'])
-            if norm in selected_normalized:
-                continue
-            if row['RelevancyScore'] < 0.45:
-                continue
-            is_dup, reason, kept_kw = check_duplicate(row['Keyword'], 'Broad Expansion (Fallback)')
-            if is_dup:
-                dedup_log.append({
-                    'Table': '01_Main_Keyword_Shortlist', 'RemovedKeyword': row['Keyword'],
-                    'OriginalSection': 'Broad Expansion (Fallback)', 'KeptKeyword': kept_kw,
-                    'DedupReason': reason, 'BalancedScore': row['BalancedScore'],
-                    'Note': 'Keyword remains in All Candidates pool'
-                })
-            else:
-                entry = add_to_shortlist(row, 'Broad Expansion')
-                entry['QuotaStatus'] = 'FILLED'
-                entry['FillSource'] = row['Bucket']
-                entry['FillReason'] = 'Broad Expansion Quota Fallback'
-                selected_broad.append(entry)
-
-    # Consider (quality-ranked review pool)
-    consider_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)].copy()
-    consider_sort_cols = [col for col in ['RelevancyScore', 'VolumeN', 'BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'] if col in consider_candidates.columns]
-    consider_ascending = [col in {'Rank_numeric', 'Difficulty'} for col in consider_sort_cols]
-    if consider_sort_cols:
-        consider_candidates = consider_candidates.sort_values(by=consider_sort_cols, ascending=consider_ascending)
-    for _, row in consider_candidates.iterrows():
-        if len(selected_consider) >= consider_quota:
-            break
-        if not volume_eligible(row, 'Consider Keywords'):
-            continue
-        is_dup, reason, kept_kw = check_duplicate(row['Keyword'], 'Consider Keywords')
-        if is_dup:
-            dedup_log.append({
-                'Table': '01_Main_Keyword_Shortlist', 'RemovedKeyword': row['Keyword'],
-                'OriginalSection': 'Consider Keywords', 'KeptKeyword': kept_kw,
-                'DedupReason': reason, 'BalancedScore': row['BalancedScore'],
-                'Note': 'Keyword remains in All Candidates pool'
-            })
-        else:
-            selected_consider.append(add_to_shortlist(row, 'Consider Keywords'))
-
-    # Consider Fallback
-    if len(selected_consider) < consider_quota:
-        selected_kws = {item['Keyword'].lower() for item in selected_core + selected_broad}
-        missed_opps = df_sorted[df_sorted['Bucket'].isin(['Core Intent Final', 'Broad Expansion']) &
-                                (~df_sorted['Keyword'].str.lower().isin(selected_kws))]
-        for _, row in missed_opps.iterrows():
-            if len(selected_consider) >= consider_quota:
-                break
-            if not volume_eligible(row, 'Consider Keywords'):
-                continue
-            norm = normalize_text(row['Keyword'])
-            if norm in selected_normalized:
-                continue
-            if row['RelevancyScore'] < 0.45:
-                continue
-            is_dup, reason, kept_kw = check_duplicate(row['Keyword'], 'Consider Keywords (Fallback)')
-            if is_dup:
-                dedup_log.append({
-                    'Table': '01_Main_Keyword_Shortlist', 'RemovedKeyword': row['Keyword'],
-                    'OriginalSection': 'Consider Keywords (Fallback)', 'KeptKeyword': kept_kw,
-                    'DedupReason': reason, 'BalancedScore': row['BalancedScore'],
-                    'Note': 'Keyword remains in All Candidates pool'
-                })
-            else:
-                entry = add_to_shortlist(row, 'Consider Keywords')
-                entry['QuotaStatus'] = 'FILLED'
-                entry['FillSource'] = row['Bucket']
-                entry['FillReason'] = 'Consider Keywords Quota Fallback (Missed Opportunity)'
-                selected_consider.append(entry)
-
-    return selected_core, selected_broad, selected_consider, dedup_log
-
-selected_core, selected_broad, selected_consider, dedup_log_list = build_shortlist(df, config)
+shortlist_result = _shared_keyword_filter.build_main_keyword_shortlist(df, config)
+selected_core = shortlist_result.core
+selected_core_feature = shortlist_result.feature
+selected_broad = shortlist_result.broad
+selected_consider = shortlist_result.consider
+dedup_log_list = shortlist_result.dedup_log
 
 def build_curated_sheet(df_all, bucket_name, sheet_name):
     df_sorted = df_all[df_all['Bucket'] == bucket_name].sort_values(by=['BalancedScore', 'Rank_numeric', 'KEI', 'Difficulty'], ascending=[False, True, False, True]).head(30)
@@ -1312,6 +1117,7 @@ selected_feature = build_curated_sheet(df, 'System Keywords', '02_System_Keyword
 # Game Keywords (capped <=30, no fallback fill)
 selected_style = build_curated_sheet(df, 'Game Keywords', '03_Game_Keywords')
 df_dedup_log = pd.DataFrame(_shared_text_dedup.normalize_log_entries(dedup_log_list))
+df_not_selected_log = pd.DataFrame(getattr(shortlist_result, "not_selected_log", []))
 
 # Metadata assignment
 print("[Step 9] Metadata slot assignment...")
@@ -1381,6 +1187,7 @@ if confirmed_selection:
                 entry['Section'] = 'Consider Keywords'
                 selected_consider.append(entry)
 
+    selected_core_feature = []
     selected_feature = []
     for kw in user_feature:
         if kw in df_lookup.index:
@@ -1390,7 +1197,12 @@ if confirmed_selection:
             entry = row.to_dict()
             entry['Keyword'] = kw
             entry['Section'] = 'System Keywords'
+            entry['QuotaStatus'] = 'EXACT'
             selected_feature.append(entry)
+            if len(selected_core_feature) < 5:
+                main_entry = dict(entry)
+                main_entry['Section'] = 'Feature Keywords'
+                selected_core_feature.append(main_entry)
 
     selected_style = []
     for kw in user_style:
@@ -1407,7 +1219,10 @@ if confirmed_selection:
     config["short_desc_draft"] = confirmed_selection.get("short_description", "")
     config["full_desc_draft"] = confirmed_selection.get("full_description", "")
 
-all_shortlist = selected_core + selected_broad + selected_consider
+if confirmed_selection:
+    all_shortlist = selected_core + selected_core_feature + selected_broad + selected_consider
+else:
+    all_shortlist = shortlist_result.all_rows
 for idx, entry in enumerate(all_shortlist):
     sec = entry['Section']
     if sec == 'Core Intent Final':
@@ -1417,7 +1232,7 @@ for idx, entry in enumerate(all_shortlist):
             entry['WhereToUse'] = '📱 Short Description'
         else:
             entry['WhereToUse'] = '📄 Full Description'
-    elif sec == 'Broad Expansion':
+    elif sec in ['Feature Keywords', 'Broad Expansion']:
         entry['WhereToUse'] = '📄 Full Description'
     else:
         entry['WhereToUse'] = '🔍 Consider / Research Only'
@@ -1490,9 +1305,9 @@ def style_sheet(ws, title, is_report=False):
 # --- 00_README_CONFIG ---
 ws_readme = wb.create_sheet(title="00_README_CONFIG")
 ws_readme.views.sheetView[0].showGridLines = True
-ws_readme.cell(row=1, column=1, value="ASO Keyword Planner v4.1 - Configuration Summary").font = Font(size=14, bold=True)
+ws_readme.cell(row=1, column=1, value="ASO Keyword Planner v4.5 - Configuration Summary").font = Font(size=14, bold=True)
 configs = [
-    ("Pipeline Version", "ASO Keyword Planner v4.1"),
+    ("Pipeline Version", "ASO Keyword Planner v4.5"),
     ("App Name", config["app_name"]),
     ("App ID", config["app_id"]),
     ("Category", config["category"]),
@@ -1518,7 +1333,7 @@ ws_readme.column_dimensions['B'].width = 80
 
 # --- 01_Main_Keyword_Shortlist ---
 ws_shortlist = wb.create_sheet(title="01_Main_Keyword_Shortlist")
-cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'MergedVariants',
+cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'UtilityScore', 'DiversityPenalty', 'ClusterId', 'ClusterRank', 'SelectionReason', 'MergedVariants',
                   'CompetitorProven', 'ProvenDetails', 'DetectedLanguage', 'LanguageGroup', 'NaturalnessFlag', 'WhereToUse', 'QuotaStatus', 'FillSource', 'FillReason', 'Reason']
 for col_idx, col in enumerate(cols_shortlist, 1):
     ws_shortlist.cell(row=1, column=col_idx, value=col)
@@ -1560,18 +1375,20 @@ style_sheet(ws_dropped, "04_Dropped_Audit")
 # --- 05_Report_Summary ---
 ws_report = wb.create_sheet(title="05_Report_Summary")
 ws_report.views.sheetView[0].showGridLines = True
-ws_report.cell(row=1, column=1, value="ASO Keyword Planner v4.1 - Report Summary").font = Font(size=14, bold=True)
+ws_report.cell(row=1, column=1, value="ASO Keyword Planner v4.5 - Report Summary").font = Font(size=14, bold=True)
 ws_report.cell(row=3, column=1, value="Metric Summary").font = Font(size=12, bold=True)
 metrics = [
     ("Total Raw Keywords", len(df)),
     ("Unique Keywords", df['Keyword'].nunique()),
     ("Dropped Keywords", len(df_dropped)),
     ("Core Intent Selected", len(selected_core)),
+    ("Feature Selected (Main)", len(selected_core_feature)),
     ("Broad Expansion Selected", len(selected_broad)),
     ("Consider Selected", len(selected_consider)),
     ("System Keywords Curated (02)", len(selected_feature)),
     ("Game Keywords Curated (03)", len(selected_style)),
-    ("Main Shortlist Dedup Log Entries (PRUNED)", len(df_dedup_log))
+    ("Main Shortlist Dedup Log Entries (PRUNED)", len(df_dedup_log)),
+    ("Not Selected Audit Entries", len(df_not_selected_log))
 ]
 for idx, (lbl, val) in enumerate(metrics, 4):
     ws_report.cell(row=idx, column=1, value=lbl).font = Font(bold=True)
@@ -1592,7 +1409,7 @@ for idx, (flag, count) in enumerate(nat_counts.items(), 26):
 ws_report.cell(row=3, column=4, value="Sheet Index").font = Font(size=12, bold=True)
 sheets_info = [
     ("00_README_CONFIG", "App configuration parameters and run metadata"),
-    ("01_Main_Keyword_Shortlist", "Top 25 Core + 5 Broad + 10 Consider shortlist for metadata allocation"),
+    ("01_Main_Keyword_Shortlist", "Target 40 utility + diversity shortlist for metadata allocation"),
     ("02_System_Keywords", "Curated system, console, and platform candidates (capped <= 30)"),
     ("03_Game_Keywords", "Curated game title and franchise candidates (capped <= 30, Research Only)"),
     ("04_Dropped_Audit", "Dropped keywords with detailed reasons"),
@@ -1631,7 +1448,7 @@ ws_report.column_dimensions['E'].width = 65
 
 # --- 06_All_Candidates ---
 ws_all = wb.create_sheet(title="06_All_Candidates")
-cols_all = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'RelevancyScore', 'CompetitorProven', 'ProvenDetails', 'Bucket',
+cols_all = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'RelevancyScore', 'CompetitorProven', 'ProvenDetails', 'Bucket', 'DecisionRule',
             'NeedsAI', 'PreAIAction', 'PreAIRule', 'PreAIReason', 'CanonicalKeyword', 'AISemanticBucket', 'AIDecisionRule', 'AIReason', 'AIConfidence', 'AIStatus',
             'DetectedLanguage', 'LanguageGroup', 'NaturalnessFlag', 'Reason', 'HardFilterRule', 'HardFilterTerm', 'HardFilterSource', 'PolicyFlags']
 for col_idx, col in enumerate(cols_all, 1):
@@ -1702,6 +1519,22 @@ if not df_dedup_log.empty:
             ws_dedup.cell(row=row_idx, column=col_idx, value=row.get(col, ''))
 style_sheet(ws_dedup, "12_Text_Dedup_Log")
 
+# --- 14_Not_Selected_Audit ---
+ws_not_selected = wb.create_sheet(title="14_Not_Selected_Audit")
+cols_not_selected = _shared_keyword_filter.NOT_SELECTED_LOG_COLUMNS
+for col_idx, col in enumerate(cols_not_selected, 1):
+    ws_not_selected.cell(row=1, column=col_idx, value=col)
+if not df_not_selected_log.empty:
+    for row_idx, (_, row) in enumerate(df_not_selected_log.iterrows(), 2):
+        for col_idx, col in enumerate(cols_not_selected, 1):
+            ws_not_selected.cell(row=row_idx, column=col_idx, value=row.get(col, ''))
+style_sheet(ws_not_selected, "14_Not_Selected_Audit")
+
+# --- 15_Selector_Quality_Log ---
+# Diversity cap events (CLUSTER_CAP_REACHED) are already visible in 14_Not_Selected_Audit
+# via NotSelectedReason, so this sheet only surfaces selector-level quality warnings
+# (e.g. SAFE_POOL_EXHAUSTED) that previously had no visibility in the exported workbook.
+_shared_keyword_filter.write_quality_log_sheet(wb, shortlist_result, style_sheet)
 # Save
 try:
     memory_path = _shared_project_memory.write_project_memory_markdown(SCRIPT_DIR, project_memory)
@@ -1719,3 +1552,5 @@ except PermissionError:
     print(f"Saving to fallback path: {alt_path}")
     wb.save(alt_path)
     print("Pipeline complete (saved to fallback path)!")
+
+

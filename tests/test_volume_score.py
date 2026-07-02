@@ -2,6 +2,8 @@ import os
 import sys
 import unittest
 
+import pandas as pd
+
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
@@ -43,6 +45,14 @@ class VolumeScoreTests(unittest.TestCase):
         self.assertGreater(high, medium)
         self.assertLess(medium, 0.10)
 
+    def test_maximum_reach_overrides_search_popularity_when_available(self):
+        lower_popularity_with_real_reach = keyword_filter.calculate_volume_score(21, 21, 900, 1000)
+        higher_popularity_with_lower_reach = keyword_filter.calculate_volume_score(90, 90, 100, 1000)
+
+        self.assertEqual(lower_popularity_with_real_reach, 0.9)
+        self.assertEqual(higher_popularity_with_lower_reach, 0.1)
+        self.assertGreater(lower_popularity_with_real_reach, higher_popularity_with_lower_reach)
+
     def test_low_tier_can_fill_metadata_quota_by_default_in_v4_1(self):
         row = {"Volume": 5}
         self.assertTrue(keyword_filter.is_shortlist_volume_eligible(row, "Core Intent Final"))
@@ -63,6 +73,29 @@ class VolumeScoreTests(unittest.TestCase):
         self.assertFalse(keyword_filter.is_shortlist_volume_eligible(row, "Broad Expansion", config=config))
         self.assertTrue(keyword_filter.is_shortlist_volume_eligible(row, "Consider Keywords", 2, config=config))
         self.assertFalse(keyword_filter.is_shortlist_volume_eligible(row, "Consider Keywords", 3, config=config))
+
+    def test_safe_reach_ceiling_excludes_competitor_outlier(self):
+        df = pd.DataFrame([
+            {"MaximumReach": 353967, "is_competitor": True, "is_irrelevant": False},
+            {"MaximumReach": 50, "is_competitor": False, "is_irrelevant": False},
+            {"MaximumReach": 172, "is_competitor": False, "is_irrelevant": False},
+            {"MaximumReach": 14, "is_competitor": False, "is_irrelevant": False},
+        ])
+        ceiling = keyword_filter.safe_reach_ceiling(df)
+        self.assertLess(ceiling, 1000)
+        self.assertGreater(ceiling, 0)
+
+    def test_safe_reach_ceiling_falls_back_when_all_rows_are_unsafe(self):
+        df = pd.DataFrame([
+            {"MaximumReach": 100, "is_competitor": True, "is_irrelevant": False},
+            {"MaximumReach": 200, "is_competitor": True, "is_irrelevant": False},
+        ])
+        ceiling = keyword_filter.safe_reach_ceiling(df)
+        self.assertGreater(ceiling, 0)
+
+    def test_safe_reach_ceiling_handles_missing_columns(self):
+        df = pd.DataFrame([{"Keyword": "x"}])
+        self.assertEqual(keyword_filter.safe_reach_ceiling(df), 0.0)
 
 
 if __name__ == "__main__":

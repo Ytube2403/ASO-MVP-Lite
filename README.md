@@ -1,6 +1,6 @@
-# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.4
+# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.5
 
-Ban Lite dung Google GTX mien phi de giam workload tren may yeu. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
+Ban Lite dung agentic cache do Antigravity subagents nap truoc runtime. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
 
 Can chat luong local va kha nang chay offline sau khi tai model? Dung [ASO-MVP-Max](https://github.com/Ytube2403/ASO-MVP-Max).
 
@@ -11,9 +11,11 @@ ASO-MVP-Lite/
 |-- apps/                         # Workspace rieng cua tung app
 |   |-- AR_Filter/
 |   |-- Control_Widget/
+|   |-- ElectricGun/
 |   |-- Emoji_Battery_Icon_Customize/
 |   |-- FunVid/
 |   |-- Game_Emulator/
+|   |-- NDS_Emulator/
 |   |-- Prank_Sounds/
 |   `-- App_Template/
 |
@@ -23,14 +25,15 @@ ASO-MVP-Lite/
 |   |-- paths.py                  # Nguon path tap trung cho workspace
 |   |-- locale_parser.py
 |   |-- language_detector.py
-|   |-- translation_service.py
+|   |-- agentic_keyword_classifier.py
+|   |-- en_gloss_resolver.py
 |   |-- profile_service.py
 |   |-- project_memory.py          # Snapshot setup cho Dashboard, workbook va handoff MD
 |   `-- text_dedup.py
 |
 |-- tools/                        # Cong cu van hanh
 |   |-- run_aso_batch.py
-|   |-- warm_ai_keyword_cache.py
+|   |-- warm_cache_helper.py
 |   `-- export_master_keywords.py
 |
 |-- tracker/                      # Dashboard Flask va SQLite local
@@ -38,7 +41,7 @@ ASO-MVP-Lite/
 |   `-- static/
 |
 |-- docs/                         # Dac ta, template, guide va tu dien
-|   |-- ASO_Keyword_Planner_v4_4.md
+|   |-- ASO_Keyword_Planner_v4_5.md
 |   |-- SETUP_WINDOWS.md
 |   |-- README_File_Guide.md
 |   `-- english_words_10k.txt
@@ -61,49 +64,30 @@ ASO-MVP-Lite/
 ## Nguyen tac
 
 - Moi app giu `app_config.py`, `App_Profile.json`, `PROJECT_MEMORY.md`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
-- Logic loc, parser locale, dich, profile, project memory va dedup phai dung module trong `shared/`.
-- Truncation logic v4.4 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
-- DeepSeek AI classifier v4.4 giu co che `pre_ai_filter`: duplicate/noise/competitor/typo/irrelevant ro rang duoc skip truoc API, con keyword rong lien quan van duoc gui AI va cache de tai su dung.
-- AI cache miss duoc xu ly theo batch song song co kiem soat, ho tro nhieu API key qua key pool va rate limit rieng tung key.
-- Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
+- Logic loc, parser locale, agentic cache, EN gloss, profile, project memory va dedup phai dung module trong `shared/`.
+- Truncation logic v4.5 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
+- Tat ca app registered dung `agentic_keyword_classifier` cache-only va khong goi AI/translation network trong runner.
+- Cache miss duoc xu ly ngoai runner bang Antigravity subagents qua `tools/warm_cache_helper.py`.
+- Main shortlist v4.5 dung `target 40 utility + diversity`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
 - App `FunVid` da duoc dang ky trong registry voi alias `FunVid`, `Fun_Vid`, `FunnyFaceFilters`, `FunVid_100_Keywords` va `FunVid_AnimalFace`.
+- Moi runner dung flow agentic cache-only: Antigravity subagents ghi intent/language/`english_gloss` vao SQLite truoc, runner chi doc cache va fail-fast neu con miss.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
-## AI keyword classifier v4.4
+## Agentic cache v4.5
 
-Khuyen nghi tao file `.env` tu template va dien key local:
+Ket qua agentic duoc cache tai `.cache/agentic_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus`, `AIEnglishGloss` de biet keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc agentic batch.
 
-```powershell
-Copy-Item .env.example .env
-notepad .env
-```
-
-Noi dung `.env`:
-
-```env
-DEEPSEEK_API_KEY=your_key_here
-DEEPSEEK_API_KEYS=
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_MAX_WORKERS=2
-DEEPSEEK_REQUESTS_PER_SECOND_PER_KEY=1.0
-```
-
-File `.env` da nam trong `.gitignore`, khong commit len repo. Neu co nhieu key, dien vao `DEEPSEEK_API_KEYS` theo dang `key_1,key_2`; neu chi co mot key thi `DEEPSEEK_API_KEY` van hoat dong nhu cu. Neu khong dung `.env`, co the set key tam thoi trong terminal:
+Dung flow chinh thuc cho moi app:
 
 ```powershell
-$env:DEEPSEEK_API_KEY = "your_key_here"
+python tools/warm_cache_helper.py find-misses --app Game_Emulator --csv "apps/Game_Emulator/Input/072026/Game Emulator_MX_ES.csv" --market MX_ES
+python tools/warm_cache_helper.py prepare-batches --misses .cache/game_emulator_mx_es_missing.json
+python tools/warm_cache_helper.py save-results --app Game_Emulator --batch .cache/agentic_batches/mx_es_batch_1.json --results .cache/agentic_batches/mx_es_batch_1_result.json
+python tools/warm_cache_helper.py verify-cache --app Game_Emulator --csv "apps/Game_Emulator/Input/072026/Game Emulator_MX_ES.csv" --market MX_ES
 ```
 
-Ket qua AI duoc cache tai `.cache/ai_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus` de biet keyword nao duoc goi AI, keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc API.
-
-Lam nong cache truoc khi chay pipeline chinh:
-
-```powershell
-python tools/warm_ai_keyword_cache.py --csv apps/AR_Filter/Input/052026/ARFilter_US_EN.csv --app ARFilter
-```
-
-Lenh nay chi chay `pre_ai_filter -> cache lookup -> DeepSeek for cache miss` va luu vao SQLite cache, khong tao workbook. Khi chay pipeline that sau do, cac keyword da xu ly se vao `AI_CACHE_HIT`.
+Co the thay `--csv` bang `--input-dir apps/<App>/Input/<MMYYYY>` de quet nhieu market cung luc. Runner chi doc cache; neu con thieu intent hoac `english_gloss` cho keyword non-English, pipeline fail-fast va in sample miss de nap cache truoc.
 
 ## Cai dat
 
@@ -126,17 +110,11 @@ Kiem tra nhanh:
 python -c "import flask, langdetect, numpy, openpyxl, pandas, snowballstemmer; print('Python environment OK')"
 ```
 
-## Dich keyword
+## English gloss
 
-Pipeline dich keyword moi sang English bang Google GTX. Ban Lite khong can cai model, khong chay translation service rieng va khong chiem RAM nen vi dich local.
+Pipeline khong dich keyword qua network trong runtime. Cot `EN` duoc lay theo thu tu: cot `EN` co san trong CSV, `AIEnglishGloss` tu agentic cache, hoac keyword goc neu keyword la tieng Anh.
 
-GTX la endpoint Google khong chinh thuc, nen can Internet va co the thay doi ma khong bao truoc. Translation cache SQLite giup han che request. Neu GTX loi sau retry, pipeline dung locale dang xu ly de tranh tao workbook thieu ban dich.
-
-Neu muon dich lai toan bo keyword, xoa cache local:
-
-```powershell
-Remove-Item .cache\translations.sqlite3*
-```
+Neu keyword non-English chua co `english_gloss`, runner fail-fast va yeu cau nap cache bang `tools/warm_cache_helper.py` truoc khi chay pipeline.
 
 ## Chay pipeline
 
@@ -175,7 +153,7 @@ Manifest mau:
 python run_aso_batch.py --manifest path\to\manifest.json
 ```
 
-Batch mac dinh toi da `2` locale song song de tranh tao qua nhieu request GTX cung luc tren may yeu.
+Batch mac dinh toi da `2` locale song song de tranh tranh chap CPU/disk tren may yeu.
 
 ## Xuat Master Keywords
 
@@ -194,7 +172,7 @@ python -m compileall -q .
 
 ## Tai lieu
 
-- [Dac ta pipeline v4.4](docs/ASO_Keyword_Planner_v4_4.md)
+- [Dac ta pipeline v4.5](docs/ASO_Keyword_Planner_v4_5.md)
 - [Cai dat Windows day du](docs/SETUP_WINDOWS.md)
 - [Huong dan cac file](docs/README_File_Guide.md)
 - [Template app moi](apps/App_Template/README.md)

@@ -69,7 +69,7 @@ Nếu chạy từ thư mục gốc `ASO-MVP-Lite`, dùng đường dẫn script 
 python apps\App_Template\run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
 ```
 
-Kết quả sẽ tự động được xuất ra cùng thư mục với file CSV đầu vào, trừ khi truyền thêm `--output`. File Excel chứa đầy đủ báo cáo, shortlist `20 Core + 5 Feature + 5 Broad + 10 Consider`, sheet `13_Top_By_Volume`, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.
+Kết quả sẽ tự động được xuất ra cùng thư mục với file CSV đầu vào, trừ khi truyền thêm `--output`. File Excel chứa đầy đủ báo cáo, shortlist `target 40 utility + diversity`, sheet `13_Top_By_Volume`, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.
 
 ---
 
@@ -97,14 +97,14 @@ Dashboard sẽ tự động mở trình duyệt tại `http://127.0.0.1:5100` v�
 
 ---
 
-## Shared platform logic v4.4
+## Shared platform logic v4.5
 
 Template pipeline hien su dung cac module chung trong `ASO-MVP-Lite/shared/`:
 
 - `shared/language_detector.py`: detect ngon ngu theo market policy va phan nhom `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache va version.
 - `shared/text_dedup.py`: dedup Unicode indexed `NFKC` + `casefold()`, stemming theo locale, va ghi `MergedVariants` cho main shortlist.
-- `shared/translation_service.py`: dich EN voi SQLite WAL cache, retry, global rate limit va TLS verification.
+- `shared/en_gloss_resolver.py`: resolve EN tu CSV hoac `AIEnglishGloss` da duoc nap bang agentic cache.
 - `shared/profile_service.py`: doc custom profile uu tien tuyet doi, generated cache atomic va stale fallback.
 - `shared/project_memory.py`: tao setup overview cho Tracker tab `Setup`, sheet `00_Project_Memory` va `PROJECT_MEMORY.md`.
 - `shared/locale_parser.py`: parse locale dung chung cho orchestrator, exporter, tracker va batch runner.
@@ -117,10 +117,10 @@ Quy tac quan trong:
 - `SECONDARY` giu o `Consider Keywords`.
 - Naturalness khong con drop non-Latin/script khac bang `LANGUAGE_BLEED`; ngon ngu do language detector xu ly.
 - Selection cache chi duoc dung lai khi metadata `app_id`, market, input hash, config hash va engine version khop run hien tai.
-- Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; Feature trong main shortlist doc quota rieng voi sheet `02_Filter_Keyword`.
-- Workbook v4.4 co them sheet `13_Top_By_Volume` de audit nhanh top keyword sach theo Volume.
+- Main shortlist v4.5 dung `target 40 utility + diversity`; Feature trong main shortlist doc quota rieng voi sheet `02_Filter_Keyword`.
+- Workbook v4.5 co them sheet `13_Top_By_Volume` de audit nhanh top keyword sach theo Volume.
 - Low-volume keyword co the vao shortlist/Consider khi config dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.
-- Truncation v4.4 bao ve complete token va singular/plural: `battery emoji`, `battery icon`, `prank sound`, `ar filter`, `control widget` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.
+- Truncation v4.5 bao ve complete token va singular/plural: `battery emoji`, `battery icon`, `prank sound`, `ar filter`, `control widget` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.
 - Hoan vi thu tu tu duoc giu nhu keyword doc lap khi `auto_merge_token_bag=False`.
 - Dedup chi ap dung cho `01_Main_Keyword_Shortlist`. Cac sheet tinh nang/style chi sort theo uu tien thong thuong.
 - Accent-fold va keyword chi gan giong duoc giu nhu keyword doc lap; khong con `ReviewVariants`.
@@ -130,3 +130,5 @@ Chay batch nhieu locale:
 ```powershell
 python ..\..\run_aso_batch.py --manifest path\to\manifest.json --max-workers 3
 ```
+
+
