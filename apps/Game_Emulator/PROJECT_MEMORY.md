@@ -1,12 +1,12 @@
 # Project Memory
 
-Generated: 2026-06-16 13:56:43
+Generated: 2026-07-02 10:52:39
 
 ## Identity
 - App: Game Emulator: GB4 Retro Games
 - App ID: com.game.emulator.gb4.retro.gameboy.collection
 - Category: Game Emulator
-- Market: US_EN
+- Market: BR_PT
 - Semantic mode: game_emulator
 
 ## Positioning
@@ -32,7 +32,7 @@ Generated: 2026-06-16 13:56:43
 - platform_affiliation_action: drop
 - platform_context_action: consider
 - platform_only_action: drop
-- risky_ip_action: consider
+- risky_ip_action: drop
 - style_only_action: reserve
 
 ## Warnings

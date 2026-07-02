@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ASO Keyword Planner - App Configuration File
-Version: 4.1
+Version: 4.5
 Purpose: Configuration file for deploying ASO Keyword Planner on Emoji Battery Icon Customize.
 """
 import sys
@@ -273,8 +273,9 @@ APP_CONFIG = {
     "keyword_quota": {
         "main_file": {
             "core_intent": 25,
+            "core_feature": 5,
             "broad_expansion": 5,
-            "consider": 10
+            "consider": 5
         },
         "feature_file": {
             "max_keywords": 30,

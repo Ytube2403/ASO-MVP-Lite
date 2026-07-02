@@ -1,4 +1,4 @@
-# 🛠️ ASO App Workspace — Electric Gun (Stun Gun Simulator)
+﻿# 🛠️ ASO App Workspace — Electric Gun (Stun Gun Simulator)
 
 Thư mục này chứa cấu hình ASO, hồ sơ ứng dụng và pipeline chạy lọc từ khóa cho ứng dụng **Electric Stun Gun Simulator - Taser prank** (`com.real.electric.stun.gun.simulator.taser.prank`).
 
@@ -50,4 +50,7 @@ python apps\ElectricGun\run_pipeline.py --csv apps\ElectricGun\Input\ElectricGun
 python apps\ElectricGun\run_pipeline.py --csv apps\ElectricGun\Input\ElectricGun_US_EN.csv --market US_EN --interactive
 ```
 
-Kết quả sẽ tự động lưu cùng thư mục với file CSV đầu vào. Báo cáo Excel bao gồm Shortlist 20 Core + 5 Feature + 5 Broad + 10 Consider, biểu đồ phân tích, và chi tiết lý do lọc từng từ khóa.
+Kết quả sẽ tự động lưu cùng thư mục với file CSV đầu vào. Báo cáo Excel bao gồm Shortlist target 40 utility + diversity, biểu đồ phân tích, và chi tiết lý do lọc từng từ khóa.
+
+
+

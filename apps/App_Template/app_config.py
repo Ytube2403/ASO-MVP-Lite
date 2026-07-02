@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ASO Keyword Planner - App Configuration File
-Version: 4.4
+Version: 4.5
 Purpose: Configuration file for deploying ASO Keyword Planner on a new application (Photo Editor template).
 """
 
@@ -23,7 +23,7 @@ APP_CONFIG = {
     "market_language_policy": {
         "enabled": True,
         "required": True,
-        "primary_languages": ["en"],              # Ngôn ngữ chính được phép xuất hiện trong Top 20 Core
+        "primary_languages": ["en"],              # Ngôn ngữ chính được phép xuất hiện trong Top 25 Core
         "secondary_languages": ["es", "es-MX"],   # Ngôn ngữ phụ (VD: Tiếng Tây Ban Nha ở thị trường Mỹ), đưa vào Consider
         "optional_secondary_languages": [],
 
@@ -161,10 +161,10 @@ APP_CONFIG = {
     # =========================================================================
     "keyword_quota": {
         "main_file": {
-            "core_intent": 20,       # Số lượng keyword core chính (Top 20)
+            "core_intent": 25,       # Số lượng keyword core chính (Top 25)
             "core_feature": 5,       # Số lượng keyword feature (Top 5)
             "broad_expansion": 5,    # Số lượng keyword mở rộng rộng hơn (Top 5)
-            "consider": 10,          # Số lượng keyword đưa vào danh sách Consider
+            "consider": 5,           # Số lượng keyword đưa vào danh sách Consider
         },
         "feature_file": {
             "max_keywords": 30,

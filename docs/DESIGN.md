@@ -105,7 +105,7 @@ Hệ thống thiết kế mới này chuyển hoàn toàn từ giao diện tối
 ## 4. Layout & Division (Phân bổ layout tránh tràn chữ)
 Để khắc phục hoàn toàn lỗi tràn chữ và lệch layout, hệ slide được chia nhỏ từ 7 slide lên **10 slide**:
 - **Quy trình 10 bước** được chia đôi làm 2 slide (Mỗi slide chứa 5 bước).
-- **Cơ cấu đầu ra** được chia thành các nhóm v4.4: 20 Core, 5 Feature, 5 Broad, 10 Consider và sheet audit `13_Top_By_Volume`.
+- **Cơ cấu đầu ra** được chia thành các nhóm v4.5: target 40 utility + diversity và sheet audit `13_Top_By_Volume`.
 - **Chuẩn dữ liệu đầu vào** được tách biệt: 1 slide hướng dẫn đặt tên file CSV và 1 slide đặc tả các cột dữ liệu bắt buộc.
 
 ---
@@ -171,3 +171,5 @@ Giao diện **ASO Keyword Tracker Dashboard** (`tracker/static/`) tuân thủ ho
 - **Badges:** Dung badge ro rang cho `Drop`, `Consider`, `Reserve`, `Boost` theo mau semantic cua dashboard.
 - **Warnings:** Hien thi warning card noi bat khi thieu competitor, thieu competitor brands, overlap config hoac profile/config mismatch.
 - **No editing:** Khong dat control chinh sua trong v1. Neu can sua setup, user sua source of truth trong `app_config.py` hoac `App_Profile.json`.
+
+

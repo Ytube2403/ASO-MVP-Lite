@@ -1,4 +1,4 @@
-# Huong dan cau truc file ASO Keyword Filter v4.4
+# Huong dan cau truc file ASO Keyword Filter v4.5
 
 ## Root
 
@@ -36,10 +36,11 @@ App da dang ky:
 - `apps/Emoji_Battery_Icon_Customize/`
 - `apps/FunVid/`
 - `apps/Game_Emulator/`
+- `apps/NDS_Emulator/`
 - `apps/Prank_Sounds/`
 - `apps/App_Template/`
 
-`AR_Filter` va `Control_Widget` van dung runner `*_v4_3.py`. `Game_Emulator` dung runner `run_game_emulator_v4_4.py`. `ElectricGun`, `Emoji_Battery_Icon_Customize`, `FunVid`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
+`AR_Filter` va `Control_Widget` van dung runner `*_v4_3.py`. `Game_Emulator` dung runner `run_game_emulator_v4_4.py`. `ElectricGun`, `Emoji_Battery_Icon_Customize`, `FunVid`, `NDS_Emulator`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
 Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.csv` cung duoc route ve app `FunVid` qua registry alias.
 
 ## `shared/`
@@ -52,7 +53,7 @@ Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.
 - `shared/agentic_keyword_classifier.py`: classifier/cache-only runtime dung provider `antigravity_subagent`; runner fail-fast neu thieu cache.
 - `shared/ai_keyword_classifier.py`: shim tuong thich, re-export sang `agentic_keyword_classifier`.
 - `shared/en_gloss_resolver.py`: resolve cot `EN` tu CSV hoac `AIEnglishGloss`, khong goi translation network.
-- `shared/keyword_filter/`: matcher precompiled, hard filter, classifier, validator, audit, cache atomic va truncation hardening complete-token aware.
+- `shared/keyword_filter/`: matcher precompiled, hard filter, classifier, validator, audit, cache atomic, truncation hardening complete-token aware va `shortlist.py` cho main keyword shortlist chung `target 40 utility + diversity` (dedup theo utility, semantic cluster diversity qua Jaccard similarity, safe-backfill co kiem tra day du score/relevancy/demand). `scoring.py` con co `safe_reach_ceiling` (reach ceiling percentile 95 chong outlier competitor/irrelevant) va `dampen_stacked_relevancy` (cap RelevancyScore cho keyword nhoi tu khoa nhung demand yeu). `report_export.py::write_quality_log_sheet` xuat canh bao selector (`SAFE_POOL_EXHAUSTED`) ra sheet `15_Selector_Quality_Log`. Xem section 36 trong `ASO_Keyword_Planner_v4_5.md`.
 - `shared/text_dedup.py`: dedup Unicode cho `01_Main_Keyword_Shortlist`.
 - `shared/profile_service.py`: custom/generated profile cache va stale fallback.
 - `shared/project_memory.py`: doc `app_config.py` va `App_Profile.json` de render Project Memory cho Dashboard, workbook va `PROJECT_MEMORY.md`.
@@ -84,7 +85,7 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 
 ## `docs/`
 
-- `docs/ASO_Keyword_Planner_v4_4.md`: dac ta logic pipeline v4.4, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid` va agentic cache-only.
+- `docs/ASO_Keyword_Planner_v4_5.md`: dac ta logic pipeline v4.5, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid` va agentic cache-only.
 - `apps/Game_Emulator/AGENTIC_CACHE_WORKFLOW.md`: huong dan flow cache-only moi cho Game Emulator, thay cho cac script scratch.
 - `docs/SETUP_WINDOWS.md`: checklist phan mem, extension, Python packages va cach kiem tra moi truong Windows.
 - `docs/App_Config_Template.py`: template config.

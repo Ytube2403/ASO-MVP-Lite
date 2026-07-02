@@ -15,6 +15,7 @@ RUNNER_PATHS = [
     "apps/Prank_Sounds/run_pipeline.py",
     "apps/FunVid/run_pipeline.py",
     "apps/ElectricGun/run_pipeline.py",
+    "apps/NDS_Emulator/run_pipeline.py",
 ]
 
 ROW_AWARE_SHARED_CALLS = [
@@ -26,7 +27,7 @@ ROW_AWARE_SHARED_CALLS = [
     "_shared_keyword_filter.check_naturalness(r, config)",
     "shared_relevancy = df.apply(lambda r: _shared_keyword_filter.calculate_relevancy(r, config), axis=1)",
     "_shared_keyword_filter.calculate_volume_score(",
-    "_shared_keyword_filter.is_shortlist_volume_eligible(",
+    "_shared_keyword_filter.build_main_keyword_shortlist(df, config)",
     "_shared_keyword_filter.selection_cache_path(",
     "_shared_keyword_filter.atomic_write_json(",
 ]
@@ -55,26 +56,46 @@ class PipelineSharedContractTests(unittest.TestCase):
                 self.assertNotIn("deep" + "seek", source.lower())
                 self.assertIn('market=config.get("market", "")', source)
                 self.assertIn("_shared_profile_service.get_app_profile(", source)
-                self.assertEqual(source.count("_shared_text_dedup.prepare_dataframe("), 1)
+                self.assertNotIn("def build_shortlist(df_all, config):", source)
+                self.assertEqual(source.count("_shared_text_dedup.prepare_dataframe("), 0)
                 self.assertNotIn("ReviewVariants", source)
                 self.assertIn(
                     "cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore'",
                     source,
                 )
 
-    def test_game_emulator_shortlist_quotas_do_not_mix_candidate_buckets(self):
-        runner_path = os.path.join(PROJECT_ROOT, "apps", "Game_Emulator", "run_game_emulator_v4_4.py")
-        with open(runner_path, "r", encoding="utf-8") as runner_file:
-            source = runner_file.read()
+    def test_all_runners_use_shared_shortlist_builder_contract(self):
+        for relative_path in RUNNER_PATHS:
+            absolute_path = os.path.join(PROJECT_ROOT, *relative_path.split("/"))
+            with self.subTest(runner=relative_path):
+                with open(absolute_path, "r", encoding="utf-8") as runner_file:
+                    source = runner_file.read()
 
-        self.assertIn("entry['Section'] = section", source)
-        self.assertNotIn("def apply_volume_penalty", source)
-        self.assertIn("core_candidates = df_sorted[df_sorted['Bucket'] == 'Core Intent Final']", source)
-        self.assertIn("broad_candidates = df_sorted[df_sorted['Bucket'] == 'Broad Expansion']", source)
-        self.assertIn("consider_candidates = df_sorted[df_sorted['Bucket'] == 'Consider Keywords'].copy()", source)
-        self.assertNotIn("core_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]", source)
-        self.assertNotIn("broad_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)]", source)
-        self.assertNotIn("consider_candidates = df_sorted[df_sorted['Bucket'].isin(eligible_buckets)].copy()", source)
+                self.assertIn("_shared_keyword_filter.build_main_keyword_shortlist(df, config)", source)
+                self.assertNotIn("def build_shortlist(df_all, config):", source)
+                self.assertIn("selected_core_feature", source)
+                self.assertIn("shortlist_result.feature", source)
+                self.assertIn("selected_core + selected_core_feature + selected_broad + selected_consider", source)
+
+        shared_path = os.path.join(PROJECT_ROOT, "shared", "keyword_filter", "shortlist.py")
+        with open(shared_path, "r", encoding="utf-8") as shared_file:
+            shared_source = shared_file.read()
+        self.assertIn('"core_intent": 25', shared_source)
+        self.assertIn('"core_feature": 5', shared_source)
+        self.assertIn('"broad_expansion": 5', shared_source)
+        self.assertIn('"consider": 5', shared_source)
+        self.assertIn('"Feature Keywords": ["Feature Keywords", "System Keywords"]', shared_source)
+        self.assertIn('"target_count": 40', shared_source)
+
+    def test_all_registered_apps_default_to_new_main_shortlist_quota(self):
+        for app_key in APP_REGISTRY:
+            with self.subTest(app=app_key):
+                _, _, config, _ = resolve_effective_app(app_key, PROJECT_ROOT, "US_EN")
+                main_file = (config.get("keyword_quota", {}) or {}).get("main_file", {}) or {}
+                self.assertEqual(main_file.get("core_intent"), 25)
+                self.assertEqual(main_file.get("core_feature"), 5)
+                self.assertEqual(main_file.get("broad_expansion"), 5)
+                self.assertEqual(main_file.get("consider"), 5)
 
     def test_game_emulator_runner_is_registered_as_v4_4(self):
         registry_path = os.path.join(PROJECT_ROOT, "shared", "app_registry.py")

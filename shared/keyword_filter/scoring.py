@@ -88,6 +88,98 @@ def is_shortlist_volume_eligible(row, section, selected_low_tier_count=0, config
     return True
 
 
+DEFAULT_REACH_CEILING_POLICY = {
+    "percentile": 0.95,
+}
+
+
+def reach_ceiling_policy(config=None):
+    policy = dict(DEFAULT_REACH_CEILING_POLICY)
+    policy.update((config or {}).get("reach_ceiling_policy", {}) or {})
+    return policy
+
+
+def safe_reach_ceiling(df, config=None):
+    """Reach ceiling for volume/utility normalization, robust to outlier brand terms.
+
+    A single competitor/irrelevant keyword can have a MaximumReach orders of
+    magnitude above every legitimate candidate (e.g. a blocked competitor-brand
+    term). Using that as the normalization denominator crushes VolumeN/reach
+    signal to ~0 for every real keyword, making search volume invisible to
+    scoring. Excluding competitor/irrelevant rows and using a percentile
+    (default p95) instead of the raw max keeps the ceiling representative of
+    the actual candidate pool.
+    """
+    if df is None or len(df) == 0 or "MaximumReach" not in df.columns:
+        return 0.0
+    pool = df
+    if "is_competitor" in df.columns and "is_irrelevant" in df.columns:
+        safe_mask = ~df["is_competitor"].astype(bool) & ~df["is_irrelevant"].astype(bool)
+        if safe_mask.any():
+            pool = df.loc[safe_mask]
+    values = pool["MaximumReach"].apply(number)
+    if len(values) == 0 or values.max() <= 0:
+        values = df["MaximumReach"].apply(number)
+    if len(values) == 0:
+        return 0.0
+    percentile = number(reach_ceiling_policy(config).get("percentile"), 0.95)
+    return max(float(values.quantile(percentile)), 1.0)
+
+
+DEFAULT_RELEVANCY_STACKING_POLICY = {
+    "enabled": True,
+    "min_category_hits": 2,
+    "max_volume": 10.0,
+    # NOTE: MaximumReach is typically a raw AppTweak reach count (0, 14, 172, ...), not a
+    # 0-1 score. A threshold of 0.0 only exempts *literally zero* reach -- any keyword with
+    # even a few units of reach (still negligible in absolute terms) would skip dampening
+    # entirely. 5.0 matches this codebase's existing "low tier" convention
+    # (DEFAULT_VOLUME_SCORE_POLICY.low_tier_threshold) for what counts as no real signal.
+    "max_reach": 5.0,
+    "score_cap": 0.65,
+}
+
+
+def relevancy_stacking_policy(config=None):
+    policy = dict(DEFAULT_RELEVANCY_STACKING_POLICY)
+    policy.update((config or {}).get("relevancy_stacking_dampener", {}) or {})
+    return policy
+
+
+def dampen_stacked_relevancy(row, config):
+    """Cap RelevancyScore for keyword-stuffed long-tail phrases with weak real demand.
+
+    RelevancyScore stacks a bonus independently for each intent category matched
+    (core/feature/style), so a phrase stuffed with buzzwords ("retro emulator save
+    state") can reach ~1.0 purely from term overlap with no search demand behind
+    it. When that happens AND the keyword has no meaningful volume/reach, cap it
+    back down so it can't out-rank genuinely higher-volume keywords in scoring
+    that only matched one category naturally.
+
+    Checks both the raw Keyword and the EN gloss, matching how RelevancyScore
+    itself is computed (has_core_intent/has_feature_intent/has_style_intent look
+    at both text sources) -- checking only one would miss hits that appear only
+    in the other (e.g. an abbreviation in Keyword vs its spelled-out EN gloss).
+    """
+    policy = relevancy_stacking_policy(config)
+    relevancy = number(row.get("RelevancyScore", 0))
+    if not policy.get("enabled", True):
+        return relevancy
+    hits = sum([
+        has_core_intent(row, config),
+        has_feature_intent(row, config),
+        has_style_intent(row, config),
+    ])
+    min_hits = number(policy.get("min_category_hits"), 2)
+    if hits < min_hits:
+        return relevancy
+    if number(row.get("Volume"), 0) > number(policy.get("max_volume"), 10.0):
+        return relevancy
+    if number(row.get("MaximumReach"), 0) > number(policy.get("max_reach"), 0.0):
+        return relevancy
+    return min(relevancy, number(policy.get("score_cap"), 0.65))
+
+
 def has_core_intent(value, config):
     return has_any_term(value, config.get("intent_core_terms", [])) or has_any_term(value, config.get("intent_core_words", []))
 

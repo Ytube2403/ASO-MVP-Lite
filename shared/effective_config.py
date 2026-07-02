@@ -46,6 +46,30 @@ def _extract_runner_config(runner_path, market=""):
     return dict(sandbox["config"])
 
 
+def deep_merge_config(base, override):
+    """Merge override into base without silently discarding list/dict content.
+
+    Plain dict.update() replaces whole top-level keys, so if both `base` and
+    `override` define e.g. risky_ip_terms with different entries, override's
+    list wins entirely and base's entries vanish (this is exactly how a
+    runner's inline risky_ip_terms lost "mario"/"zelda" to FILTER_POLICY's
+    shorter list). Dicts merge recursively key-by-key; lists union in order
+    (base first, then override's new items); everything else (scalars) still
+    lets override win, preserving the intended "override configures policy"
+    behavior for non-collection values.
+    """
+    merged = dict(base)
+    for key, override_value in override.items():
+        base_value = merged.get(key)
+        if isinstance(base_value, dict) and isinstance(override_value, dict):
+            merged[key] = deep_merge_config(base_value, override_value)
+        elif isinstance(base_value, list) and isinstance(override_value, list):
+            merged[key] = base_value + [item for item in override_value if item not in base_value]
+        else:
+            merged[key] = override_value
+    return merged
+
+
 def load_effective_config(config_path, runner_path=None, market=""):
     module = _load_python_module(config_path)
     config = getattr(module, "APP_CONFIG", None)
@@ -55,7 +79,7 @@ def load_effective_config(config_path, runner_path=None, market=""):
         effective = _extract_runner_config(runner_path, market)
         filter_policy = getattr(module, "FILTER_POLICY", None)
         if isinstance(filter_policy, dict):
-            effective.update(filter_policy)
+            effective = deep_merge_config(effective, filter_policy)
     else:
         raise RuntimeError(f"APP_CONFIG dict not found in {config_path}")
 
@@ -76,5 +100,6 @@ def resolve_effective_app(app_alias, project_root, market=""):
     app = resolve_app(app_alias, project_root)
     app_folder = os.path.join(project_root, *app["folder"].split("/"))
     config = load_effective_config(app["config_path"], app.get("runner_path"), market)
-    app_profile = load_app_profile(app_folder)
+    from shared.profile_service import get_app_profile
+    app_profile = get_app_profile(config, config.get("app_name", "App"), app_folder)
     return app, app_folder, config, app_profile

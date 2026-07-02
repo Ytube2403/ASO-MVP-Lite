@@ -1,6 +1,6 @@
 # ASO Keyword Planner v4.3 Archive
 
-This historical spec has been superseded by `docs/ASO_Keyword_Planner_v4_4.md`.
+This historical spec has been superseded by `docs/ASO_Keyword_Planner_v4_5.md`.
 
 Active runtime contract:
 
@@ -9,4 +9,4 @@ find-misses -> prepare-batches -> Antigravity subagents -> save-results -> verif
 ```
 
 App runners are cache-only and do not call AI or translation network providers.
-See the v4.4 spec and `tools/warm_cache_helper.py` for the current workflow.
+See the v4.5 spec and `tools/warm_cache_helper.py` for the current workflow.

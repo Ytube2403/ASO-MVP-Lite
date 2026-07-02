@@ -1,12 +1,12 @@
 # Project Memory
 
-Generated: 2026-07-01 12:00:28
+Generated: 2026-07-02 10:00:52
 
 ## Identity
 - App: Electric Stun Gun Simulator - Taser prank
 - App ID: com.real.electric.stun.gun.simulator.taser.prank
 - Category: Entertainment
-- Market: MX_ES
+- Market: BR_PT
 - Semantic mode: electric_gun
 
 ## Positioning
@@ -18,7 +18,7 @@ Generated: 2026-07-01 12:00:28
 
 ## Keyword Setup
 - core_terms: electric stun gun, stun gun simulator, taser simulator, taser prank, electric stun gun simulator, stun gun, taser, shock gun, shock gun prank, electric taser, shock taser, stun gun prank, taser stun gun, taser gun, electric shocker, shocker prank, electric shock prank, stun simulator, taser zapper, electric zap, shock simulator, stun gun sound, taser sound
-- core_words:
+- core_words: 
 - feature_terms: flashlight strobe, flashlight flash, strobe light, camera flash, camera stun gun, vibration shock, vibrate taser, electric shock sounds, stun gun sounds, spark sounds, lightning sparks, electric arc, hair clipper prank, haircut prank, hair clipper sounds, laser gun simulator, laser gun sounds, time bomb prank, screaming sound, scary pranks, prank sounds, shock effects, gun soundboard
 - style_terms: funny, joke, jokes, troll, trolls, crazy, silly, hilarious, realistic simulator, virtual stun gun, prankster, fake taser, prank app, funny jokes, troll friends, shock game, 3d simulator
 - visual_terms: skin, skins, gun skins, taser skins, lightning effect, led flash, color themes, sparks animation, camera feed, live camera background

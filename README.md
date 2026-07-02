@@ -1,4 +1,4 @@
-# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.4
+# ASO-MVP-Lite Keyword Filter Pipeline & Tracker v4.5
 
 Ban Lite dung agentic cache do Antigravity subagents nap truoc runtime. He thong ASO gom pipeline loc keyword, dashboard theo doi chi so va cong cu xuat Master Keywords.
 
@@ -11,9 +11,11 @@ ASO-MVP-Lite/
 |-- apps/                         # Workspace rieng cua tung app
 |   |-- AR_Filter/
 |   |-- Control_Widget/
+|   |-- ElectricGun/
 |   |-- Emoji_Battery_Icon_Customize/
 |   |-- FunVid/
 |   |-- Game_Emulator/
+|   |-- NDS_Emulator/
 |   |-- Prank_Sounds/
 |   `-- App_Template/
 |
@@ -39,7 +41,7 @@ ASO-MVP-Lite/
 |   `-- static/
 |
 |-- docs/                         # Dac ta, template, guide va tu dien
-|   |-- ASO_Keyword_Planner_v4_4.md
+|   |-- ASO_Keyword_Planner_v4_5.md
 |   |-- SETUP_WINDOWS.md
 |   |-- README_File_Guide.md
 |   `-- english_words_10k.txt
@@ -63,16 +65,16 @@ ASO-MVP-Lite/
 
 - Moi app giu `app_config.py`, `App_Profile.json`, `PROJECT_MEMORY.md`, `Input/`, `Output/` va runner rieng trong `apps/<AppName>/`.
 - Logic loc, parser locale, agentic cache, EN gloss, profile, project memory va dedup phai dung module trong `shared/`.
-- Truncation logic v4.4 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
+- Truncation logic v4.5 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
 - Tat ca app registered dung `agentic_keyword_classifier` cache-only va khong goi AI/translation network trong runner.
 - Cache miss duoc xu ly ngoai runner bang Antigravity subagents qua `tools/warm_cache_helper.py`.
-- Main shortlist v4.4 gom `20 Core + 5 Feature + 5 Broad + 10 Consider`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
+- Main shortlist v4.5 dung `target 40 utility + diversity`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
 - App `FunVid` da duoc dang ky trong registry voi alias `FunVid`, `Fun_Vid`, `FunnyFaceFilters`, `FunVid_100_Keywords` va `FunVid_AnimalFace`.
 - Moi runner dung flow agentic cache-only: Antigravity subagents ghi intent/language/`english_gloss` vao SQLite truoc, runner chi doc cache va fail-fast neu con miss.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
-## Agentic cache v4.4
+## Agentic cache v4.5
 
 Ket qua agentic duoc cache tai `.cache/agentic_keyword_analysis.sqlite3`. Sheet `06_All_Candidates` co cac cot audit `NeedsAI`, `PreAIAction`, `PreAIRule`, `PreAIReason`, `CanonicalKeyword`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIConfidence`, `AIStatus`, `AIEnglishGloss` de biet keyword nao dung cache, keyword nao reuse canonical hoac bi skip truoc agentic batch.
 
@@ -170,7 +172,7 @@ python -m compileall -q .
 
 ## Tai lieu
 
-- [Dac ta pipeline v4.4](docs/ASO_Keyword_Planner_v4_4.md)
+- [Dac ta pipeline v4.5](docs/ASO_Keyword_Planner_v4_5.md)
 - [Cai dat Windows day du](docs/SETUP_WINDOWS.md)
 - [Huong dan cac file](docs/README_File_Guide.md)
 - [Template app moi](apps/App_Template/README.md)

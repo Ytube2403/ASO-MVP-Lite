@@ -51,6 +51,12 @@ APP_REGISTRY = {
         "config": "apps/ElectricGun/app_config.py",
         "aliases": ["ElectricGun", "Electric_Gun", "StunGun", "TaserPrank", "electric_gun"],
     },
+    "nds_emulator": {
+        "folder": "apps/NDS_Emulator",
+        "runner": "apps/NDS_Emulator/run_pipeline.py",
+        "config": "apps/NDS_Emulator/app_config.py",
+        "aliases": ["NDSEmulator", "NDS_Emulator", "SuperNDS", "com.emulator.nds.super.game.console.handheld"],
+    },
 }
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ASO Keyword Planner - App Configuration Template
-Version: 4.4
+Version: 4.5
 Purpose: Template configuration for deploying ASO Keyword Planner on a new application.
 """
 
@@ -24,7 +24,7 @@ APP_CONFIG = {
     "market_language_policy": {
         "enabled": True,
         "required": True,
-        "primary_languages": ["en"],              # Danh sÃ¡ch ngÃ´n ngá»¯ chÃ­nh Ä‘Æ°á»£c phÃ©p xuáº¥t hiá»‡n trong Top 20 Core
+        "primary_languages": ["en"],              # Danh sÃ¡ch ngÃ´n ngá»¯ chÃ­nh Ä‘Æ°á»£c phÃ©p xuáº¥t hiá»‡n trong Top 25 Core
         "secondary_languages": ["es", "es-MX"],   # NgÃ´n ngá»¯ phá»¥ (vÃ­ dá»¥ tiáº¿ng TÃ¢y Ban Nha táº¡i Má»¹), Ä‘Æ°a vÃ o danh sÃ¡ch Consider
         "optional_secondary_languages": [],       # NgÃ´n ngá»¯ tÃ¹y chá»n khÃ¡c
 
@@ -127,6 +127,16 @@ APP_CONFIG = {
         "calculator", "weather"
     ],
 
+    # PHAN BIET risky_ip_terms vs risky_platform_terms (quan trong):
+    # - risky_ip_terms: ten NHAN VAT/TUA GAME/SAN PHAM SANG TAO cu the (vd Mario, Pokemon,
+    #   Zelda). Dung tu nay ngu y app cho dung/choi DUNG san pham do -> rui ro ban quyen cao,
+    #   mac dinh Drop cung.
+    # - risky_platform_terms: ten HANG SAN XUAT/HE MAY/PHAN CUNG (vd Nintendo, Sony, Sega,
+    #   Microsoft, PlayStation, Xbox). Day la tu vung MO TA CHUC NANG bat buoc cho app dang
+    #   emulator/phu kien (vd "NDS emulator" phai nhac "Nintendo DS") -> rui ro thap hon nhieu,
+    #   mac dinh chi Consider Keywords (platform_context_action), khong Drop cung.
+    # KHONG dat ten hang/he may vao risky_ip_terms - se bi Drop oan ngay ca khi do la platform
+    # chinh ma app ho tro (xem section 36 trong ASO_Keyword_Planner_v4_5.md).
     "risky_ip_terms": [
         # Tá»« khÃ³a chá»©a IP hoáº·c báº£n quyá»n nháº¡y cáº£m cáº§n háº¡n cháº¿
         "brandname"
@@ -164,10 +174,10 @@ APP_CONFIG = {
     # ==========================================
     "keyword_quota": {
         "main_file": {
-            "core_intent": 20,       # So luong keyword core chinh (Top 20)
+            "core_intent": 25,       # So luong keyword core chinh (Top 25)
             "core_feature": 5,       # So luong keyword feature (Top 5)
             "broad_expansion": 5,    # Sá»‘ lÆ°á»£ng keyword má»Ÿ rá»™ng rá»™ng hÆ¡n (Top 5)
-            "consider": 10,          # Sá»‘ lÆ°á»£ng keyword Ä‘Æ°a vÃ o danh sÃ¡ch Consider
+            "consider": 5,          # Sá»‘ lÆ°á»£ng keyword Ä‘Æ°a vÃ o danh sÃ¡ch Consider
         },
         "feature_file": {
             "max_keywords": 30,
@@ -188,6 +198,33 @@ APP_CONFIG = {
             "min_relevancy_for_fill": 0.45,
             "add_fill_reason_column": True
         }
+    },
+
+    "metadata_selector": {
+        "enabled": True,
+        "target_count": 40,
+        "cluster_cap": 3,                        # Toi da 3 keyword/cum ngu nghia (Jaccard similarity, xem shortlist.py)
+        "cluster_similarity_threshold": 0.5,      # Nguong Jaccard de coi 2 keyword la cung 1 cum
+        "cluster_generic_token_ratio": 0.30,      # Tu xuat hien > 30% pool bi loai khoi phep so sanh cum
+        "quality_min_balanced_score": 0.40,
+        "quality_min_relevancy": 0.45,
+        "quality_min_volume": 6.0,
+        "quality_min_reach": 1.0,
+        "generic_safe_descriptors": ["retro", "classic"],
+    },
+
+    # VolumeN/utility reach ceiling: shared/keyword_filter/scoring.py::safe_reach_ceiling
+    # tinh percentile-95 tren cac dong khong phai competitor/irrelevant (mac dinh, khong can config)
+    # thay vi max() tuyet doi, tranh 1 outlier brand term keo lech chuan hoa cho ca pool.
+
+    # RelevancyScore stacking dampener: shared/keyword_filter/scoring.py::dampen_stacked_relevancy
+    # (mac dinh bat, co the override qua "relevancy_stacking_dampener")
+    "relevancy_stacking_dampener": {
+        "enabled": True,
+        "min_category_hits": 2,     # Khop >= 2 nhom intent (core/feature/style) cung luc moi xet dampen
+        "max_volume": 10.0,         # Chi dampen neu Volume <= nguong nay
+        "max_reach": 0.0,           # Chi dampen neu MaximumReach <= nguong nay
+        "score_cap": 0.65,          # Tran RelevancyScore sau khi dampen
     },
 
     # ==========================================

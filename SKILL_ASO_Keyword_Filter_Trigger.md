@@ -1,7 +1,7 @@
 # 🎯 SKILL: ASO Keyword Filter Trigger & Automation
 
 **SKILL_ID:** `aso_keyword_filter_trigger`  
-**VERSION:** 4.1  
+**VERSION:** 4.5  
 **AUTHOR:** AI Assistant  
 **SCOPE:** Tự động hóa việc nhận diện lệnh kích hoạt, định tuyến và chạy pipeline lọc từ khóa ASO dựa trên cấu trúc tên file CSV được gửi trong thư mục `d:\Antigravity\ASO-Project\ASO-MVP-Lite`.
 **RUNTIME:** Python 3.9+  
@@ -55,7 +55,7 @@ Sau khi script hoàn thành thành công:
    * *Ví dụ link Game Emulator:* [GameEmulator_US-EN_Output.xlsx](file:///d:/Antigravity/ASO-Project/ASO-MVP-Lite/apps/Game_Emulator/Output/052026/GameEmulator_US-EN_Output.xlsx)
    * *Ví dụ link Prank Sounds:* [PrankSounds_PH-FIL_Output.xlsx](file:///d:/Antigravity/ASO-Project/ASO-MVP-Lite/apps/Prank_Sounds/Output/052026/PrankSounds_PH-FIL_Output.xlsx)
 
-### Ghi chu logic v4.1
+### Ghi chu logic v4.5
 Pipeline hien dung shared logic:
 - `shared/language_detector.py` cho `detect_keyword_language` va co che hoan doi `LANG_COUNTRY` sang `COUNTRY_LANG` trong `parse_market`.
 - `shared/keyword_filter/` cho matcher precompiled, hard filter raw + EN, classification, validator, audit va selection cache metadata. Keyword volume thap (Volume <= 5) khong bi auto-drop ma nhan diem VolumeN bang 0.

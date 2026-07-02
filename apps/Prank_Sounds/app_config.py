@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ASO Keyword Planner - App Configuration File for Pranky
-Version: 4.1
+Version: 4.5
 Purpose: Configuration file for deploying ASO Keyword Planner on Pranky (Prank Sounds: Haircut & Taser).
 """
 
@@ -183,8 +183,9 @@ APP_CONFIG = {
     "keyword_quota": {
         "main_file": {
             "core_intent": 25,       # Số lượng keyword core chính (Top 25)
+            "core_feature": 5,
             "broad_expansion": 5,    # Số lượng keyword mở rộng rộng hơn (Top 5)
-            "consider": 10,          # Số lượng keyword đưa vào danh sách Consider
+            "consider": 5,           # Số lượng keyword đưa vào danh sách Consider
         },
         "feature_file": {
             "max_keywords": 30,
