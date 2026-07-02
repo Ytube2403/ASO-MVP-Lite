@@ -156,6 +156,15 @@ APP_CONFIG = {
         "video editor", "photo editor", "vpn", "antivirus", "cleaner", "booster"
     ],
 
+    "risky_platform_terms": [
+        # Thương hiệu HỆ MÁY/NHÀ SẢN XUẤT (phần cứng): là từ vựng mô tả chức năng bắt buộc
+        # của app giả lập (vd "NDS emulator", "PSP emulator") -> rủi ro thấp hơn nhiều so với
+        # nhắc tên tựa game cụ thể, nên chỉ đưa vào Consider Keywords (platform_context_action)
+        # thay vị Drop cứng. "nintendo" thuộc nhóm này (nhà sản xuất), không phải risky_ip_terms.
+        "nintendo", "iphone", "ios", "ipad", "apple", "switch", "3ds", "wii", "gamecube", "dsi",
+        "playstation", "psp", "ps", "psx", "psx2", "ps1", "ps2", "ps3", "ps4", "ps5", "xbox", "sony", "sega", "microsoft"
+    ],
+
     "risky_ip_terms": [
         # Thương hiệu NHÂN VẬT/TỰA GAME cụ thể (bản quyền sáng tạo): dùng từ này ngụ ý app
         # cho chơi ĐÚNG tựa game đó -> rủi ro vi phạm bản quyền game cao, luôn Drop cứng.
@@ -379,7 +388,9 @@ APP_CONFIG = {
             "ds", "psp", "ps", "playstation", "nintendo", "mario", "zelda", "gba", "gameboy", "snes", "nes", "n64", "1980s", "1990s", "80s",
             # Competitors & Unwanted terms
             "sboy", "sboy emulator", "ideas emulator", "gamer boy emulator", "manic emu", "naruto emulator",
-            "ideas", "gamer boy", "manic", "naruto", "retro bowl", "boy", "pspad", "xb", "game remote"
+            "ideas", "gamer boy", "manic", "naruto", "retro bowl", "boy", "pspad", "xb", "game remote",
+            # Trademarked / Misleading brand/platform terms
+            "my nintendo", "nintendo switch", "nitendo switch", "psx2", "ps game emulator"
         ],
         "force_top30_terms": [],
         "notes": []

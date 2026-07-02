@@ -1,0 +1,1975 @@
+{
+  "batch_id": "br_pt_batch_1",
+  "items": [
+    {
+      "keyword": "ar dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.75,
+      "english_gloss": "ar dog",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad on-topic combination of ar and dog core themes without explicit filter word."
+    },
+    {
+      "keyword": "ar filter fyp",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.92,
+      "english_gloss": "ar filter fyp",
+      "decision_rule": "ai_core_intent",
+      "reason": "Directly matches the app's own name/core term combining ar filter with fyp branding."
+    },
+    {
+      "keyword": "ar filter game",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.6,
+      "english_gloss": "ar filter game",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Core ar filter term with game framing, broader gamified-app expansion of the niche."
+    },
+    {
+      "keyword": "fyp filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.75,
+      "english_gloss": "fyp filter",
+      "decision_rule": "ai_style",
+      "reason": "Matches style_terms fyp combined with core filter term."
+    },
+    {
+      "keyword": "ar filters",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.95,
+      "english_gloss": "ar filters",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry."
+    },
+    {
+      "keyword": "ar filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.95,
+      "english_gloss": "ar filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry."
+    },
+    {
+      "keyword": "dog filter ar",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "dog filter ar",
+      "decision_rule": "ai_core_intent",
+      "reason": "Word-order variant of core intent terms ar filter + dog filter."
+    },
+    {
+      "keyword": "ar dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "ar dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Combines core intent terms ar filter and dog filter, app's exact niche."
+    },
+    {
+      "keyword": "dog filtro",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.78,
+      "english_gloss": "dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "English+Portuguese mixed variant of core intent term dog filter."
+    },
+    {
+      "keyword": "dog meme filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.8,
+      "english_gloss": "dog meme filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines dog face feature with meme style, a specific feature variant of core filter."
+    },
+    {
+      "keyword": "ar funny",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.7,
+      "english_gloss": "ar funny",
+      "decision_rule": "ai_style",
+      "reason": "Combines ar core term with funny style term but lacks explicit filter/camera object."
+    },
+    {
+      "keyword": "3d scanner app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.4,
+      "english_gloss": "3d scanner app",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "3D scanning is adjacent to the app's 3D AR filter tech but not a face/camera filter itself."
+    },
+    {
+      "keyword": "dog doin",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.55,
+      "english_gloss": "dog doin (meme trend, short form)",
+      "decision_rule": "ai_style",
+      "reason": "Short form of the viral 'what the dog doin' meme trend, style reference."
+    },
+    {
+      "keyword": "fanny camera",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.55,
+      "english_gloss": "funny camera (likely typo of 'funny')",
+      "decision_rule": "ai_manual_review",
+      "reason": "Likely a typo of 'funny camera'; kept for manual consideration rather than auto-classified as core intent."
+    },
+    {
+      "keyword": "ar camera",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "ar camera",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry ar camera."
+    },
+    {
+      "keyword": "ar effect",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "ar effect",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry ar effect."
+    },
+    {
+      "keyword": "dog meme",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.72,
+      "english_gloss": "dog meme",
+      "decision_rule": "ai_style",
+      "reason": "Matches style_terms dog + meme, describes content style rather than explicit filter feature."
+    },
+    {
+      "keyword": "da dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.4,
+      "english_gloss": "the dog (informal/garbled)",
+      "decision_rule": "ai_dropped",
+      "reason": "Fragment/informal spelling of 'the dog' with no specific filter or camera intent."
+    },
+    {
+      "keyword": "do dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.4,
+      "english_gloss": "do dog (garbled/unclear)",
+      "decision_rule": "ai_dropped",
+      "reason": "Fragmentary phrase with no clear standalone meaning or relevance to AR filters."
+    },
+    {
+      "keyword": "what the dog doing",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.62,
+      "english_gloss": "what the dog doing (meme trend)",
+      "decision_rule": "ai_style",
+      "reason": "Full form of the viral 'what the dog doin' meme trend, style/trend reference relevant to app's meme content."
+    },
+    {
+      "keyword": "filtro engraçado",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.85,
+      "english_gloss": "funny filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for funny filter, matches localized style term engraçado combined with core filtro."
+    },
+    {
+      "keyword": "ar funny filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.8,
+      "english_gloss": "ar funny filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines ar filter core with funny face style, a feature variant."
+    },
+    {
+      "keyword": "pet filters for dogs",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "pet filters for dogs",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Pet/dog filter feature phrasing, on-topic for the app's dog filter niche."
+    },
+    {
+      "keyword": "dog camera filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "dog camera filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines dog filter core with camera visual term, on-topic feature phrasing."
+    },
+    {
+      "keyword": "prank filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "prank filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Filter used for pranking, aligns with app's playful/joke filter content though prank isn't in config lists."
+    },
+    {
+      "keyword": "take funny pictures",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.6,
+      "english_gloss": "take funny pictures",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Describes taking funny photos, a plausible core-app use-case tied to funny/photo visual terms."
+    },
+    {
+      "keyword": "dog prank",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "dog prank",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Dog-themed prank content, aligns with app's playful prank/meme filter style."
+    },
+    {
+      "keyword": "funny dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.7,
+      "english_gloss": "funny dog",
+      "decision_rule": "ai_style",
+      "reason": "Matches style_terms funny + dog, generic style descriptor without filter object."
+    },
+    {
+      "keyword": "dog sight filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.5,
+      "english_gloss": "dog sight filter (dog vision simulator)",
+      "decision_rule": "ai_dropped",
+      "reason": "Likely refers to simulating a dog's eyesight/vision, a different concept from applying a dog filter to a human face."
+    },
+    {
+      "keyword": "funny dogs",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.68,
+      "english_gloss": "funny dogs",
+      "decision_rule": "ai_style",
+      "reason": "Matches style_terms funny + dog, generic style descriptor without filter object."
+    },
+    {
+      "keyword": "dog dangerous",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.65,
+      "english_gloss": "dangerous dog",
+      "decision_rule": "ai_dropped",
+      "reason": "Pet-safety/behavior topic, unrelated to AR camera filters."
+    },
+    {
+      "keyword": "dog cam",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.6,
+      "english_gloss": "dog cam (pet monitoring camera)",
+      "decision_rule": "ai_dropped",
+      "reason": "Refers to a physical pet-monitoring camera device/app category, not an AR face/camera filter."
+    },
+    {
+      "keyword": "dog filter ar funny camera",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "dog filter ar funny camera",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Long-tail combination of core dog/ar filter terms with funny camera feature term."
+    },
+    {
+      "keyword": "dog filter app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.82,
+      "english_gloss": "dog filter app",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Core dog filter term plus generic app suffix, describing the product itself."
+    },
+    {
+      "keyword": "trendy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.72,
+      "english_gloss": "trendy filter",
+      "decision_rule": "ai_style",
+      "reason": "Core filter term with trend style qualifier similar to configured tiktok trend style term."
+    },
+    {
+      "keyword": "trend filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.72,
+      "english_gloss": "trend filter",
+      "decision_rule": "ai_style",
+      "reason": "Core filter term with trend style qualifier similar to configured tiktok trend style term."
+    },
+    {
+      "keyword": "meme filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "meme filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry meme filter."
+    },
+    {
+      "keyword": "filtro tiktok",
+      "detected_language": "pt",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.75,
+      "english_gloss": "tiktok filter",
+      "decision_rule": "ai_style",
+      "reason": "Portuguese+English mix (filtro + tiktok loanword), matches style_terms tiktok platform/trend reference."
+    },
+    {
+      "keyword": "filter funny",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.7,
+      "english_gloss": "funny filter",
+      "decision_rule": "ai_style",
+      "reason": "Reordered variant of funny filter core term style combination."
+    },
+    {
+      "keyword": "meme runner",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.45,
+      "english_gloss": "meme runner",
+      "decision_rule": "ai_manual_review",
+      "reason": "Sounds like a runner-game genre term; ambiguous whether related to meme filters or an unrelated game app."
+    },
+    {
+      "keyword": "make filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.6,
+      "english_gloss": "make a filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Describes filter-creation action, plausible feature-level intent for a filter-making app."
+    },
+    {
+      "keyword": "dog vaccine",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.8,
+      "english_gloss": "dog vaccine",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Pet health/veterinary topic entirely unrelated to AR camera filters."
+    },
+    {
+      "keyword": "shrek ar dance",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.5,
+      "english_gloss": "Shrek AR dance",
+      "decision_rule": "ai_manual_review",
+      "reason": "References the Shrek character in an AR dance context; potential IP/character sensitivity worth manual review, though app has no risky_ip_terms configured."
+    },
+    {
+      "keyword": "dog face camera",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "dog face camera",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Matches feature_terms dog face combined with camera visual term."
+    },
+    {
+      "keyword": "face dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "dog face",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Reordered variant of feature_terms dog face."
+    },
+    {
+      "keyword": "funny moments",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.55,
+      "english_gloss": "funny moments",
+      "decision_rule": "ai_style",
+      "reason": "Generic funny content descriptor, weak tie to filter/camera product."
+    },
+    {
+      "keyword": "ar dog meme",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "ar dog meme",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines ar/dog core with meme style, on-topic feature phrasing."
+    },
+    {
+      "keyword": "funny meme filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "funny meme filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines funny filter and meme filter core terms into a feature-style phrase."
+    },
+    {
+      "keyword": "jump filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.6,
+      "english_gloss": "jump filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Filter tied to jump action/animation, plausible character-action feature."
+    },
+    {
+      "keyword": "weird filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.72,
+      "english_gloss": "weird filter",
+      "decision_rule": "ai_style",
+      "reason": "Matches style_terms weird combined with core filter term."
+    },
+    {
+      "keyword": "filtro de rosto engraçado",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.85,
+      "english_gloss": "funny face filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for funny face filter, matches localized intent_core_terms filtro de rosto + engraçado style term."
+    },
+    {
+      "keyword": "funny filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "funny filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry funny filter."
+    },
+    {
+      "keyword": "filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.8,
+      "english_gloss": "filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Single generic core word directly naming the app's product category."
+    },
+    {
+      "keyword": "filter prank",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "prank filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Filter used for pranking, aligns with app's playful/joke filter content though prank itself isn't in config lists."
+    },
+    {
+      "keyword": "dog filters",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.93,
+      "english_gloss": "dog filters",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry dog filters."
+    },
+    {
+      "keyword": "filtro meme",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.82,
+      "english_gloss": "meme filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for meme filter, matches localized intent_core_terms filtro meme."
+    },
+    {
+      "keyword": "filter smart app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.45,
+      "english_gloss": "smart filter app",
+      "decision_rule": "ai_manual_review",
+      "reason": "Vague generic descriptor combining filter and smart app; unclear specific intent."
+    },
+    {
+      "keyword": "crazy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.72,
+      "english_gloss": "crazy filter",
+      "decision_rule": "ai_style",
+      "reason": "Matches style_terms crazy combined with core filter term."
+    },
+    {
+      "keyword": "puppy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "puppy filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Direct match to configured feature_terms puppy filter, core to app niche."
+    },
+    {
+      "keyword": "ar videos",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.65,
+      "english_gloss": "ar videos",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Matches feature_terms ar videos, broader AR content expansion."
+    },
+    {
+      "keyword": "câmera com filtro",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.8,
+      "english_gloss": "camera with filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese phrase for camera with filter, matches localized intent_core_words câmera + filtro."
+    },
+    {
+      "keyword": "filtro para vídeo",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.7,
+      "english_gloss": "filter for video",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for video filter, on-topic visual/feature term combining filtro and vídeo."
+    },
+    {
+      "keyword": "efeito tiktok",
+      "detected_language": "pt",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.72,
+      "english_gloss": "tiktok effect",
+      "decision_rule": "ai_style",
+      "reason": "Portuguese+English mix (efeito + tiktok loanword), matches style_terms tiktok platform/trend reference."
+    },
+    {
+      "keyword": "dog face filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "dog face filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "duplicate-guard"
+    },
+    {
+      "keyword": "ar filter fyp doggy",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "ar filter fyp doggy",
+      "decision_rule": "ai_core_intent",
+      "reason": "Near-exact match of the app's own name AR Filter: FYP Dogy Filter."
+    },
+    {
+      "keyword": "ar filter fyp doggy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.92,
+      "english_gloss": "ar filter fyp doggy filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Near-exact match of the app's own full name."
+    },
+    {
+      "keyword": "ar filter app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "ar filter app",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent term ar filter plus generic app suffix."
+    },
+    {
+      "keyword": "ar filter fyp do",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.75,
+      "english_gloss": "ar filter fyp do(g)",
+      "decision_rule": "ai_core_intent",
+      "reason": "Truncated variant of the app's own name ar filter fyp doggy, protected as core intent per truncation policy."
+    },
+    {
+      "keyword": "live ar filters",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "live ar filters",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent term ar filters with live-camera qualifier, matches app function."
+    },
+    {
+      "keyword": "filtro fyp",
+      "detected_language": "pt",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.72,
+      "english_gloss": "fyp filter",
+      "decision_rule": "ai_style",
+      "reason": "Portuguese+English mix (filtro + fyp loanword), matches style_terms fyp."
+    },
+    {
+      "keyword": "ar animal filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "ar animal filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core ar filter term applied to animal/dog niche the app covers."
+    },
+    {
+      "keyword": "filtro ar",
+      "detected_language": "pt",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "ar filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Portuguese+English mix, exact match of localized intent_core_terms filtro ar."
+    },
+    {
+      "keyword": "dogy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.93,
+      "english_gloss": "dogy filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry dogy filter, the app's own brand niche."
+    },
+    {
+      "keyword": "puppy ar filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "puppy ar filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core ar filter term combined with puppy, matches dog filter niche."
+    },
+    {
+      "keyword": "ar dogy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.93,
+      "english_gloss": "ar dogy filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry ar dogy filter."
+    },
+    {
+      "keyword": "ar character filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "ar character filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Matches feature_terms ar character combined with core filter term."
+    },
+    {
+      "keyword": "filtro dogy",
+      "detected_language": "pt",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.82,
+      "english_gloss": "dogy filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Portuguese+English mix combining filtro with the app's own dogy brand term."
+    },
+    {
+      "keyword": "dancing dog ar filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "dancing dog ar filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines ar filter core with dogy dance feature/style terms."
+    },
+    {
+      "keyword": "realistic dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "realistic dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with realism qualifier, still squarely on-topic."
+    },
+    {
+      "keyword": "dog reaction filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.8,
+      "english_gloss": "dog reaction filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with reaction/meme framing central to app's content style."
+    },
+    {
+      "keyword": "filtro cachorrinho",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.82,
+      "english_gloss": "puppy filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Portuguese for puppy filter (diminutive of cachorro), matches localized dog filter niche."
+    },
+    {
+      "keyword": "hilarious dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "hilarious dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with funny/hilarious style qualifier."
+    },
+    {
+      "keyword": "cute dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "cute dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with cute style qualifier."
+    },
+    {
+      "keyword": "ar dog filter with control",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.75,
+      "english_gloss": "ar dog filter with control",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core ar dog filter term with control feature reference, matches app's interactive control feature."
+    },
+    {
+      "keyword": "dog filters for dogs",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.75,
+      "english_gloss": "dog filters for dogs",
+      "decision_rule": "ai_core_intent",
+      "reason": "Redundant phrasing of core dog filters term."
+    },
+    {
+      "keyword": "dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.93,
+      "english_gloss": "dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry dog filter."
+    },
+    {
+      "keyword": "ar effects",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "ar effects",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of configured intent_core_terms entry ar effects."
+    },
+    {
+      "keyword": "barking dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.82,
+      "english_gloss": "barking dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with barking behavior qualifier."
+    },
+    {
+      "keyword": "dogy",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.75,
+      "english_gloss": "dogy",
+      "decision_rule": "ai_core_intent",
+      "reason": "Bare brand/style term dogy central to the app's own name and style_terms list."
+    },
+    {
+      "keyword": "realistic dog filter app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "realistic dog filter app",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Core dog filter term plus app suffix and realism qualifier."
+    },
+    {
+      "keyword": "dog filter meme",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "dog filter meme",
+      "decision_rule": "ai_core_intent",
+      "reason": "Combines core dog filter term with meme style term, exact app niche."
+    },
+    {
+      "keyword": "dog prank filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "dog prank filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Dog filter used for pranks, on-topic playful use-case for the app."
+    },
+    {
+      "keyword": "tiktok filter or dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.55,
+      "english_gloss": "tiktok filter or dog",
+      "decision_rule": "ai_manual_review",
+      "reason": "Garbled phrase mixing tiktok filter and dog, unclear exact intent though on-topic overall."
+    },
+    {
+      "keyword": "augmented reality dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.85,
+      "english_gloss": "augmented reality dog filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Full expansion of AR dog filter, matches feature term augmented reality + dog filter core."
+    },
+    {
+      "keyword": "viral dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "viral dog filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Dog filter with viral/trend framing, on-topic style variant."
+    },
+    {
+      "keyword": "interactive dog filter app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "interactive dog filter app",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Matches feature_terms interactive combined with dog filter core and app suffix."
+    },
+    {
+      "keyword": "funny pet filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "funny pet filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Pet filter with funny style, on-topic for the app's dog/pet filter niche."
+    },
+    {
+      "keyword": "dancing dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.82,
+      "english_gloss": "dancing dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with dancing feature qualifier."
+    },
+    {
+      "keyword": "funny dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.88,
+      "english_gloss": "funny dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with funny qualifier, exact app niche."
+    },
+    {
+      "keyword": "filter choose filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.4,
+      "english_gloss": "choose a filter (garbled repeat)",
+      "decision_rule": "ai_dropped",
+      "reason": "Garbled/duplicated phrase with unclear standalone meaning."
+    },
+    {
+      "keyword": "funny dog filter app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.82,
+      "english_gloss": "funny dog filter app",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Core funny dog filter term with app suffix."
+    },
+    {
+      "keyword": "fyp challenge filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.65,
+      "english_gloss": "fyp challenge filter",
+      "decision_rule": "ai_style",
+      "reason": "Combines fyp style term with filter, referencing tiktok-style trend challenges."
+    },
+    {
+      "keyword": "filtro de ranking fyp",
+      "detected_language": "pt",
+      "language_group": "MIXED",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "fyp ranking filter",
+      "decision_rule": "ai_manual_review",
+      "reason": "Unclear meaning combining filtro, ranking, and fyp; ambiguous whether it refers to an in-app leaderboard or something unrelated."
+    },
+    {
+      "keyword": "funny dog camera filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "funny dog camera filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines funny, dog filter core and camera visual term."
+    },
+    {
+      "keyword": "fall filtro",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "fall filter",
+      "decision_rule": "ai_manual_review",
+      "reason": "Ambiguous mixed term; could mean autumn-themed filter or a 'falling' action filter, unclear relevance."
+    },
+    {
+      "keyword": "what the dog doing filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "what the dog doing filter (meme trend)",
+      "decision_rule": "ai_feature_intent",
+      "reason": "References the viral 'what the dog doin' meme trend applied as a filter, on-topic meme/style content."
+    },
+    {
+      "keyword": "pranks filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.6,
+      "english_gloss": "pranks filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Filter for pranking, aligns with app's playful joke content."
+    },
+    {
+      "keyword": "funny pet filters",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "funny pet filters",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Pet filter with funny style, on-topic for the app's dog/pet filter niche."
+    },
+    {
+      "keyword": "dog filter camera for dogs",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "dog filter camera for dogs",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Redundant long-tail combination of core dog filter and camera terms."
+    },
+    {
+      "keyword": "funny face dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.8,
+      "english_gloss": "funny face dog filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines funny face feature term with dog filter core."
+    },
+    {
+      "keyword": "filtro rosto",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "face filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese shorthand for face filter, matches localized filtro de rosto term."
+    },
+    {
+      "keyword": "ar",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.55,
+      "english_gloss": "ar",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Bare 'ar' acronym, broad category term underlying the app's core intent terms."
+    },
+    {
+      "keyword": "3d scanner",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.35,
+      "english_gloss": "3d scanner",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "3D scanning tool is only loosely related to the app's 3D AR filter effects."
+    },
+    {
+      "keyword": "ar doggy",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.68,
+      "english_gloss": "ar doggy",
+      "decision_rule": "ai_style",
+      "reason": "Combines ar core term with doggy style term but lacks explicit filter/camera object."
+    },
+    {
+      "keyword": "dog smart",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.55,
+      "english_gloss": "smart dog (dog training/intelligence)",
+      "decision_rule": "ai_dropped",
+      "reason": "Likely about dog intelligence/training, unrelated to AR camera filters."
+    },
+    {
+      "keyword": "doggy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "doggy filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Exact match of the doggy spelling variant added to intent_core_terms."
+    },
+    {
+      "keyword": "dog monitor doggy",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.75,
+      "english_gloss": "dog monitor (pet camera)",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Refers to a pet-monitoring camera device category, unrelated to AR face filters."
+    },
+    {
+      "keyword": "dog wifi",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.8,
+      "english_gloss": "dog wifi (pet camera connectivity)",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Refers to wifi-connected pet devices/cameras, unrelated to AR camera filters."
+    },
+    {
+      "keyword": "doge the dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.6,
+      "english_gloss": "Doge the dog (meme dog breed)",
+      "decision_rule": "ai_dropped",
+      "reason": "References the Doge meme dog generically; too generic/ambiguous and not tied to a filter action."
+    },
+    {
+      "keyword": "nearby dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.75,
+      "english_gloss": "nearby dog",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Location-based pet-finding/social term, unrelated to AR camera filters."
+    },
+    {
+      "keyword": "funny dog videos",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "funny dog videos",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Matches feature_terms funny videos applied to dog content, plausible in-app sharing/output use-case."
+    },
+    {
+      "keyword": "dog share",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.6,
+      "english_gloss": "dog share (social sharing)",
+      "decision_rule": "ai_dropped",
+      "reason": "Vague sharing-feature term tied to dogs, not clearly about filters/camera effects."
+    },
+    {
+      "keyword": "share dogs",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.6,
+      "english_gloss": "share dogs",
+      "decision_rule": "ai_dropped",
+      "reason": "Vague sharing-feature term tied to dogs, not clearly about filters/camera effects."
+    },
+    {
+      "keyword": "arstudio pro",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.4,
+      "english_gloss": "AR Studio Pro",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Generic AR-studio-style app name/term, broadly AR-adjacent but not a specific competitor brand in config."
+    },
+    {
+      "keyword": "cute dog videos",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.55,
+      "english_gloss": "cute dog videos",
+      "decision_rule": "ai_manual_review",
+      "reason": "Generic cute dog video content term, only loosely tied to the app's filter-creation function."
+    },
+    {
+      "keyword": "funny cute",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.6,
+      "english_gloss": "funny cute",
+      "decision_rule": "ai_style",
+      "reason": "Generic style descriptor pair without explicit filter/camera/dog object."
+    },
+    {
+      "keyword": "funny animal videos",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.55,
+      "english_gloss": "funny animal videos",
+      "decision_rule": "ai_manual_review",
+      "reason": "Generic funny animal video content term, loosely related but not filter-specific."
+    },
+    {
+      "keyword": "meme sharing",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.55,
+      "english_gloss": "meme sharing",
+      "decision_rule": "ai_dropped",
+      "reason": "Generic meme-sharing feature term without connection to camera/AR filters."
+    },
+    {
+      "keyword": "ai dog photo",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.5,
+      "english_gloss": "AI dog photo",
+      "decision_rule": "ai_manual_review",
+      "reason": "AI-generated dog photo concept, adjacent to but distinct from the app's live AR camera filter function."
+    },
+    {
+      "keyword": "dog shield",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.8,
+      "english_gloss": "dog shield (pet protection product)",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Likely a pet-protection/insurance product term, unrelated to AR camera filters."
+    },
+    {
+      "keyword": "funny ranking filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "funny ranking filter",
+      "decision_rule": "ai_manual_review",
+      "reason": "Unclear meaning combining funny, ranking, and filter; ambiguous exact intent."
+    },
+    {
+      "keyword": "ai video dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.45,
+      "english_gloss": "AI dog video",
+      "decision_rule": "ai_manual_review",
+      "reason": "AI-generated dog video concept, adjacent to but distinct from the app's live AR camera filter function."
+    },
+    {
+      "keyword": "mer filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.4,
+      "english_gloss": "mermaid filter (likely truncated)",
+      "decision_rule": "ai_manual_review",
+      "reason": "Likely a truncated form of 'mermaid filter'; ambiguous and not clearly matching the app's dog/meme niche."
+    },
+    {
+      "keyword": "diarrhea in dogs",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.95,
+      "english_gloss": "diarrhea in dogs",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Veterinary health topic, entirely unrelated to AR camera filters."
+    },
+    {
+      "keyword": "funny dog attack",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "funny dog attack",
+      "decision_rule": "ai_manual_review",
+      "reason": "Ambiguous phrase; could reference a funny 'dog attack' prank filter or unrelated dog-attack content."
+    },
+    {
+      "keyword": "companion funny meme",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.45,
+      "english_gloss": "companion funny meme",
+      "decision_rule": "ai_manual_review",
+      "reason": "Vague phrase possibly referring to a pet-companion meme; unclear specific intent."
+    },
+    {
+      "keyword": "funny aidog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.45,
+      "english_gloss": "funny AI dog",
+      "decision_rule": "ai_manual_review",
+      "reason": "Garbled/concatenated term possibly meaning 'funny AI dog'; ambiguous exact intent."
+    },
+    {
+      "keyword": "dog funny camera",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "dog funny camera",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines dog filter core with funny camera feature term."
+    },
+    {
+      "keyword": "dog moments",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.55,
+      "english_gloss": "dog moments",
+      "decision_rule": "ai_style",
+      "reason": "Generic dog content descriptor without explicit filter/camera object."
+    },
+    {
+      "keyword": "viral dog videos",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "viral dog videos",
+      "decision_rule": "ai_manual_review",
+      "reason": "Generic viral dog video content term, not clearly about filters/camera effects."
+    },
+    {
+      "keyword": "fy filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.65,
+      "english_gloss": "fyp filter (typo)",
+      "decision_rule": "ai_style",
+      "reason": "Likely truncated/typo of fyp filter, matches style_terms fyp."
+    },
+    {
+      "keyword": "choosing filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.6,
+      "english_gloss": "choosing a filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Describes the in-app action of selecting a filter, plausible UI-flow feature term."
+    },
+    {
+      "keyword": "pet ar filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "pet ar filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines ar filter core with pet/dog niche."
+    },
+    {
+      "keyword": "filter for dogs",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "filter for dogs",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Core filter term applied to dogs, on-topic phrasing."
+    },
+    {
+      "keyword": "live dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "live dog filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Dog filter with live/real-time camera qualifier."
+    },
+    {
+      "keyword": "jumping filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.6,
+      "english_gloss": "jumping filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Filter tied to jumping action/animation, plausible character-action feature similar to configured character actions term."
+    },
+    {
+      "keyword": "skipping filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.58,
+      "english_gloss": "skipping filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Filter tied to skipping action/animation, plausible character-action feature similar to configured character actions term."
+    },
+    {
+      "keyword": "augmented reality dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.7,
+      "english_gloss": "augmented reality dog",
+      "decision_rule": "ai_feature_intent",
+      "reason": "AR dog content term without explicit filter word, still clearly on-topic for an AR dog filter app."
+    },
+    {
+      "keyword": "dog postures",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "dog postures",
+      "decision_rule": "ai_manual_review",
+      "reason": "Ambiguous phrase, could reference dog body-pose animations in a filter or unrelated pet-training content."
+    },
+    {
+      "keyword": "dog viod",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.4,
+      "english_gloss": "dog video (typo)",
+      "decision_rule": "ai_dropped",
+      "reason": "Likely typo of 'dog video'; too generic/garbled and not tied to filters specifically."
+    },
+    {
+      "keyword": "realistic ar dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "realistic ar dog",
+      "decision_rule": "ai_feature_intent",
+      "reason": "AR dog content with realism qualifier, on-topic though missing filter word."
+    },
+    {
+      "keyword": "dis dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.4,
+      "english_gloss": "this dog (likely typo)",
+      "decision_rule": "ai_manual_review",
+      "reason": "Likely informal/typo form of 'this dog'; too vague to confidently classify."
+    },
+    {
+      "keyword": "dog video adngenerator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.5,
+      "english_gloss": "dog video ad generator",
+      "decision_rule": "ai_dropped",
+      "reason": "Appears to reference an ad-generation tool, not the app's AR camera filter function."
+    },
+    {
+      "keyword": "aantrekkelijk filter",
+      "detected_language": "nl",
+      "language_group": "FOREIGN",
+      "semantic_bucket": "Language Mismatch Audit",
+      "confidence": 0.6,
+      "english_gloss": "attractive filter",
+      "decision_rule": "ai_lang_mismatch",
+      "reason": "Dutch-language keyword ('aantrekkelijk' = attractive); not English, Portuguese, or a common loanword for this BR_PT market."
+    },
+    {
+      "keyword": "ar da",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.35,
+      "english_gloss": "ar da (garbled/unclear)",
+      "decision_rule": "ai_dropped",
+      "reason": "Fragmentary/garbled text, likely truncated or noise with no clear standalone meaning."
+    },
+    {
+      "keyword": "diso dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.4,
+      "english_gloss": "diso dog (garbled/unclear)",
+      "decision_rule": "ai_dropped",
+      "reason": "Garbled text with no clear meaning or relevance to AR/camera filters."
+    },
+    {
+      "keyword": "dog injury",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "dog injury",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Veterinary/pet health topic, entirely unrelated to AR camera filters."
+    },
+    {
+      "keyword": "dog whines",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.85,
+      "english_gloss": "dog whines (dog behavior)",
+      "decision_rule": "ai_irrelevant",
+      "reason": "Pet behavior topic, unrelated to AR camera filters."
+    },
+    {
+      "keyword": "what the dog doin filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "what the dog doin filter (meme trend)",
+      "decision_rule": "ai_feature_intent",
+      "reason": "References viral 'what the dog doin' meme trend as a filter, on-topic meme content."
+    },
+    {
+      "keyword": "da dog doin",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.55,
+      "english_gloss": "the dog doin (meme trend, garbled)",
+      "decision_rule": "ai_style",
+      "reason": "Garbled variant of the viral 'what the dog doin' meme phrase, style/trend reference."
+    },
+    {
+      "keyword": "dog apt",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.35,
+      "english_gloss": "dog apartment (unclear abbreviation)",
+      "decision_rule": "ai_dropped",
+      "reason": "Unclear abbreviation, likely unrelated to AR filters (possibly 'dog apartment/dog app' typo) with no clear on-topic meaning."
+    },
+    {
+      "keyword": "interactive ar dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.68,
+      "english_gloss": "interactive ar dog",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Matches feature_terms interactive combined with ar dog core niche."
+    },
+    {
+      "keyword": "what the dog doin",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.6,
+      "english_gloss": "what the dog doin (meme trend)",
+      "decision_rule": "ai_style",
+      "reason": "Viral meme phrase about dogs; style/trend reference without explicit filter/camera intent."
+    },
+    {
+      "keyword": "what the dog doin ar",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "what the dog doin AR (meme trend)",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Viral dog meme trend combined with AR, on-topic feature phrasing."
+    },
+    {
+      "keyword": "what the dog doin meme",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "what the dog doin meme",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Viral dog meme trend combined with meme style term."
+    },
+    {
+      "keyword": "dog fun explore",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.55,
+      "english_gloss": "dog fun explore",
+      "decision_rule": "ai_dropped",
+      "reason": "Vague generic discovery/explore phrase, no explicit filter/camera intent."
+    },
+    {
+      "keyword": "explore fun dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.55,
+      "english_gloss": "explore fun dog",
+      "decision_rule": "ai_dropped",
+      "reason": "Vague generic discovery/explore phrase, no explicit filter/camera intent."
+    },
+    {
+      "keyword": "funny dog app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.7,
+      "english_gloss": "funny dog app",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Generic funny dog app phrasing, plausible match for app discovery."
+    },
+    {
+      "keyword": "funny dog attack filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "funny dog attack filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Dog attack prank filter concept, on-topic playful filter use-case."
+    },
+    {
+      "keyword": "crazy dog prank",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "crazy dog prank",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Dog-themed prank content, aligns with app's playful prank/meme filter style."
+    },
+    {
+      "keyword": "cutest dog filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "cutest dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core dog filter term with cute style qualifier."
+    },
+    {
+      "keyword": "dog attack filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "dog attack filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Dog-themed prank/attack filter concept, on-topic playful filter use-case."
+    },
+    {
+      "keyword": "dog explore fun",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.55,
+      "english_gloss": "dog explore fun",
+      "decision_rule": "ai_dropped",
+      "reason": "Vague generic discovery/explore phrase, no explicit filter/camera intent."
+    },
+    {
+      "keyword": "dog funny faces",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "dog funny faces",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Matches feature_terms funny face applied to dog niche."
+    },
+    {
+      "keyword": "funniest dog app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.68,
+      "english_gloss": "funniest dog app",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Generic funny dog app phrasing, plausible app discovery term."
+    },
+    {
+      "keyword": "funny ar dog",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "funny ar dog",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines funny style with ar dog core niche."
+    },
+    {
+      "keyword": "ar selfie",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.7,
+      "english_gloss": "ar selfie",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines ar core term with selfie visual term."
+    },
+    {
+      "keyword": "ar camera video",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "ar camera video",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines ar camera core term with video visual term."
+    },
+    {
+      "keyword": "face ar",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.68,
+      "english_gloss": "face AR",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Combines face with ar core term, generic face-AR phrasing on-topic for face filters."
+    },
+    {
+      "keyword": "ar camera apps",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "ar camera apps",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent term ar camera with generic apps suffix."
+    },
+    {
+      "keyword": "augmented reality pictures",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "augmented reality pictures",
+      "decision_rule": "ai_feature_intent",
+      "reason": "AR content combined with pictures visual term, on-topic general AR photo phrasing."
+    },
+    {
+      "keyword": "filtros de tiktok",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.7,
+      "english_gloss": "tiktok filters",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for tiktok filters, on-topic style/platform reference to trending filters."
+    },
+    {
+      "keyword": "filtro de rosto",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.82,
+      "english_gloss": "face filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for face filter, matches localized intent_core_terms filtro de rosto."
+    },
+    {
+      "keyword": "efeitos de rosto",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.78,
+      "english_gloss": "face effects",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for face effects, matches localized ar effects/face concept."
+    },
+    {
+      "keyword": "personagens 3d",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.82,
+      "english_gloss": "3d characters",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for 3d characters, exact match of localized feature_terms personagens 3d."
+    },
+    {
+      "keyword": "filtro de cachorro",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.88,
+      "english_gloss": "dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Portuguese for dog filter, exact match of localized intent_core_terms filtro de cachorro."
+    },
+    {
+      "keyword": "filtro cachorro",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.85,
+      "english_gloss": "dog filter",
+      "decision_rule": "ai_core_intent",
+      "reason": "Portuguese shorthand for dog filter, matches localized intent_core_terms filtro de cachorro."
+    },
+    {
+      "keyword": "efeito cachorro",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.75,
+      "english_gloss": "dog effect",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for dog effect, matches ar effect core term applied to dog niche."
+    },
+    {
+      "keyword": "filtro de pegadinhas",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "prank filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for prank filter, plausible playful filter use-case though pegadinha not in config lists."
+    },
+    {
+      "keyword": "filter bf fake",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.6,
+      "english_gloss": "fake boyfriend filter",
+      "decision_rule": "ai_dropped",
+      "reason": "Likely references a 'fake boyfriend/girlfriend' prank filter trend unrelated to the app's dog/meme AR niche."
+    },
+    {
+      "keyword": "pegadinha com filtro de animal",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.65,
+      "english_gloss": "prank with animal filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for prank with animal filter, on-topic playful animal-filter use-case."
+    },
+    {
+      "keyword": "pegadinha com filtro de aranha",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "prank with spider filter",
+      "decision_rule": "ai_manual_review",
+      "reason": "Portuguese for prank with spider filter; spider is outside the app's dog/animal-face niche, ambiguous relevance."
+    },
+    {
+      "keyword": "ar bug filter",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "ar bug filter",
+      "decision_rule": "ai_manual_review",
+      "reason": "Ambiguous: could mean insect-bug AR filter (off-niche) or software bug in the AR filter; not clearly on-topic."
+    },
+    {
+      "keyword": "arrested filter prank",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Manual Review",
+      "confidence": 0.5,
+      "english_gloss": "arrested filter prank",
+      "decision_rule": "ai_manual_review",
+      "reason": "Unclear meaning; possibly references a 'you're under arrest' prank filter trend, ambiguous relevance."
+    },
+    {
+      "keyword": "filtro de pegadinha de cachorro",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.72,
+      "english_gloss": "dog prank filter",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for dog prank filter, on-topic combination of dog and prank filter concepts."
+    },
+    {
+      "keyword": "animal filter prank",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.68,
+      "english_gloss": "animal filter prank",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Animal filter used for pranks, on-topic playful use-case for the app's animal filters."
+    },
+    {
+      "keyword": "cachorro camera",
+      "detected_language": "pt",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.7,
+      "english_gloss": "dog camera",
+      "decision_rule": "ai_feature_intent",
+      "reason": "Portuguese for dog camera, combines cachorro (dog, localized style term) with camera visual term."
+    }
+  ]
+}

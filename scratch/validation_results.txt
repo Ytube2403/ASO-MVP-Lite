@@ -1,0 +1,69 @@
+=== nds_emulator_BR-PT_Output.xlsx ===
+  Main Shortlist Rows: 40
+  Top 10 Keywords:
+    - 'games emulator' (Core Intent Final): Vol=12, Rel=0.65, Bal=0.54 -> 🏷️ Title
+    - 'game emulator gb4' (Core Intent Final): Vol=7, Rel=0.65, Bal=0.51 -> 🏷️ Title
+    - 'arcade games emulator' (Core Intent Final): Vol=9, Rel=0.65, Bal=0.48 -> 📱 Short Description
+    - 'console emulator' (Core Intent Final): Vol=7, Rel=0.65, Bal=0.47 -> 📱 Short Description
+    - 'gb4 emulator' (Core Intent Final): Vol=25, Rel=0.30, Bal=0.46 -> 📱 Short Description
+    - 'ds game emulator' (Core Intent Final): Vol=18, Rel=0.80, Bal=0.46 -> 📱 Short Description
+    - 'game console emulator' (Core Intent Final): Vol=7, Rel=0.65, Bal=0.45 -> 📱 Short Description
+    - 'gaming emulator' (Core Intent Final): Vol=7, Rel=0.30, Bal=0.43 -> 📱 Short Description
+    - 'gbã emulator' (Core Intent Final): Vol=18, Rel=0.65, Bal=0.43 -> 📱 Short Description
+    - 'emulator' (Core Intent Final): Vol=8, Rel=0.45, Bal=0.42 -> 📄 Full Description
+
+=== nds_emulator_ID-ID_Output.xlsx ===
+  Main Shortlist Rows: 40
+  Top 10 Keywords:
+    - 'game emulator' (Core Intent Final): Vol=18, Rel=0.78, Bal=0.57 -> 🏷️ Title
+    - 'nds emulator offline' (Core Intent Final): Vol=18, Rel=0.80, Bal=0.46 -> 🏷️ Title
+    - 'nds emulator with games' (Core Intent Final): Vol=18, Rel=0.80, Bal=0.44 -> 📱 Short Description
+    - 'nds emulator for android free' (Core Intent Final): Vol=9, Rel=0.80, Bal=0.43 -> 📱 Short Description
+    - 'emu' (Core Intent Final): Vol=21, Rel=0.30, Bal=0.41 -> 📱 Short Description
+    - 'game emulator game konsol' (Core Intent Final): Vol=7, Rel=0.65, Bal=0.41 -> 📱 Short Description
+    - 'controller emulator' (Core Intent Final): Vol=9, Rel=0.30, Bal=0.39 -> 📱 Short Description
+    - 'emulator semua konsol' (Core Intent Final): Vol=7, Rel=0.65, Bal=0.39 -> 📱 Short Description
+    - 'all in one emulator' (Core Intent Final): Vol=18, Rel=0.35, Bal=0.38 -> 📱 Short Description
+    - 'emulator permainan' (Core Intent Final): Vol=5, Rel=0.65, Bal=0.35 -> 📄 Full Description
+
+=== nds_emulator_IN-HI_Output.xlsx ===
+  Main Shortlist Rows: 40
+  Top 10 Keywords:
+    - 'nds emulator' (Core Intent Final): Vol=8, Rel=0.80, Bal=0.47 -> 🏷️ Title
+    - 'emulator' (Core Intent Final): Vol=31, Rel=0.45, Bal=0.45 -> 🏷️ Title
+    - 'nds emulator for android' (Core Intent Final): Vol=18, Rel=0.80, Bal=0.44 -> 📱 Short Description
+    - 'game emulator' (Core Intent Final): Vol=5, Rel=0.78, Bal=0.41 -> 📱 Short Description
+    - 'गेम एमुलेटर' (Core Intent Final): Vol=5, Rel=0.65, Bal=0.39 -> 📱 Short Description
+    - 'controller emulator' (Core Intent Final): Vol=13, Rel=0.30, Bal=0.39 -> 📱 Short Description
+    - 'कंसोल एमुलेटर' (Core Intent Final): Vol=5, Rel=0.65, Bal=0.38 -> 📱 Short Description
+    - 'game emulator android' (Core Intent Final): Vol=5, Rel=0.65, Bal=0.37 -> 📱 Short Description
+    - 'गेमिंग कंसोल एमुलेटर' (Core Intent Final): Vol=5, Rel=0.65, Bal=0.35 -> 📱 Short Description
+    - '90s ke game' (Core Intent Final): Vol=18, Rel=0.45, Bal=0.35 -> 📄 Full Description
+
+=== nds_emulator_MX-ES_Output.xlsx ===
+  Main Shortlist Rows: 40
+  Top 10 Keywords:
+    - 'game emulator' (Core Intent Final): Vol=8, Rel=0.78, Bal=0.56 -> 🏷️ Title
+    - 'juegos ds' (Core Intent Final): Vol=7, Rel=0.65, Bal=0.43 -> 🏷️ Title
+    - 'emulador' (Core Intent Final): Vol=56, Rel=0.30, Bal=0.41 -> 📱 Short Description
+    - 'juego emulador' (Core Intent Final): Vol=9, Rel=0.30, Bal=0.40 -> 📱 Short Description
+    - 'emulador android' (Core Intent Final): Vol=7, Rel=0.30, Bal=0.39 -> 📱 Short Description
+    - 'juegos de emulador' (Core Intent Final): Vol=13, Rel=0.30, Bal=0.37 -> 📱 Short Description
+    - 'game emulador' (Core Intent Final): Vol=5, Rel=0.65, Bal=0.37 -> 📱 Short Description
+    - 'emuladores' (Core Intent Final): Vol=50, Rel=0.30, Bal=0.35 -> 📱 Short Description
+    - 'emulador de juegos de ds' (Core Intent Final): Vol=5, Rel=1.00, Bal=0.33 -> 📱 Short Description
+    - 'emulador de juegos ds' (Core Intent Final): Vol=5, Rel=1.00, Bal=0.33 -> 📄 Full Description
+
+=== nds_emulator_US-EN_Output.xlsx ===
+  Main Shortlist Rows: 40
+  Top 10 Keywords:
+    - 'games emulator' (Core Intent Final): Vol=12, Rel=0.65, Bal=0.54 -> 🏷️ Title
+    - 'game emulator replay' (Core Intent Final): Vol=7, Rel=0.65, Bal=0.49 -> 🏷️ Title
+    - 'video game emulator' (Core Intent Final): Vol=18, Rel=0.65, Bal=0.49 -> 📱 Short Description
+    - 'gba game emulator' (Core Intent Final): Vol=24, Rel=0.80, Bal=0.49 -> 📱 Short Description
+    - 'emulator' (Core Intent Final): Vol=59, Rel=0.45, Bal=0.48 -> 📱 Short Description
+    - '8 bit game emulator' (Core Intent Final): Vol=14, Rel=0.65, Bal=0.48 -> 📱 Short Description
+    - 'all in one emulator' (Core Intent Final): Vol=8, Rel=0.70, Bal=0.47 -> 📱 Short Description
+    - 'gba emulator' (Core Intent Final): Vol=46, Rel=0.65, Bal=0.43 -> 📱 Short Description
+    - 'one emulator' (Core Intent Final): Vol=18, Rel=0.35, Bal=0.42 -> 📱 Short Description
+    - 'game boy advance gba emulator' (Core Intent Final): Vol=12, Rel=0.65, Bal=0.42 -> 📄 Full Description

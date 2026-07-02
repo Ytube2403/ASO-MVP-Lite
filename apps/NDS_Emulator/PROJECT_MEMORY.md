@@ -1,12 +1,12 @@
 # Project Memory
 
-Generated: 2026-07-02 15:20:54
+Generated: 2026-07-02 16:49:12
 
 ## Identity
 - App: SuperNDS: Retro Games Emulator
 - App ID: com.emulator.nds.super.game.console.handheld
 - Category: Game Emulator
-- Market: MX_ES
+- Market: IN_HI
 - Semantic mode: game_emulator
 
 ## Positioning
