@@ -742,13 +742,6 @@ def get_language_bonus(row):
 
 df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
 
-# Apply low volume penalty (Volume <= 5)
-def apply_volume_penalty(row):
-    score = row['BalancedScore']
-    if float(row['Volume']) <= 5.0:
-        score -= 0.15
-    return max(0.0, score)
-
 # Low-volume suppression now lives in VolumeN (log-reach); avoid double-penalizing here.
 df['BalancedScore'] = df['BalancedScore'].clip(0.0, 1.0).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)

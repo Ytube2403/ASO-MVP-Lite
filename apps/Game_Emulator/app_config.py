@@ -41,6 +41,8 @@ FILTER_POLICY = {
         "core_intent_override": True,
     },
     "volume_score_policy": {
+        "mode": "log_reach",
+        "reach_reference": 100000.0,
         "max_low_tier_consider_keywords": 3,
         "exclude_low_tier_from_metadata_shortlist": True
     },

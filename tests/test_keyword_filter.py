@@ -111,6 +111,51 @@ class KeywordFilterTests(unittest.TestCase):
         self.assertEqual(keyword_filter.classify_keyword(item, BASE_CONFIG)[0], "Core Intent Final")
         self.assertGreaterEqual(keyword_filter.calculate_relevancy(item, BASE_CONFIG), 0.65)
 
+    def test_agentic_core_bucket_sets_relevancy_floor_without_term_match(self):
+        item = row(
+            "emulador",
+            "PRIMARY",
+            AISemanticBucket="Core Intent Final",
+            AIDecisionRule="ai_core_intent",
+            AIConfidence=0.92,
+        )
+
+        self.assertGreaterEqual(keyword_filter.calculate_relevancy(item, BASE_CONFIG), 0.65)
+
+    def test_agentic_feature_bucket_sets_relevancy_floor_without_term_match(self):
+        item = row(
+            "emulador de jogos gba",
+            "MIXED",
+            AISemanticBucket="Feature Keywords",
+            AIDecisionRule="ai_feature_intent",
+            AIConfidence=0.88,
+        )
+
+        self.assertGreaterEqual(keyword_filter.calculate_relevancy(item, BASE_CONFIG), 0.50)
+
+    def test_agentic_style_bucket_does_not_raise_relevancy_floor(self):
+        item = row(
+            "dragon ball",
+            "SECONDARY",
+            AISemanticBucket="Style Keywords",
+            AIDecisionRule="ai_style_intent",
+            AIConfidence=0.95,
+        )
+
+        self.assertEqual(keyword_filter.calculate_relevancy(item, BASE_CONFIG), 0.30)
+
+    def test_agentic_floor_does_not_rescue_blocked_risk(self):
+        item = row(
+            "pokemon emulator",
+            "PRIMARY",
+            is_risky_ip=True,
+            AISemanticBucket="Core Intent Final",
+            AIDecisionRule="ai_core_intent",
+            AIConfidence=0.95,
+        )
+
+        self.assertLess(keyword_filter.calculate_relevancy(item, BASE_CONFIG), 0.65)
+
     def test_translated_en_text_drives_row_aware_filters(self):
         self.assertTrue(keyword_filter.is_competitor_keyword(row("editor de fotos", EN="picsart editor"), BASE_CONFIG))
         self.assertTrue(keyword_filter.is_irrelevant_keyword(row("juego divertido", EN="fun game"), BASE_CONFIG))

@@ -318,9 +318,8 @@ config = {
 
     "balanced_weights": {
         "VolumeN": 0.35,
-        "DifficultyN": 0.10,
-        "KEIN": 0.10,
-        "RelevancyScore": 0.25,
+        "DifficultyN": 0.15,
+        "RelevancyScore": 0.30,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
     }

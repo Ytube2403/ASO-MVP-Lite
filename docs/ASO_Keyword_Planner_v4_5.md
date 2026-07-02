@@ -272,7 +272,7 @@ File 01_Main_Keyword_Shortlist.csv pháº£i cÃ³ cá»™t Section:
 | 3 | Market Language Policy | DataFrame B2 | DataFrame + language fields | Kiá»ƒm tra keyword cÃ³ Ä‘Ãºng ngÃ´n ngá»¯ market khÃ´ng |
 | 4 | Language Naturalness Filter | DataFrame B3 | DataFrame + NaturalnessFlag | PhÃ¡t hiá»‡n keyword khÃ´ng tá»± nhiÃªn, stuffing, phrase lá»—i |
 | 5 | Relevancy Scoring | DataFrame B4 | DataFrame + RelevancyScore | TÃ­nh Ä‘iá»ƒm liÃªn quan vá»›i app |
-| 6 | Balanced Score | DataFrame B5 | DataFrame + BalancedScore | Káº¿t há»£p Volume, Difficulty, KEI, Rank, Relevancy |
+| 6 | Balanced Score | DataFrame B5 | DataFrame + BalancedScore | Ket hop Volume, Difficulty, Rank, Relevancy va Expansion; KEI chi giu de audit |
 | 7 | Bucket Classification | DataFrame B6 | Keyword buckets | Chia Core / Broad / Consider / Reserve / Drop |
 | 8 | Word Overlap & Diversity Filter | Buckets | Shortlist Ä‘a dáº¡ng | TrÃ¡nh Top keyword bá»‹ láº·p Ã½ quÃ¡ nhiá»u |
 | 9 | Metadata Assignment | Shortlist | File output chÃ­nh | Gá»£i Ã½ keyword theo platform metadata |
@@ -428,9 +428,8 @@ APP_CONFIG = {
 
     # â”€â”€â”€ Balanced Score Weights â”€â”€â”€
     "balanced_weights": {
-        "VolumeN": 0.20,
+        "VolumeN": 0.35,
         "DifficultyN": 0.15,
-        "KEIN": 0.15,
         "RelevancyScore": 0.30,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
@@ -446,6 +445,8 @@ APP_CONFIG = {
     },
 
     "volume_score_policy": {
+        "mode": "log_reach",
+        "reach_reference": 100000.0,
         "search_popularity_floor": 5.0,
         "search_popularity_ceiling": 100.0,
         "exponential_curve_factor": 4.0,
@@ -769,15 +770,33 @@ CÃ´ng thá»©c gá»£i Ã½:
 ```text
 RelevancyScore =
 base
-+ intent_core_match
-+ feature_specific_match
-+ style_theme_match
-+ visual_extra_match
-- competitor_penalty
-- noise_penalty
-- language_mismatch_penalty
-- naturalness_penalty
++ 0.35 if core intent matches
++ 0.20 if feature intent matches
++ 0.15 if style intent matches
+- 0.20 if competitor
+- 0.25 if irrelevant
+- 0.30 if LanguageGroup = FOREIGN
++ CompetitorBoost
 ```
+
+Actual pipeline scoring order:
+
+1. If the input already has `RelevancyScore`, use `max(raw_score + CompetitorBoost, calculate_relevancy(row, config))`.
+2. Otherwise use `calculate_relevancy(row, config)` as the lexical score.
+3. Blend the deterministic AI-cache rubric with `max(current_score, calculate_rubric_relevancy(row, config))`.
+4. Run `dampen_stacked_relevancy(row, config)` so keyword-stuffed low-demand phrases cannot win only by matching many intent categories.
+
+`calculate_relevancy()` also applies conservative AI-classification floors when the row is not blocked/risky: Core Intent Final `>= 0.65`, Feature/System Keywords `>= 0.50`, Broad Expansion `>= 0.45`.
+
+Rubric formula:
+
+```text
+rubric = bucket_base(AISemanticBucket)
+       - (1 - AIConfidence) * confidence_span
+       + language_adjust(LanguageGroup)
+```
+
+Default rubric bases: Core Intent Final `0.90`; Feature/System Keywords `0.70`; Broad Expansion `0.55`; Consider/Style Keywords `0.45`; Generic Style Reserve `0.35`; Manual Review `0.30`; Language Mismatch Audit `0.15`; Dropped `0.00`. FOREIGN language rows get `0.00` from rubric.
 
 ### 9.1 VÃ­ dá»¥ Ä‘iá»ƒm cao
 
@@ -820,13 +839,20 @@ CÃ´ng thá»©c máº·c Ä‘á»‹nh:
 
 ```text
 BalancedScore =
-0.20 * VolumeN
+0.35 * VolumeN
 + 0.15 * DifficultyN
-+ 0.15 * KEIN
 + 0.30 * RelevancyScore
 + 0.10 * CurrentRankN
 + 0.10 * ExpansionValue
++ language_bonus
 ```
+
+`language_bonus` is added after the weighted score: PRIMARY `+0.02`, SECONDARY
+`+0.01`, all other language groups `+0.00`; the final score is clamped to `0..1`.
+
+`KEIN` can still be calculated/exported for audit, but its default weight is `0.0`.
+If a legacy app config still has `KEIN > 0`, `resolve_balanced_weights(config)`
+migrates it to this KEIN-free default scheme.
 
 ### 10.1 CÃ´ng thá»©c normalize báº¯t buá»™c
 
@@ -835,6 +861,19 @@ BalancedScore =
 #### VolumeN
 
 `Volume` tá»« AppTweak lÃ  Search Popularity theo thang phi tuyáº¿n `5â€“100`, khÃ´ng pháº£i sá»‘ lÆ°á»£t tÃ¬m kiáº¿m tuyá»‡t Ä‘á»‘i. Pipeline Æ°u tiÃªn `MaximumReach` náº¿u CSV cÃ³ cá»™t nÃ y. Náº¿u CSV khÃ´ng cÃ³ `MaximumReach`, pipeline dÃ¹ng proxy exponential trÃªn thang Search Popularity tuyá»‡t Ä‘á»‘i:
+
+Default v4.5 when `MaximumReach` is present:
+
+```text
+VolumeN = log1p(min(MaximumReach, reach_reference)) / log1p(reach_reference)
+```
+
+`volume_score_policy.mode` defaults to `"log_reach"` and `reach_reference` defaults
+to `100000.0`. Set `mode = "reach_linear"` only to restore the old
+`MaximumReach / reference` behavior. Set `reach_reference = 0` to use the run's
+`safe_reach_ceiling(df, config)` instead of a fixed cross-month anchor.
+
+Fallback when no valid reach exists:
 
 ```text
 CurrentVolumeN = exp_curve(Volume, floor=5, ceiling=100)
@@ -867,6 +906,9 @@ Náº¿u khÃ´ng cÃ³ KEI hoáº·c MaxKEI = 0:
 ```text
 KEIN = 0
 ```
+
+Trong BalancedScore v4.5, `KEIN` chi giu de audit workbook va khong con dong
+gop diem (`weight = 0.0`) vi KEI la ham cua Volume va Difficulty.
 
 #### CurrentRankN
 
@@ -1376,9 +1418,8 @@ APP_CONFIG = {
     },
 
     "balanced_weights": {
-        "VolumeN": 0.20,
+        "VolumeN": 0.35,
         "DifficultyN": 0.15,
-        "KEIN": 0.15,
         "RelevancyScore": 0.30,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
@@ -1393,6 +1434,8 @@ APP_CONFIG = {
     },
 
     "volume_score_policy": {
+        "mode": "log_reach",
+        "reach_reference": 100000.0,
         "search_popularity_floor": 5.0,
         "search_popularity_ceiling": 100.0,
         "exponential_curve_factor": 4.0,
@@ -2559,16 +2602,16 @@ Core/Feature/Broad/Consider la nhan giai thich va metadata placement, khong phai
 
 `shared/keyword_filter/scoring.py` la source of truth duy nhat cho `VolumeN`.
 
-- Neu CSV co `MaximumReach` va reach ceiling > 0, `VolumeN = MaximumReach / reach_ceiling`. Tu v4.5, reach ceiling la `safe_reach_ceiling(df, config)` (percentile 95 tren cac dong khong phai competitor/irrelevant), khong con `max()` tuyet doi ca pool - xem section 36.2.
+- Neu CSV co `MaximumReach` hop le, default `VolumeN = log1p(min(MaximumReach, reference)) / log1p(reference)`, voi `reference = volume_score_policy.reach_reference` (mac dinh `100000.0`). Neu `reach_reference = 0`, reference fallback ve `safe_reach_ceiling(df, config)` (percentile 95 tren cac dong khong phai competitor/irrelevant), khong con `max()` tuyet doi ca pool - xem section 36.2.
 - Neu khong co reach hop le, fallback sang exponential Search Popularity tren `Volume` va `Max. Volume`.
 - Low-tier cap (`Volume <= low_tier_threshold`) chi ap dung mot lan trong shared scoring qua `low_tier_score_cap`.
 - Runner khong duoc tru them penalty rieng vao `BalancedScore` cho `Volume <= 5`.
 
-Balanced weights hien hanh cua `Game_Emulator`:
+Balanced weights hien hanh theo source of truth:
 
 ```text
-VolumeN=0.35, DifficultyN=0.10, KEIN=0.10,
-RelevancyScore=0.25, CurrentRankN=0.10, ExpansionValue=0.10
+VolumeN=0.35, DifficultyN=0.15, KEIN=0.00,
+RelevancyScore=0.30, CurrentRankN=0.10, ExpansionValue=0.10
 ```
 
 ### 34.5 Risk gate truoc AI/subagent bucket
@@ -2675,7 +2718,7 @@ max_reach = _shared_keyword_filter.safe_reach_ceiling(df, config)
 
 Van de: `calculate_relevancy` cong don doc lap +0.35/+0.20/+0.15 cho moi nhom intent (core/feature/style) khop duoc, nen 1 cum tu nhoi nhieu buzzword (vd "retro emulator save state") co the dat RelevancyScore ~1.0 du khong co nhu cau tim kiem that, danh bai keyword that su pho bien hon nhung chi khop 1 nhom (RelevancyScore ~0.5-0.65).
 
-Fix: neu 1 keyword khop >= `min_category_hits` (mac dinh 2) nhom intent VA Volume <= `max_volume` (mac dinh 10) VA MaximumReach <= `max_reach` (mac dinh 0), cap RelevancyScore ve toi da `score_cap` (mac dinh 0.65). Kiem tra ca 2 nguon text (Keyword va EN gloss) giong het cach `has_core_intent`/`has_feature_intent`/`has_style_intent` da lam - chi check 1 nguon se bo sot hit chi xuat hien o nguon con lai (vd tu viet tat trong Keyword duoc AI dich day du trong EN gloss). Runner goi ngay sau khi RelevancyScore duoc chot (truoc Step 6):
+Fix: neu 1 keyword khop >= `min_category_hits` (mac dinh 2) nhom intent VA Volume <= `max_volume` (mac dinh 10) VA MaximumReach <= `max_reach` (mac dinh 5.0), cap RelevancyScore ve toi da `score_cap` (mac dinh 0.65). Kiem tra ca 2 nguon text (Keyword va EN gloss) giong het cach `has_core_intent`/`has_feature_intent`/`has_style_intent` da lam - chi check 1 nguon se bo sot hit chi xuat hien o nguon con lai (vd tu viet tat trong Keyword duoc AI dich day du trong EN gloss). Runner goi ngay sau khi RelevancyScore duoc chot (truoc Step 6):
 
 ```python
 df['RelevancyScore'] = df.apply(lambda r: _shared_keyword_filter.dampen_stacked_relevancy(r, config), axis=1)

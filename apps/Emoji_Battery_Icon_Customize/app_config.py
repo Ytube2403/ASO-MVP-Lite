@@ -347,9 +347,8 @@ APP_CONFIG = {
 
     "balanced_weights": {
         "VolumeN": 0.35,
-        "DifficultyN": 0.10,
-        "KEIN": 0.10,
-        "RelevancyScore": 0.25,
+        "DifficultyN": 0.15,
+        "RelevancyScore": 0.30,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
     },
@@ -363,6 +362,8 @@ APP_CONFIG = {
     },
 
     "volume_score_policy": {
+        "mode": "log_reach",
+        "reach_reference": 100000.0,
         "search_popularity_floor": 5.0,
         "search_popularity_ceiling": 45.0,
         "exponential_curve_factor": 4.0,

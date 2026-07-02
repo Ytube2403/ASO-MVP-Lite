@@ -257,9 +257,8 @@ APP_CONFIG = {
 
     "balanced_weights": {
         "VolumeN": 0.35,          # Trọng số điểm Volume (Lượng tìm kiếm)
-        "DifficultyN": 0.10,      # Trọng số điểm Difficulty (Độ cạnh tranh - càng thấp điểm càng cao)
-        "KEIN": 0.10,             # Trọng số điểm KEI (Hiệu quả từ khóa)
-        "RelevancyScore": 0.25,   # Trọng số điểm liên quan (Relevancy - Quan trọng nhất)
+        "DifficultyN": 0.15,      # Trọng số điểm Difficulty (Độ cạnh tranh - càng thấp điểm càng cao)
+        "RelevancyScore": 0.30,   # Trọng số điểm liên quan (Relevancy)
         "CurrentRankN": 0.10,     # Trọng số điểm thứ hạng hiện tại của app
         "ExpansionValue": 0.10    # Trọng số điểm mở rộng semantic
     },
@@ -273,6 +272,8 @@ APP_CONFIG = {
     },
 
     "volume_score_policy": {
+        "mode": "log_reach",
+        "reach_reference": 100000.0,
         "search_popularity_floor": 5.0,
         "search_popularity_ceiling": 100.0,
         "exponential_curve_factor": 4.0,

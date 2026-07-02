@@ -3,9 +3,21 @@ import pandas as pd
 import openpyxl
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
+import argparse
+import datetime
+
+# Parse month argument
+parser = argparse.ArgumentParser(description="Create combined shortlist for Control Widget")
+parser.add_argument("--month", type=str, default="", help="Month in MMYYYY format (e.g. 072026)")
+args = parser.parse_args()
+
+month = args.month
+if not month:
+    month = datetime.datetime.now().strftime("%m%Y")
 
 # Define paths
-OUTPUT_DIR = r"C:\Users\VOLIO\Documents\ASO_MVP\apps\Control_Widget\Output\062026"
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(APP_DIR, "Output", month)
 file_paths = {
     "BR_PT": os.path.join(OUTPUT_DIR, "control_widget_BR-PT_Output.xlsx"),
     "MX_ES": os.path.join(OUTPUT_DIR, "control_widget_MX-ES_Output.xlsx"),

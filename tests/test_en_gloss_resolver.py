@@ -27,6 +27,24 @@ class EnglishGlossResolverTests(unittest.TestCase):
         with self.assertRaisesRegex(EnglishGlossError, "Agentic English gloss is missing"):
             resolve_dataframe(frame)
 
+    def test_prefiltered_hard_risk_keyword_does_not_require_agentic_gloss(self):
+        frame = pd.DataFrame([
+            {
+                "Keyword": "retroarch",
+                "DetectedLanguage": "pt",
+                "LanguageGroup": "PRIMARY",
+                "PreAIAction": "skip_ai",
+                "PreAIRule": "competitor_brand",
+                "AIStatus": "AI_SKIPPED_PREFILTER",
+                "AIEnglishGloss": "",
+            },
+        ])
+
+        resolved = resolve_dataframe(frame)
+
+        self.assertEqual(resolved["EN"].tolist(), ["retroarch"])
+        self.assertEqual(resolved["TranslationStatus"].tolist(), ["PREFILTERED_NOT_REQUIRED"])
+
 
 if __name__ == "__main__":
     unittest.main()

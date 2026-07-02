@@ -223,7 +223,7 @@ APP_CONFIG = {
         "enabled": True,
         "min_category_hits": 2,     # Khop >= 2 nhom intent (core/feature/style) cung luc moi xet dampen
         "max_volume": 10.0,         # Chi dampen neu Volume <= nguong nay
-        "max_reach": 0.0,           # Chi dampen neu MaximumReach <= nguong nay
+        "max_reach": 5.0,           # Chi dampen neu MaximumReach <= nguong nay
         "score_cap": 0.65,          # Tran RelevancyScore sau khi dampen
     },
 
@@ -262,22 +262,20 @@ APP_CONFIG = {
     # ==========================================
     # 8. SCORING WEIGHTS (Trá»ng sá»‘ Relevancy & Balanced Score)
     # ==========================================
+    # Current shared calculate_relevancy reads only "base"; the remaining lexical
+    # bonuses/penalties are deterministic in shared/keyword_filter/scoring.py:
+    # +0.35 core, +0.20 feature, +0.15 style, -0.20 competitor,
+    # -0.25 irrelevant, -0.30 FOREIGN, +CompetitorBoost.
     "relevancy_weights": {
-        "base": 0.30,
-        "intent_core": 0.40,
-        "feature_specific": 0.15,
-        "style_theme": 0.10,
-        "visual_extra": 0.05,
-        "penalty_competitor": -0.25,
-        "penalty_noise": -0.20,
-        "penalty_language_mismatch": -0.35,
-        "penalty_unnatural": -0.35
+        "base": 0.30
     },
 
+    # KEIN is removed from BalancedScore weighting because KEI is derived from
+    # Volume and Difficulty. Legacy configs with KEIN > 0 are auto-migrated by
+    # shared/keyword_filter/scoring.py::resolve_balanced_weights.
     "balanced_weights": {
-        "VolumeN": 0.20,
+        "VolumeN": 0.35,
         "DifficultyN": 0.15,
-        "KEIN": 0.15,
         "RelevancyScore": 0.30,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
@@ -292,6 +290,8 @@ APP_CONFIG = {
     },
 
     "volume_score_policy": {
+        "mode": "log_reach",
+        "reach_reference": 100000.0,
         "search_popularity_floor": 5.0,
         "search_popularity_ceiling": 100.0,
         "exponential_curve_factor": 4.0,
@@ -302,6 +302,10 @@ APP_CONFIG = {
         "exclude_low_tier_from_metadata_shortlist": False,
         "max_low_tier_consider_keywords": 999
     },
+
+    # Optional: deterministic rubric used after lexical relevancy when an AI cache
+    # classification is available. Defaults live in shared/keyword_filter/scoring.py.
+    # "relevancy_rubric": {"bucket_base": {"feature keywords": 0.75}, "confidence_span": 0.15},
 
     # ==========================================
     # 9. METADATA SLOTS & OUTPUT (PhÃ¢n bá»• & Äá»‹nh dáº¡ng Ä‘áº§u ra)

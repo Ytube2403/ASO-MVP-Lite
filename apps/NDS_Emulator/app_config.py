@@ -164,19 +164,6 @@ APP_CONFIG = {
         "kirby", "animal crossing", "sonic", "gta", "grand theft auto", "megaman", "mega man",
         "harvest moon", "castlevania", "chrono trigger", "dragon quest"
     ],
-
-    "risky_platform_terms": [
-        # Thương hiệu HỆ MÁY/NHÀ SẢN XUẤT (phần cứng): là từ vựng mô tả chức năng bắt buộc
-        # của app giả lập (vd "NDS emulator", "PSP emulator") -> rủi ro thấp hơn nhiều so với
-        # nhắc tên tựa game cụ thể, nên chỉ đưa vào Consider Keywords (platform_context_action)
-        # thay vì Drop cứng. "nintendo" thuộc nhóm này (nhà sản xuất), không phải risky_ip_terms.
-        "nintendo", "iphone", "ios", "ipad", "apple", "switch", "3ds", "wii", "gamecube", "dsi",
-        "playstation", "psp", "ps1", "ps2", "ps3", "ps4", "ps5", "xbox", "sony", "sega", "microsoft"
-    ],
-    
-    "ambiguous_brand_terms": ["delta"],
-    "platform_affiliation_terms": ["official nintendo", "official playstation", "official sega"],
-    
     "truncation_policy": {
         "enabled": True,
         "min_prefix_length": 2,
@@ -240,8 +227,8 @@ APP_CONFIG = {
     "metadata_selector": {
         "enabled": True,
         "target_count": 40,
-        "cluster_cap": 3,
-        "quality_min_balanced_score": 0.40,
+        "cluster_cap": 10,
+        "quality_min_balanced_score": 0.35,
         "quality_min_relevancy": 0.45,
         "quality_min_volume": 6.0,
         "quality_min_reach": 1.0,
@@ -297,9 +284,8 @@ APP_CONFIG = {
 
     "balanced_weights": {
         "VolumeN": 0.35,          
-        "DifficultyN": 0.10,      
-        "KEIN": 0.10,             
-        "RelevancyScore": 0.25,   
+        "DifficultyN": 0.15,      
+        "RelevancyScore": 0.30,   
         "CurrentRankN": 0.10,     
         "ExpansionValue": 0.10    
     },
@@ -313,6 +299,8 @@ APP_CONFIG = {
     },
 
     "volume_score_policy": {
+        "mode": "log_reach",
+        "reach_reference": 100000.0,
         "search_popularity_floor": 5.0,
         "search_popularity_ceiling": 100.0,
         "exponential_curve_factor": 4.0,
@@ -391,7 +379,7 @@ APP_CONFIG = {
             "ds", "psp", "ps", "playstation", "nintendo", "mario", "zelda", "gba", "gameboy", "snes", "nes", "n64", "1980s", "1990s", "80s",
             # Competitors & Unwanted terms
             "sboy", "sboy emulator", "ideas emulator", "gamer boy emulator", "manic emu", "naruto emulator",
-            "ideas", "gamer boy", "manic", "naruto", "retro bowl", "boy"
+            "ideas", "gamer boy", "manic", "naruto", "retro bowl", "boy", "pspad", "xb", "game remote"
         ],
         "force_top30_terms": [],
         "notes": []

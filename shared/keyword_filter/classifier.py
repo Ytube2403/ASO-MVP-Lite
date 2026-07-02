@@ -96,7 +96,17 @@ def _declared_safe_terms(config, terms):
 
 def _matches_declared_safe_term(row, config, terms):
     safe = _declared_safe_terms(config, terms)
-    return bool(safe) and has_any_term(row, list(safe))
+    if not safe:
+        return False
+    from .matcher import find_term, row_texts
+    matched_terms = set()
+    for source, text in row_texts(row):
+        for term in terms:
+            if find_term(text, [term]):
+                matched_terms.add(term)
+    if not matched_terms:
+        return False
+    return matched_terms.issubset(safe)
 
 
 def _is_explicit_core_term(row, config):

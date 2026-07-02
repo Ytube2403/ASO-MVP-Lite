@@ -455,8 +455,17 @@ class MainKeywordShortlistBuilder:
         bucket = _text_value(row, "Bucket")
         if bucket in BLOCKED_BUCKETS:
             return False, "BLOCKED_RISK"
-        if _text_value(row, "LanguageGroup") in {"FOREIGN", "MIXED", "UNKNOWN"}:
+        if _text_value(row, "LanguageGroup") in {"FOREIGN", "UNKNOWN"}:
             return False, "BLOCKED_RISK"
+        # MIXED is deliberately NOT in the blanket block above. classify_keyword already
+        # makes a market-aware decision for MIXED-language rows via get_market_language_policy's
+        # mixed_allowed flag: Bucket="Manual Review" (already caught by BLOCKED_BUCKETS above)
+        # when the market disallows it, or a normal eligible bucket ("Consider Keywords" via
+        # mixed_language_consider, or whatever an earlier risk-flag/override branch decided)
+        # when it's fine. For a non-English market, mixing the primary language with an English
+        # loanword ("ds emulador", "arcade games emulator") is completely normal search behavior,
+        # not a language-mismatch problem -- re-blocking it here regardless of that decision was
+        # silently starving non-English markets' shortlists of otherwise-good keywords.
         naturalness = _text_value(row, "NaturalnessFlag", default="OK")
         if naturalness and naturalness != "OK":
             return False, "BLOCKED_RISK"

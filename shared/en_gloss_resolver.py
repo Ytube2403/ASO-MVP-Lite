@@ -4,6 +4,17 @@ class EnglishGlossError(RuntimeError):
 
 TARGET_LANGUAGE = "en"
 GLOSS_COLUMNS = ["EN", "TranslationStatus", "TranslationError"]
+PREFILTERED_GLOSS_NOT_REQUIRED_RULES = {
+    "empty_keyword",
+    "duplicate_keyword",
+    "competitor_brand",
+    "typo_blacklist",
+    "truncated_keyword",
+    "irrelevant_intent",
+    "noise_only",
+    "platform_affiliation",
+    "platform_only",
+}
 
 
 def _provided_value(provided_en, index):
@@ -37,6 +48,17 @@ def _needs_gloss(row):
     return detected not in {"", TARGET_LANGUAGE} or group in {"PRIMARY", "SECONDARY", "MIXED", "FOREIGN", "UNKNOWN"}
 
 
+def _is_prefiltered_without_gloss_need(row):
+    action = str(row.get("PreAIAction", "") or "").strip()
+    rule = str(row.get("PreAIRule", "") or "").strip()
+    status = str(row.get("AIStatus", "") or "").strip()
+    return (
+        action == "skip_ai"
+        and status == "AI_SKIPPED_PREFILTER"
+        and rule in PREFILTERED_GLOSS_NOT_REQUIRED_RULES
+    )
+
+
 def resolve_dataframe(df, provided_en=None):
     import pandas as pd
 
@@ -50,6 +72,8 @@ def resolve_dataframe(df, provided_en=None):
             rows.append((supplied, "PROVIDED_EN", ""))
         elif _is_english(row):
             rows.append((keyword, "NOT_REQUIRED", ""))
+        elif _is_prefiltered_without_gloss_need(row):
+            rows.append((keyword, "PREFILTERED_NOT_REQUIRED", ""))
         elif gloss:
             rows.append((gloss, "AGENTIC_GLOSS", ""))
         elif _needs_gloss(row):

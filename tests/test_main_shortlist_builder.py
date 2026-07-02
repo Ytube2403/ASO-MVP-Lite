@@ -229,6 +229,36 @@ class MainKeywordShortlistBuilderTests(unittest.TestCase):
         self.assertIn("retro games emulator", selected)
         self.assertNotIn("delta game emulator", selected)
 
+    def test_mixed_language_row_is_selectable_when_bucket_already_allows_it(self):
+        # For a non-English market, mixing the primary language with an English loanword
+        # ("ds emulador") is normal search behavior. classify_keyword already encodes
+        # whether the market allows it via Bucket (Manual Review if not, a normal bucket
+        # if so) -- the selector must not re-block MIXED rows wholesale on top of that.
+        rows = [
+            candidate("ds emulador", "Core Intent Final", 0.6, rel=0.7, volume=25, rule="ai_core_intent"),
+        ]
+        rows[0]["LanguageGroup"] = "MIXED"
+        config = {"market": "BR_PT", "metadata_selector": {"target_count": 1}}
+
+        result = keyword_filter.build_main_keyword_shortlist(pd.DataFrame(rows), config)
+
+        self.assertEqual([row["Keyword"] for row in result.all_rows], ["ds emulador"])
+
+    def test_foreign_and_unknown_language_rows_stay_blocked_regardless_of_bucket(self):
+        rows = [
+            candidate("foreign keyword", "Core Intent Final", 0.9, rel=0.9, volume=50),
+            candidate("unknown keyword", "Core Intent Final", 0.9, rel=0.9, volume=50),
+        ]
+        rows[0]["LanguageGroup"] = "FOREIGN"
+        rows[1]["LanguageGroup"] = "UNKNOWN"
+        config = {"market": "US_EN", "metadata_selector": {"target_count": 5}}
+
+        result = keyword_filter.build_main_keyword_shortlist(pd.DataFrame(rows), config)
+
+        self.assertEqual(result.all_rows, [])
+        reasons = {entry["NotSelectedReason"] for entry in result.not_selected_log}
+        self.assertEqual(reasons, {"BLOCKED_RISK"})
+
 
 if __name__ == "__main__":
     unittest.main()

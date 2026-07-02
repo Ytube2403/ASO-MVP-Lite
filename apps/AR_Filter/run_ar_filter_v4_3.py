@@ -186,9 +186,8 @@ config = {
 
     "balanced_weights": {
         "VolumeN": 0.35,
-        "DifficultyN": 0.10,
-        "KEIN": 0.10,
-        "RelevancyScore": 0.25,
+        "DifficultyN": 0.15,
+        "RelevancyScore": 0.30,
         "CurrentRankN": 0.10,
         "ExpansionValue": 0.10
     }
@@ -950,13 +949,6 @@ def get_language_bonus(row):
     return 0.0
 
 df['BalancedScore'] = (df['BalancedScore'] + df.apply(get_language_bonus, axis=1)).round(4)
-
-# Apply low volume penalty (Volume <= 5)
-def apply_volume_penalty(row):
-    score = row['BalancedScore']
-    if float(row['Volume']) <= 5.0:
-        score -= 0.15
-    return max(0.0, score)
 
 # Low-volume suppression now lives in VolumeN (log-reach); avoid double-penalizing here.
 df['BalancedScore'] = df['BalancedScore'].clip(0.0, 1.0).round(4)
