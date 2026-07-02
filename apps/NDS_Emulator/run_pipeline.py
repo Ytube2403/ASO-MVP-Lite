@@ -667,6 +667,14 @@ else:
 
 # Dampen relevancy stacking for keyword-stuffed long-tail phrases with weak real demand
 # (shared/keyword_filter/scoring.py::dampen_stacked_relevancy -- see its docstring).
+# Blend graded rubric relevancy from the cached agentic classification with the lexical
+# score so AI-classified keywords aren't stuck at the term-match floor (see
+# shared/keyword_filter/scoring.py::calculate_rubric_relevancy).
+df['RelevancyScore'] = df.apply(
+    lambda r: max(float(r.get('RelevancyScore', 0) or 0.0),
+                  _shared_keyword_filter.calculate_rubric_relevancy(r, config)),
+    axis=1,
+)
 df['RelevancyScore'] = df.apply(lambda r: _shared_keyword_filter.dampen_stacked_relevancy(r, config), axis=1)
 df['RelevancyScore'] = df['RelevancyScore'].clip(0.0, 1.0)
 
@@ -722,7 +730,7 @@ def calculate_expansion(row, config):
 
 df['ExpansionValue'] = df.apply(lambda r: _shared_keyword_filter.calculate_expansion(r, config), axis=1)
 
-bw = config['balanced_weights']
+bw = _shared_keyword_filter.resolve_balanced_weights(config)
 df['BalancedScore'] = (
     bw['VolumeN'] * df['VolumeN'] +
     bw['DifficultyN'] * df['DifficultyN'] +
@@ -750,7 +758,8 @@ def apply_volume_penalty(row):
         score -= 0.15
     return max(0.0, score)
 
-df['BalancedScore'] = df.apply(apply_volume_penalty, axis=1).round(4)
+# Low-volume suppression now lives in VolumeN (log-reach); avoid double-penalizing here.
+df['BalancedScore'] = df['BalancedScore'].clip(0.0, 1.0).round(4)
 df['RelevancyScore'] = df['RelevancyScore'].round(4)
 
 # Bucket classification
@@ -1282,6 +1291,12 @@ try:
     print(f"Project Memory updated: {memory_path}")
 except Exception as exc:
     print(f"WARNING: Could not write PROJECT_MEMORY.md: {exc}")
+
+# Trim audit/derived sheets unless output_mode is "full" (see shared/report_builder.py)
+from shared import report_builder as _shared_report_builder
+_removed_sheets = _shared_report_builder.apply_output_mode(wb, config)
+if _removed_sheets:
+    print(f"Output mode '{_shared_report_builder.resolve_output_mode(config)}': trimmed {len(_removed_sheets)} audit/derived sheet(s).")
 
 print(f"Saving stylized workbook to {OUTPUT_PATH}...")
 try:

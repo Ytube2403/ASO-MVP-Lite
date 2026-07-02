@@ -25,6 +25,26 @@ from shared.locale_parser import extract_locale_from_filename
 DEFAULT_BATCH_SIZE = 200
 DEFAULT_BATCH_DIR = os.path.join(PROJECT_ROOT, ".cache", "agentic_batches")
 
+# Case-insensitive lookup from a subagent-provided bucket label to the canonical
+# name expected by the cache. Also folds legacy "Visual*" labels into Feature.
+_CANONICAL_BUCKETS = {bucket.lower(): bucket for bucket in SEMANTIC_BUCKETS}
+_BUCKET_ALIASES = {
+    "visual keywords": "Feature Keywords",
+    "visual": "Feature Keywords",
+    "visuals": "Feature Keywords",
+    "ui keywords": "Feature Keywords",
+}
+
+
+def _canonical_semantic_bucket(raw_value):
+    """Return the canonical bucket name for a subagent label, or None if unknown."""
+    key = str(raw_value or "").strip().lower()
+    if not key:
+        return None
+    if key in _BUCKET_ALIASES:
+        return _BUCKET_ALIASES[key]
+    return _CANONICAL_BUCKETS.get(key)
+
 
 def _read_csv(path):
     if not os.path.exists(path):
@@ -159,7 +179,22 @@ def _result_path_for_batch(batch_path):
     return f"{stem}_result{ext or '.json'}"
 
 
-def _validate_result_items(result_payload, batch_payload):
+def _remaining_path_for_batch(batch_path):
+    stem, ext = os.path.splitext(batch_path)
+    return f"{stem}_remaining{ext or '.json'}"
+
+
+def _validate_result_items(result_payload, batch_payload, partial=False):
+    """Validate subagent results against the batch.
+
+    Returns ``(validated_items, errors)``. Per-item and coverage problems are
+    collected instead of aborting on the first one, so a single bad keyword no
+    longer forces a re-spawn of the whole batch. When ``partial`` is False the
+    collected errors are raised together (preserving the original fail-fast
+    contract); when True the caller decides what to do with the valid subset.
+    Structural problems (no items[] list, batch_id mismatch) still raise
+    immediately since nothing can be salvaged.
+    """
     items = result_payload.get("items")
     if not isinstance(items, list):
         raise ValueError("Result JSON must contain an items[] list")
@@ -171,53 +206,67 @@ def _validate_result_items(result_payload, batch_payload):
     expected_keywords.discard("")
     seen_keywords = set()
     validated = []
+    errors = []
 
     for item in items:
         if not isinstance(item, dict):
-            raise ValueError("Every result item must be an object")
+            errors.append("Every result item must be an object")
+            continue
         keyword = str(item.get("keyword", "") or "").strip()
         if keyword not in expected_keywords:
-            raise ValueError(f"Result keyword is not part of the batch: {keyword!r}")
+            errors.append(f"Result keyword is not part of the batch: {keyword!r}")
+            continue
         if keyword in seen_keywords:
-            raise ValueError(f"Duplicate result keyword: {keyword!r}")
+            errors.append(f"Duplicate result keyword: {keyword!r}")
+            continue
         seen_keywords.add(keyword)
+
+        item_errors = []
 
         language_group = str(item.get("language_group", "") or "").strip().upper()
         if language_group not in LANGUAGE_GROUPS:
-            raise ValueError(f"Invalid language_group for {keyword!r}: {language_group!r}")
+            item_errors.append(f"Invalid language_group for {keyword!r}: {language_group!r}")
 
-        semantic_bucket = str(item.get("semantic_bucket", "") or "").strip()
-        if semantic_bucket in {"Visual Keywords", "Visual", "Visuals", "UI Keywords"}:
-            semantic_bucket = "Feature Keywords"
-            item = dict(item)
-            item["semantic_bucket"] = semantic_bucket
-        if semantic_bucket not in SEMANTIC_BUCKETS:
-            raise ValueError(f"Invalid semantic_bucket for {keyword!r}: {semantic_bucket!r}")
+        canonical_bucket = _canonical_semantic_bucket(item.get("semantic_bucket", ""))
+        if canonical_bucket is None:
+            raw_bucket = str(item.get("semantic_bucket", "") or "").strip()
+            item_errors.append(f"Invalid semantic_bucket for {keyword!r}: {raw_bucket!r}")
 
         try:
             confidence = float(item.get("confidence", ""))
-        except (TypeError, ValueError) as exc:
-            raise ValueError(f"Invalid confidence for {keyword!r}") from exc
-        if not 0.0 <= confidence <= 1.0:
-            raise ValueError(f"Confidence must be between 0 and 1 for {keyword!r}")
+            if not 0.0 <= confidence <= 1.0:
+                item_errors.append(f"Confidence must be between 0 and 1 for {keyword!r}")
+        except (TypeError, ValueError):
+            item_errors.append(f"Invalid confidence for {keyword!r}")
 
         detected_language = str(item.get("detected_language", "") or "").strip().lower()
         english_gloss = str(item.get("english_gloss", "") or "").strip()
         if detected_language != "en" and not english_gloss:
-            raise ValueError(f"english_gloss is required for non-English keyword {keyword!r}")
+            item_errors.append(f"english_gloss is required for non-English keyword {keyword!r}")
 
         for field in ("decision_rule", "reason"):
             if not str(item.get(field, "") or "").strip():
-                raise ValueError(f"Missing {field} for {keyword!r}")
+                item_errors.append(f"Missing {field} for {keyword!r}")
 
-        validated.append(item)
+        if item_errors:
+            errors.extend(item_errors)
+            continue
 
-    missing_results = expected_keywords - seen_keywords
-    if missing_results:
+        normalized = dict(item)
+        normalized["semantic_bucket"] = canonical_bucket
+        normalized["language_group"] = language_group
+        validated.append(normalized)
+
+    validated_keywords = {str(item["keyword"]).strip() for item in validated}
+    missing_results = expected_keywords - validated_keywords
+    if missing_results and not partial:
         sample = ", ".join(sorted(missing_results)[:5])
-        raise ValueError(f"Result JSON is missing {len(missing_results)} batch keyword(s): {sample}")
+        errors.append(f"Result JSON is missing {len(missing_results)} batch keyword(s): {sample}")
 
-    return validated
+    if errors and not partial:
+        raise ValueError("; ".join(errors))
+
+    return validated, errors
 
 
 def _save_validated_results(args):
@@ -233,14 +282,33 @@ def _save_validated_results(args):
             "Regenerate misses and batches before saving results."
         )
 
-    items = _validate_result_items(result_payload, batch_payload)
+    partial = getattr(args, "partial", False)
+    items, errors = _validate_result_items(result_payload, batch_payload, partial=partial)
     cache_path = _resolve_cache_path(config, args.cache_path)
     service = AIKeywordClassifier(cache_path, config=config, app_profile=app_profile, market=market)
 
+    reason_by_keyword = {
+        _keyword_value(entry): str((entry or {}).get("reason", "") or "").strip()
+        for entry in batch_payload.get("keywords", [])
+        if isinstance(entry, dict)
+    }
+
+    source = getattr(args, "source", "") or os.environ.get("AGENTIC_SUBAGENT_SOURCE", "antigravity_subagent")
+
     saved_count = 0
+    gloss_updated = 0
     for item in items:
+        keyword = str(item["keyword"])
+        # Gloss-only misses were already classified; only fill the gloss so we
+        # never clobber a good semantic_bucket/confidence with a fresh guess.
+        if reason_by_keyword.get(keyword) == "missing_english_gloss":
+            gloss = str(item.get("english_gloss", "") or "").strip()
+            if gloss and service._update_english_gloss(keyword, gloss):
+                gloss_updated += 1
+                continue
+            # No existing row to patch (unexpected) -> fall back to a full store.
         analysis = AIKeywordAnalysis(
-            keyword=str(item["keyword"]),
+            keyword=keyword,
             detected_language=str(item.get("detected_language", "unknown")).strip().lower(),
             language_group=str(item.get("language_group", "UNKNOWN")).strip().upper(),
             semantic_bucket=str(item.get("semantic_bucket", "")).strip(),
@@ -252,10 +320,36 @@ def _save_validated_results(args):
         service._store_cached(analysis, {
             "batch": batch_payload,
             "item": item,
-            "source": "antigravity_subagent",
+            "source": source,
         })
         saved_count += 1
-    return saved_count, cache_path
+
+    remaining_path = ""
+    saved_keywords = {str(item["keyword"]).strip() for item in items}
+    remaining_keywords = [
+        entry for entry in batch_payload.get("keywords", [])
+        if _keyword_value(entry) not in saved_keywords
+    ]
+    if partial and (remaining_keywords or errors):
+        remaining_path = getattr(args, "remaining_output", "") or _remaining_path_for_batch(args.batch)
+        _write_json(remaining_path, {
+            "app_id": batch_payload.get("app_id", ""),
+            "app_name": batch_payload.get("app_name", ""),
+            "market": market,
+            "context_hash": batch_payload.get("context_hash", ""),
+            "missing_count": len(remaining_keywords),
+            "missing_keywords": remaining_keywords,
+            "errors": errors,
+        })
+
+    return {
+        "saved_count": saved_count,
+        "gloss_updated": gloss_updated,
+        "cache_path": cache_path,
+        "errors": errors,
+        "remaining_count": len(remaining_keywords),
+        "remaining_path": remaining_path,
+    }
 
 
 def cmd_find_misses(args):
@@ -317,8 +411,21 @@ def cmd_prepare_batches(args):
 
 
 def cmd_save_results(args):
-    saved_count, cache_path = _save_validated_results(args)
-    print(f"Successfully saved {saved_count} keywords to SQLite cache at: {cache_path}")
+    outcome = _save_validated_results(args)
+    total = outcome["saved_count"] + outcome["gloss_updated"]
+    print(
+        f"Successfully saved {total} keyword(s) to SQLite cache at: {outcome['cache_path']} "
+        f"({outcome['saved_count']} classified, {outcome['gloss_updated']} gloss-only)"
+    )
+    if outcome["errors"]:
+        print(f"Skipped {len(outcome['errors'])} invalid item(s):")
+        for message in outcome["errors"]:
+            print(f"  - {message}")
+    if outcome["remaining_path"]:
+        print(
+            f"{outcome['remaining_count']} keyword(s) still missing. "
+            f"Re-batch from: {outcome['remaining_path']}"
+        )
 
 
 def cmd_verify_cache(args):
@@ -377,6 +484,24 @@ def _build_parser():
     p_save.add_argument("--results", required=True, help="Subagent result JSON file")
     p_save.add_argument("--market", default="", help="Optional market override")
     p_save.add_argument("--cache-path", default="", help="Optional SQLite cache override")
+    p_save.add_argument(
+        "--partial",
+        action="store_true",
+        help="Save valid items instead of aborting on the first bad one; "
+             "write the still-missing keywords to a remaining JSON for re-spawning",
+    )
+    p_save.add_argument(
+        "--remaining-output",
+        default="",
+        help="Where to write the still-missing keywords when --partial is set "
+             "(defaults to <batch>_remaining.json)",
+    )
+    p_save.add_argument(
+        "--source",
+        default="",
+        help="Source label stored with each cache row "
+             "(defaults to $AGENTIC_SUBAGENT_SOURCE or antigravity_subagent)",
+    )
 
     p_verify = subparsers.add_parser("verify-cache", help="Verify cache coverage before running the pipeline")
     p_verify.add_argument("--app", required=True, help="App alias, e.g. Game_Emulator")

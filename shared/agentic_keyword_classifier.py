@@ -460,6 +460,29 @@ class AIKeywordClassifier:
             )
             connection.commit()
 
+    def _update_english_gloss(self, keyword, english_gloss):
+        """Update only the english_gloss of an existing cache row.
+
+        Used when warming a ``missing_english_gloss`` keyword: the row was
+        already classified, so we must not overwrite its semantic_bucket /
+        confidence / decision_rule with a fresh guess. Returns True when an
+        existing row was updated, False when no row matched.
+        """
+        key = _cache_key(keyword, self.config, self.market, self.app_profile, self.classifier_config)
+        with closing(self._connect()) as connection:
+            cursor = connection.execute(
+                """
+                UPDATE ai_keyword_analysis
+                SET english_gloss = ?, updated_at = ?
+                WHERE provider = ? AND model = ? AND prompt_version = ?
+                  AND app_id = ? AND market = ? AND context_hash = ?
+                  AND normalized_keyword = ?
+                """,
+                (english_gloss, self.clock(), *key),
+            )
+            connection.commit()
+            return cursor.rowcount > 0
+
     def analyze_rows(self, keyword_rows):
         started_at = self.clock()
         self._reset_stats(total_rows=len(keyword_rows))

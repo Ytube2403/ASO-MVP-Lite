@@ -15,6 +15,17 @@ APP_CONFIG = {
     "category_slug": "photo_editor",       # Slug dùng cho đường dẫn (viết thường, không dấu, phân cách bởi gạch dưới)
     "market": "US_EN",                     # Mã thị trường mặc định (VD: US_EN, BR_PT, VN_VI...)
     "platform_mode": "google_play",        # Nền tảng: 'google_play' hoặc 'app_store'
+
+    # Output workbook verbosity (xem shared/report_builder.py):
+    #   "lean" (mặc định) -> chỉ giữ các sheet cần thao tác: 00_README_CONFIG,
+    #       00_Project_Memory, 01_Main_Keyword_Shortlist, các sheet curated (02/03...),
+    #       05_Report_Summary, 06_All_Candidates. Các sheet audit/derived (04,07-15)
+    #       bị lược vì chỉ là view lọc/sort của 06_All_Candidates.
+    #   "full" -> xuất đầy đủ mọi sheet như trước.
+    # Custom theo app (tùy chọn):
+    #   "report_output": {"keep_extra": ["10_Top_By_Score"],  # giữ thêm sheet audit ở lean
+    #                      "drop_extra": ["06_All_Candidates"]} # bỏ thêm sheet ở lean
+    "output_mode": "lean",
     "semantic_mode": "photo_editor",
 
     # =========================================================================
@@ -234,11 +245,13 @@ APP_CONFIG = {
         "penalty_unnatural": -0.35
     },
 
+    # KEIN đã bị loại: KEI là hàm của Volume & Difficulty nên trùng tín hiệu (collinear).
+    # Trọng số của nó được dồn sang Relevancy. Config cũ còn giữ KEIN > 0 sẽ được
+    # shared/keyword_filter/scoring.py::resolve_balanced_weights tự migrate sang scheme dưới.
     "balanced_weights": {
-        "VolumeN": 0.35,          # Trọng số điểm Volume (Lượng tìm kiếm)
-        "DifficultyN": 0.10,      # Trọng số điểm Difficulty (Độ cạnh tranh - càng thấp điểm càng cao)
-        "KEIN": 0.10,             # Trọng số điểm KEI (Hiệu quả từ khóa)
-        "RelevancyScore": 0.25,   # Trọng số điểm liên quan (Relevancy - Quan trọng nhất)
+        "VolumeN": 0.35,          # Trọng số điểm Volume (log-reach)
+        "DifficultyN": 0.15,      # Trọng số điểm Difficulty (độ cạnh tranh - càng thấp điểm càng cao)
+        "RelevancyScore": 0.30,   # Trọng số điểm liên quan (Relevancy - quan trọng nhất)
         "CurrentRankN": 0.10,     # Trọng số điểm thứ hạng hiện tại của app
         "ExpansionValue": 0.10    # Trọng số điểm mở rộng semantic
     },
@@ -252,6 +265,14 @@ APP_CONFIG = {
     },
 
     "volume_score_policy": {
+        # VolumeN dùng Reach thật với chuẩn hóa LOG (Reach tăng theo cấp số nhân với Volume;
+        # đo thực nghiệm ~R^2=0.72). "log_reach" (mặc định) tránh nghiền nát keyword tầm trung
+        # về 0; "reach_linear" khôi phục hành vi cũ.
+        "mode": "log_reach",
+        # Mốc cố định để điểm ổn định giữa các tháng: keyword đạt reach này ~ điểm 1.0.
+        # Chỉnh theo quy mô app/market (Game US có thể để cao hơn, thị trường ngách thấp hơn).
+        # Đặt 0 để quay lại dùng reach ceiling của chính dataset (chỉ so sánh được trong 1 lần chạy).
+        "reach_reference": 100000.0,
         "search_popularity_floor": 5.0,
         "search_popularity_ceiling": 100.0,
         "exponential_curve_factor": 4.0,
@@ -262,6 +283,11 @@ APP_CONFIG = {
         "exclude_low_tier_from_metadata_shortlist": False,
         "max_low_tier_consider_keywords": 999
     },
+
+    # RelevancyScore ưu tiên rubric có thang từ phân loại AI đã cache (bucket + confidence +
+    # language), tính bằng công thức deterministic trong shared/keyword_filter/scoring.py
+    # (calculate_rubric_relevancy). Bỏ trống để dùng mặc định; ghi đè để tinh chỉnh per-app:
+    # "relevancy_rubric": {"bucket_base": {"feature keywords": 0.75}, "confidence_span": 0.15},
 
     # =========================================================================
     # 9. METADATA SLOTS & OUTPUT (Phân bổ & Định dạng đầu ra)

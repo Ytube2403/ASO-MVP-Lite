@@ -1,0 +1,7 @@
+interface:
+  display_name: "Warm Agentic Cache"
+  short_description: "Classify missing keywords via subagents, then run the pipeline"
+  default_prompt: "Use $warm-agentic-cache to warm the agentic keyword cache for an app/market with real subagents, then run the pipeline."
+
+policy:
+  allow_implicit_invocation: true

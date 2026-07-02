@@ -151,6 +151,111 @@ class WarmCacheHelperTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Invalid semantic_bucket"):
             warm_cache_helper._validate_result_items(result, batch)
 
+    def test_canonical_semantic_bucket_normalizes_case_and_aliases(self):
+        self.assertEqual(
+            warm_cache_helper._canonical_semantic_bucket("core intent final"),
+            "Core Intent Final",
+        )
+        self.assertEqual(
+            warm_cache_helper._canonical_semantic_bucket("FEATURE KEYWORDS"),
+            "Feature Keywords",
+        )
+        self.assertEqual(
+            warm_cache_helper._canonical_semantic_bucket("Visual Keywords"),
+            "Feature Keywords",
+        )
+        self.assertIsNone(warm_cache_helper._canonical_semantic_bucket("Not A Bucket"))
+        self.assertIsNone(warm_cache_helper._canonical_semantic_bucket(""))
+
+    def test_validate_accepts_lowercase_bucket_and_normalizes_output(self):
+        batch = {
+            "batch_id": "mx_es_batch_1",
+            "keywords": [{"keyword": "emulador", "reason": "missing_agentic_cache"}],
+        }
+        result = {
+            "items": [{
+                "keyword": "emulador",
+                "detected_language": "es",
+                "language_group": "primary",
+                "semantic_bucket": "core intent final",
+                "decision_rule": "ai_core",
+                "reason": "Relevant.",
+                "confidence": 0.9,
+                "english_gloss": "emulator",
+            }]
+        }
+        validated, errors = warm_cache_helper._validate_result_items(result, batch)
+        self.assertEqual(errors, [])
+        self.assertEqual(validated[0]["semantic_bucket"], "Core Intent Final")
+        self.assertEqual(validated[0]["language_group"], "PRIMARY")
+
+    def test_validate_partial_collects_errors_and_keeps_valid_items(self):
+        batch = {
+            "batch_id": "b",
+            "keywords": [
+                {"keyword": "good"},
+                {"keyword": "badbucket"},
+                {"keyword": "noconf"},
+            ],
+        }
+        result = {
+            "items": [
+                {
+                    "keyword": "good", "detected_language": "en", "language_group": "PRIMARY",
+                    "semantic_bucket": "Feature Keywords", "decision_rule": "r", "reason": "x",
+                    "confidence": 0.8, "english_gloss": "",
+                },
+                {
+                    "keyword": "badbucket", "detected_language": "en", "language_group": "PRIMARY",
+                    "semantic_bucket": "Nope", "decision_rule": "r", "reason": "x",
+                    "confidence": 0.8, "english_gloss": "",
+                },
+                {
+                    "keyword": "noconf", "detected_language": "en", "language_group": "PRIMARY",
+                    "semantic_bucket": "Feature Keywords", "decision_rule": "r", "reason": "x",
+                    "confidence": "abc", "english_gloss": "",
+                },
+            ]
+        }
+        validated, errors = warm_cache_helper._validate_result_items(result, batch, partial=True)
+        self.assertEqual([item["keyword"] for item in validated], ["good"])
+        self.assertEqual(len(errors), 2)
+
+    def test_update_english_gloss_preserves_existing_classification(self):
+        from shared.agentic_keyword_classifier import AIKeywordAnalysis, AIKeywordClassifier
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cache_path = os.path.join(temp_dir, "agentic.sqlite3")
+            _, _, config, app_profile = resolve_effective_app("App_Template", PROJECT_ROOT, "MX_ES")
+            config["market"] = "MX_ES"
+            service = AIKeywordClassifier(
+                cache_path, config=config, app_profile=app_profile, market="MX_ES"
+            )
+            service._store_cached(
+                AIKeywordAnalysis(
+                    keyword="emulador",
+                    detected_language="es",
+                    language_group="PRIMARY",
+                    semantic_bucket="Core Intent Final",
+                    decision_rule="ai_core_intent",
+                    reason="core",
+                    confidence=0.9,
+                    english_gloss="",
+                ),
+                {"source": "seed"},
+            )
+
+            self.assertTrue(service._update_english_gloss("emulador", "emulator"))
+            cached = service._get_cached("emulador")
+            self.assertEqual(cached.english_gloss, "emulator")
+            # classification fields must be untouched by a gloss-only fill
+            self.assertEqual(cached.semantic_bucket, "Core Intent Final")
+            self.assertEqual(cached.confidence, 0.9)
+            self.assertEqual(cached.decision_rule, "ai_core_intent")
+
+            # no matching row -> reports nothing updated
+            self.assertFalse(service._update_english_gloss("missing", "x"))
+
 
 if __name__ == "__main__":
     unittest.main()

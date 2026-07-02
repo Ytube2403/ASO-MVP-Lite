@@ -37,21 +37,24 @@ class VolumeScoreTests(unittest.TestCase):
         self.assertLess(with_peak, top)
 
     def test_maximum_reach_preserves_exponential_traffic_gap(self):
+        # Log-reach keeps higher reach ranked higher, but no longer crushes mid-tier reach
+        # to ~0 (that linear behavior was the bug this replaced).
         top = keyword_filter.calculate_volume_score(67, 67, 130506, 130506)
         high = keyword_filter.calculate_volume_score(60, 60, 34122, 130506)
         medium = keyword_filter.calculate_volume_score(21, 21, 5846, 130506)
 
         self.assertGreater(top, high)
         self.assertGreater(high, medium)
-        self.assertLess(medium, 0.10)
+        self.assertGreater(medium, 0.5)  # mid-tier reach is meaningful, not crushed to ~0
 
     def test_maximum_reach_overrides_search_popularity_when_available(self):
-        lower_popularity_with_real_reach = keyword_filter.calculate_volume_score(21, 21, 900, 1000)
-        higher_popularity_with_lower_reach = keyword_filter.calculate_volume_score(90, 90, 100, 1000)
+        # Real reach drives the score even when the popularity index disagrees.
+        low_vol_real_reach = keyword_filter.calculate_volume_score(21, 21, 900, 1000)
+        high_vol_low_reach = keyword_filter.calculate_volume_score(90, 90, 100, 1000)
 
-        self.assertEqual(lower_popularity_with_real_reach, 0.9)
-        self.assertEqual(higher_popularity_with_lower_reach, 0.1)
-        self.assertGreater(lower_popularity_with_real_reach, higher_popularity_with_lower_reach)
+        self.assertGreater(low_vol_real_reach, high_vol_low_reach)
+        self.assertGreater(low_vol_real_reach, 0.5)
+        self.assertLess(high_vol_low_reach, 0.5)
 
     def test_low_tier_can_fill_metadata_quota_by_default_in_v4_1(self):
         row = {"Volume": 5}

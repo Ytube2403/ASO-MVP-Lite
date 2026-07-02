@@ -1,0 +1,7 @@
+interface:
+  display_name: "Run Pipeline ASO"
+  short_description: "Run the full ASO pipeline end-to-end: profile check, cache warm via subagents, then filter"
+  default_prompt: "Use $run-pipeline-aso to run the full ASO pipeline for an app/market from an Input CSV, including profile check, cache warming with real subagents, and the filter run."
+
+policy:
+  allow_implicit_invocation: true

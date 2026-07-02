@@ -1,0 +1,7 @@
+interface:
+  display_name: "Create Profile"
+  short_description: "Create a complete, schema-correct App_Profile.json the pipeline can trust"
+  default_prompt: "Use $create-profile to build a standard, fully-populated App_Profile.json for an app so the pipeline evaluates keywords correctly."
+
+policy:
+  allow_implicit_invocation: true

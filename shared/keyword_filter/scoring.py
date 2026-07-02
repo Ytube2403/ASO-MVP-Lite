@@ -5,6 +5,16 @@ from .matcher import has_any_term, normalize_filter_text, tokenize
 
 
 DEFAULT_VOLUME_SCORE_POLICY = {
+    # Reach grows exponentially with AppTweak Volume (empirically Reach ~ exp(0.15*Volume),
+    # i.e. Volume is ~log(Reach); measured R^2=0.72 over 15.7k keywords). Scoring real reach
+    # linearly (reach/ceiling) crushes >95% of keywords to ~0 -- only a few mega-terms score.
+    # "log_reach" (default) normalizes log1p(reach) so mid-tier keywords keep a meaningful
+    # score. "reach_linear" restores the old behavior.
+    "mode": "log_reach",
+    # Fixed anchor for log-reach normalization so scores are comparable across runs/months.
+    # A keyword whose reach reaches this value scores ~1.0. Tune per app/market. When 0, falls
+    # back to the dataset's reach ceiling (comparable within a run only).
+    "reach_reference": 100000.0,
     "search_popularity_floor": 5.0,
     "search_popularity_ceiling": 100.0,
     "exponential_curve_factor": 4.0,
@@ -58,8 +68,15 @@ def calculate_volume_score(volume, max_volume=None, maximum_reach=0, max_maximum
     historical_volume = max(current_volume, number(max_volume, current_volume))
     reach = max(0.0, number(maximum_reach))
     reach_ceiling = max(0.0, number(max_maximum_reach))
-    if reach > 0 and reach_ceiling > 0:
-        score = reach / reach_ceiling
+    reach_reference = number(policy.get("reach_reference"), 0.0)
+    reference = reach_reference if reach_reference > 0 else reach_ceiling
+    if reach > 0 and reference > 0:
+        if str(policy.get("mode", "log_reach")).strip().lower() == "reach_linear":
+            score = reach / reference
+        else:
+            # log-reach: log1p compresses the exponential reach distribution so mid-tier
+            # keywords are ranked meaningfully instead of collapsing to ~0.
+            score = math.log1p(min(reach, reference)) / math.log1p(reference)
     else:
         current_score = _normalize_search_popularity(current_volume, policy)
         historical_score = _normalize_search_popularity(historical_volume, policy)
@@ -138,6 +155,114 @@ DEFAULT_RELEVANCY_STACKING_POLICY = {
     "max_reach": 5.0,
     "score_cap": 0.65,
 }
+
+
+DEFAULT_AGENTIC_RELEVANCY_FLOORS = {
+    "enabled": True,
+    "min_confidence": 0.55,
+    "core": 0.65,
+    "feature": 0.50,
+    "broad": 0.45,
+}
+
+
+# Rubric-based relevancy (v1): a graded, explainable relevancy derived from the cached
+# agentic classification instead of a raw LLM float. The subagent only supplies discrete,
+# defensible judgments (semantic bucket, confidence, language group); this deterministic
+# formula turns them into the number, so "why 0.90 not 0.85" always traces to a criterion,
+# the weights are tunable in config, and the score is recomputable without re-warming cache.
+#   score = bucket_base - (1 - confidence) * confidence_span + language_adjust   (clamped 0..1)
+DEFAULT_RELEVANCY_RUBRIC = {
+    "enabled": True,
+    "bucket_base": {
+        "core intent final": 0.90,
+        "feature keywords": 0.70,
+        "system keywords": 0.70,
+        "broad expansion": 0.55,
+        "consider keywords": 0.45,
+        "style keywords": 0.45,
+        "generic style reserve": 0.35,
+        "manual review": 0.30,
+        "language mismatch audit": 0.15,
+        "dropped": 0.00,
+    },
+    "confidence_span": 0.15,          # lose up to this as confidence falls to 0
+    "language_adjust": {"PRIMARY": 0.0, "SECONDARY": -0.05, "MIXED": -0.05, "UNKNOWN": -0.10},
+    "zero_language_groups": ["FOREIGN"],  # these get 0 relevancy from the rubric
+}
+
+
+def relevancy_rubric_policy(config=None):
+    policy = dict(DEFAULT_RELEVANCY_RUBRIC)
+    override = (config or {}).get("relevancy_rubric", {}) or {}
+    policy.update(override)
+    # nested dicts should merge, not wholesale-replace, so a partial override still works
+    if "bucket_base" in override:
+        merged = dict(DEFAULT_RELEVANCY_RUBRIC["bucket_base"])
+        merged.update(override["bucket_base"] or {})
+        policy["bucket_base"] = merged
+    if "language_adjust" in override:
+        merged = dict(DEFAULT_RELEVANCY_RUBRIC["language_adjust"])
+        merged.update(override["language_adjust"] or {})
+        policy["language_adjust"] = merged
+    return policy
+
+
+def calculate_rubric_relevancy(row, config):
+    """Graded relevancy from the cached agentic classification. Returns 0.0 when the
+    keyword has no usable classification (so the lexical score takes over)."""
+    policy = relevancy_rubric_policy(config)
+    if not policy.get("enabled", True) or not hasattr(row, "get"):
+        return 0.0
+
+    bucket = str(row.get("AISemanticBucket", "") or "").strip().lower()
+    base_map = policy.get("bucket_base", {})
+    if bucket not in base_map:
+        return 0.0  # unclassified / no AI signal -> let lexical relevancy decide
+
+    language = str(row.get("LanguageGroup", "PRIMARY") or "PRIMARY").strip().upper()
+    if language in {str(g).upper() for g in policy.get("zero_language_groups", [])}:
+        return 0.0
+
+    base = number(base_map.get(bucket), 0.0)
+    # confidence defaults to 1.0 when the row was classified but carries no explicit score
+    has_rule = bool(str(row.get("AIDecisionRule", "") or "").strip())
+    confidence = min(1.0, max(0.0, number(row.get("AIConfidence"), 1.0 if has_rule else 0.0)))
+    span = number(policy.get("confidence_span"), 0.15)
+    score = base - (1.0 - confidence) * span
+    score += number(policy.get("language_adjust", {}).get(language), 0.0)
+    return max(0.0, min(1.0, score))
+
+
+# New KEIN-free BalancedScore weights. KEI is collinear with Volume & Difficulty (KEI is
+# derived from them), so it is dropped and its weight redistributed toward Relevancy.
+DEFAULT_BALANCED_WEIGHTS = {
+    "VolumeN": 0.35,
+    "DifficultyN": 0.15,
+    "KEIN": 0.0,
+    "RelevancyScore": 0.30,
+    "CurrentRankN": 0.10,
+    "ExpansionValue": 0.10,
+}
+
+
+def resolve_balanced_weights(config):
+    """Return BalancedScore weights, migrating legacy KEIN-based configs.
+
+    Legacy app configs carry a non-zero ``KEIN`` weight (the old 6-way split). Those are
+    migrated wholesale to DEFAULT_BALANCED_WEIGHTS so KEI no longer double-counts the
+    volume/difficulty axis. A config that omits KEIN (or sets it to 0) is treated as
+    already using the new scheme and its weights are respected, so apps can still tune
+    weights per their needs. ``KEIN`` is always present (=0.0) so callers that still
+    reference ``weights['KEIN']`` don't KeyError.
+    """
+    cfg = (config or {}).get("balanced_weights", {}) or {}
+    if number(cfg.get("KEIN"), 0.0) > 0:
+        return dict(DEFAULT_BALANCED_WEIGHTS)
+    merged = dict(DEFAULT_BALANCED_WEIGHTS)
+    merged.update(cfg)
+    merged.setdefault("KEIN", 0.0)
+    return merged
 
 
 def relevancy_stacking_policy(config=None):
@@ -230,6 +355,54 @@ def get_language_bonus(row):
     return 0.02 if group == "PRIMARY" else 0.01 if group == "SECONDARY" else 0.0
 
 
+def _agentic_relevancy_floors(config=None):
+    policy = dict(DEFAULT_AGENTIC_RELEVANCY_FLOORS)
+    policy.update((config or {}).get("agentic_relevancy_floors", {}) or {})
+    classifier = (config or {}).get("agentic_keyword_classifier", {}) or {}
+    if "min_confidence" not in ((config or {}).get("agentic_relevancy_floors", {}) or {}):
+        policy["min_confidence"] = classifier.get("min_confidence", policy["min_confidence"])
+    return policy
+
+
+def _agentic_relevancy_floor(row, config):
+    policy = _agentic_relevancy_floors(config)
+    if not policy.get("enabled", True):
+        return 0.0
+    if not hasattr(row, "get"):
+        return 0.0
+
+    blocked_flags = (
+        "is_competitor",
+        "is_typo",
+        "is_truncated",
+        "is_irrelevant",
+        "is_noise",
+        "is_risky_ip",
+        "is_platform_affiliation",
+    )
+    if any(bool(row.get(flag)) for flag in blocked_flags):
+        return 0.0
+    if str(row.get("NaturalnessFlag", "OK") or "OK").upper() != "OK":
+        return 0.0
+    if str(row.get("LanguageGroup", "PRIMARY") or "PRIMARY").upper() in {"FOREIGN", "UNKNOWN"}:
+        return 0.0
+
+    confidence_raw = row.get("AIConfidence", "")
+    confidence = number(confidence_raw, 1.0 if str(row.get("AIDecisionRule", "") or "").strip() else 0.0)
+    if confidence < number(policy.get("min_confidence"), 0.55):
+        return 0.0
+
+    bucket = str(row.get("AISemanticBucket", "") or "").strip().lower()
+    rule = str(row.get("AIDecisionRule", "") or "").strip().lower()
+    if bucket == "core intent final" or rule in {"ai_core_intent", "agentic_core_intent", "core_intent_final"}:
+        return number(policy.get("core"), 0.65)
+    if bucket in {"feature keywords", "system keywords", "effect / filter type"} or rule in {"ai_feature_intent", "feature_keywords", "system_keywords"}:
+        return number(policy.get("feature"), 0.50)
+    if bucket == "broad expansion" or rule in {"ai_broad_expansion", "broad_expansion"}:
+        return number(policy.get("broad"), 0.45)
+    return 0.0
+
+
 def calculate_relevancy(row, config):
     score = float(config.get("relevancy_weights", {}).get("base", 0.30))
     if has_core_intent(row, config):
@@ -245,4 +418,5 @@ def calculate_relevancy(row, config):
     if str(row.get("LanguageGroup", "")).upper() == "FOREIGN":
         score -= 0.30
     score += float(row.get("CompetitorBoost", 0.0) or 0.0)
+    score = max(score, _agentic_relevancy_floor(row, config))
     return max(0.0, min(1.0, score))

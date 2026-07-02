@@ -7,6 +7,16 @@ description: Expand and build ASO seed keyword sets for a registered app in this
 
 Use this skill to collect seed keywords for an app before running the ASO filtering pipeline. The goal is breadth and relevance: collect many plausible seed keywords, grouped by intent, without scoring Volume, Difficulty, KEI, or metadata placement.
 
+## Execution contract (MUST read and follow first)
+
+These rules are mandatory. Do not skip, reorder, or substitute them.
+
+1. You **MUST run all five research lanes as five separate subagents** (see "Research Lanes") whenever a multi-agent / task-spawning tool exists in this environment. Spawn them in parallel when the environment supports it.
+2. You **MUST NOT do the five lanes yourself inline** when such a tool is available. Doing the research in the main thread instead of delegating is a failure of this skill.
+3. The **only** allowed fallback is when the environment genuinely has no subagent/task tool at all. In that case you MUST first tell the user, verbatim: "No multi-agent tool is available, running the 5 lanes sequentially inline as a fallback." — then proceed sequentially. Never take this fallback silently, and never take it merely because it is faster.
+4. Before spawning, output a short plan listing the five subagents by name so it is visible that all five will run.
+5. You are not done until the "Definition of done" checklist at the end passes. If any lane did not run, re-run that lane before reporting.
+
 ## Inputs
 
 Resolve the app from the user's app name or alias. Prefer the workspace registry when available, and use the resolved registry `folder` path instead of guessing a folder from the alias. Then read:
@@ -30,7 +40,7 @@ If the target market is explicit in the user request, use it. If it is ambiguous
 
 ## Research Lanes
 
-Cover these five research lanes. When multi-agent tools are available and delegation is allowed in the current session, run them as parallel subagents using the available multi-agent tool names for that environment. Otherwise, execute the lanes yourself and still report them separately:
+Cover these five research lanes. Per the Execution contract above, each lane MUST be run as its **own subagent** (in parallel when supported) using whatever multi-agent / task tool this environment provides. Spawn exactly these five, by name; do not merge them and do not run them inline unless the no-tool fallback in the Execution contract applies:
 
 1. **Linguistic & Cultural Analyst (`linguistic_cultural_agent`)**:
    - Focus: Local slang, colloquial terms, emotional qualifiers, cultural context, diacritic/no-diacritic behavior, and native category names (e.g., in ID: *jadul*, *lawas*, *gimbot*, *dingdong*, *rental ps*).
@@ -89,12 +99,23 @@ Do not call a keyword "scraped", "actual autocomplete", or "store suggestion" un
 ## Workflow
 
 1. Read the app config/profile and summarize the real feature surface.
-2. Run the five research lanes in parallel when permitted, or sequentially when subagents are unavailable.
+2. Output the plan of the five named subagents, then **spawn all five as subagents** (parallel when supported) per the Execution contract. Take the inline fallback only if there is genuinely no multi-agent tool, and only after telling the user.
 3. Consolidate their keyword lists, local insights, and source notes.
 4. Separate safe seeds from research-only IP/competitor terms and blacklist candidates.
 5. Deduplicate case-insensitively while preserving meaningful language variants.
 6. Write a consolidated master keyword research report.
 7. Save the result as a Markdown file under `<resolved app folder>/Research/`.
+
+## Definition of done (self-check before you reply)
+
+Do not finish until every box is true. If any is false, fix it (usually: re-run the missing lane) before replying.
+
+- [ ] All five lanes ran as **separate subagents** (or, if no multi-agent tool exists, the fallback notice was shown to the user first).
+- [ ] The chat output has a distinct, labeled subsection for each of the five lanes.
+- [ ] Every non-obvious keyword has an evidence level (`Observed` / `Derived` / `Inference`) with a source/derivation.
+- [ ] Autocomplete results are labeled real-scraped vs `Autocomplete-style / Inferred` — no false "scraped" claims.
+- [ ] The Markdown artifact was written under `<resolved app folder>/Research/`.
+- [ ] No Volume / Difficulty / KEI / metadata slots were assigned (that is the pipeline's job, not research).
 
 ## Output
 

@@ -23,11 +23,15 @@ from .matcher import has_any_term, has_term, normalize_filter_text, tokenize
 from .report_export import write_quality_log_sheet
 from .runtime import FilterRuntime, build_filter_runtime
 from .scoring import (
+    DEFAULT_BALANCED_WEIGHTS,
+    DEFAULT_RELEVANCY_RUBRIC,
     DEFAULT_RELEVANCY_STACKING_POLICY,
     DEFAULT_VOLUME_SCORE_POLICY,
     calculate_expansion,
     calculate_relevancy,
+    calculate_rubric_relevancy,
     calculate_volume_score,
+    resolve_balanced_weights,
     check_naturalness,
     dampen_stacked_relevancy,
     get_language_bonus,
@@ -50,7 +54,9 @@ from .version import FILTER_LOGIC_VERSION
 
 
 __all__ = [
+    "DEFAULT_BALANCED_WEIGHTS",
     "DEFAULT_NOISE_TERMS",
+    "DEFAULT_RELEVANCY_RUBRIC",
     "DEFAULT_RELEVANCY_STACKING_POLICY",
     "DEFAULT_VOLUME_SCORE_POLICY",
     "FILTER_LOGIC_VERSION",
@@ -68,6 +74,7 @@ __all__ = [
     "build_main_keyword_shortlist",
     "calculate_expansion",
     "calculate_relevancy",
+    "calculate_rubric_relevancy",
     "calculate_volume_score",
     "check_naturalness",
     "classify_keyword",
@@ -77,6 +84,7 @@ __all__ = [
     "file_md5",
     "get_language_bonus",
     "has_any_term",
+    "resolve_balanced_weights",
     "has_core_intent",
     "has_feature_intent",
     "has_style_intent",
