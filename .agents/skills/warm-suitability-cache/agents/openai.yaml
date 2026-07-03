@@ -1,0 +1,7 @@
+interface:
+  display_name: "Warm Suitability Cache"
+  short_description: "Audit keyword ads/store specificity via subagents, then run the pipeline"
+  default_prompt: "Use $warm-suitability-cache to audit metadata/ads suitability for an app/market with real subagents, then run the pipeline."
+
+policy:
+  allow_implicit_invocation: true

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from contextlib import closing
 import json
 import os
+import re
 import sqlite3
 import time
 
@@ -39,6 +40,11 @@ DEFAULT_METADATA_SUITABILITY = {
         "block_terms": [],
     },
     "audit_min_volume": 20,
+    # Mirrors agentic_keyword_classifier's fail_on_api_error: this module is cache-only
+    # for keywords needing a subagent audit, so a missing entry must be a loud error
+    # -- not a silent "Eligible" default -- or the audit step is a no-op and nothing
+    # ever prompts a subagent to actually run (tools/suitability_cache_helper.py).
+    "fail_on_missing_audit": True,
 }
 
 BLOCKED_BUCKETS = {
@@ -65,6 +71,11 @@ BLOCKED_DECISION_RULES = {
 
 SINGLE_TOKEN_TOO_BROAD = "single_token_too_broad"
 SUITABILITY_RESEARCH_ONLY = "suitability_research_only"
+SUITABILITY_PENDING_AUDIT = "suitability_pending_audit"
+
+
+class SuitabilityAuditError(RuntimeError):
+    pass
 
 
 @dataclass
@@ -108,7 +119,11 @@ def _number(value, default=0.0):
 
 def _decision_rule(row):
     for key in ("DecisionRule", "AIDecisionRule", "HardFilterRule"):
-        value = str(row.get(key, "") or "").strip()
+        # Use _text (NaN-safe) rather than `row.get(key, "") or ""`: pandas round-trips
+        # an empty string through CSV (to_csv -> read_csv) as float NaN, and
+        # `bool(float("nan"))` is True in Python, so a raw `x or default` pattern keeps
+        # the NaN and str()s it into the literal string "nan" instead of falling back.
+        value = _text(row, key)
         if value:
             return value
     return ""
@@ -133,7 +148,12 @@ def _is_blocked(row):
     rule = _decision_rule(row)
     if rule in BLOCKED_DECISION_RULES:
         return True
-    if str(row.get("HardFilterRule", "") or "").strip():
+    # NaN-safe (see _decision_rule): a raw `row.get(...) or ""` here would treat every
+    # CSV-round-tripped empty HardFilterRule as the literal truthy string "nan" and
+    # block every keyword -- this previously made tools/suitability_cache_helper.py's
+    # find-misses (which reads the exported CSV) silently disagree with the live
+    # in-process pipeline run (which never round-trips through CSV).
+    if _text(row, "HardFilterRule"):
         return True
     return False
 
@@ -218,6 +238,19 @@ def evaluate_metadata_suitability(row, config=None, cached_analysis=None):
 
     if cached_analysis:
         return _from_analysis(cached_analysis)
+    # A multi-word keyword the deterministic gates didn't already resolve (blocked/
+    # single-token) still needs a real subagent verdict if it matches
+    # needs_suitability_audit's own criteria (high-volume Feature/System Keywords).
+    # Defaulting this to "Eligible" when uncached would make the whole audit step a
+    # silent no-op -- nothing would ever surface that a subagent run is needed. Return
+    # a distinguishable pending state instead; apply_metadata_suitability decides
+    # whether to fail loud on it.
+    if needs_suitability_audit(row, config):
+        return _result(
+            False, False, True, "Pending Audit", SUITABILITY_PENDING_AUDIT,
+            "Keyword requires subagent suitability audit before metadata/ads eligibility",
+            confidence=0.0, source="pending",
+        )
     return _result(True, True, False, "Eligible", "suitability_default_eligible", "Keyword passed deterministic suitability gate")
 
 
@@ -236,9 +269,19 @@ def needs_suitability_audit(row, config=None):
             return False
         return True
     bucket = str(row.get("Bucket", "") or "").strip()
-    if bucket in {"Feature Keywords", "System Keywords"} and _number(row.get("Volume"), 0) >= _number(policy.get("audit_min_volume"), 20):
-        return True
-    return False
+    if bucket not in {"Feature Keywords", "System Keywords"}:
+        return False
+    if _number(row.get("Volume"), 0) < _number(policy.get("audit_min_volume"), 20):
+        return False
+    # Only AI-INFERRED feature buckets (DecisionRule prefixed "ai_", e.g. "ai_feature")
+    # need a second-pass specificity audit. A keyword that landed in Feature/System
+    # Keywords by matching the app's own hand-declared feature_terms/intent_core_terms
+    # (deterministic rules like "feature_keywords"/"system_keywords") was already
+    # vetted by the app owner -- re-auditing every declared feature would block the
+    # pipeline on legitimate, specific keywords ("gba emulator", "nds roms") and make
+    # this gate useless. The AI can bucket broad head terms ("gba retro games",
+    # "joypad", "turbospeed") as Feature too; those need the extra check.
+    return _decision_rule(row).strip().lower().startswith("ai_")
 
 
 def _context_hash(config, app_profile=None):
@@ -385,6 +428,22 @@ class SuitabilityCache:
             connection.commit()
 
 
+def _write_candidate_pool_csv(frame, config, market):
+    # tools/suitability_cache_helper.py's find-misses needs a POST-classification CSV
+    # (Keyword/Bucket/DecisionRule/Volume) to know which keywords need an audit -- the
+    # raw input CSV doesn't have those columns yet. Without this, a pipeline failure
+    # here leaves nothing to feed into find-misses. Export deterministically so the
+    # error message can point straight at a ready-to-use file.
+    app_id = str((config or {}).get("app_id", "") or "app")
+    safe_app_id = re.sub(r"[^A-Za-z0-9_.-]+", "_", app_id).strip("_") or "app"
+    safe_market = re.sub(r"[^A-Za-z0-9_.-]+", "_", str(market or (config or {}).get("market", "")) or "default")
+    directory = os.path.join(PROJECT_ROOT, ".cache", "candidate_pools")
+    os.makedirs(directory, exist_ok=True)
+    path = os.path.join(directory, f"{safe_app_id}_{safe_market}_candidates.csv")
+    frame.to_csv(path, index=False, encoding="utf-8-sig")
+    return path
+
+
 def apply_metadata_suitability(df, config=None, app_profile=None, market="", cache_path=""):
     if df is None:
         return df
@@ -398,10 +457,28 @@ def apply_metadata_suitability(df, config=None, app_profile=None, market="", cac
         cache = SuitabilityCache(resolved_cache, config=config, app_profile=app_profile, market=market or (config or {}).get("market", ""))
 
     results = []
+    pending_keywords = []
     for _, row in frame.iterrows():
         row_dict = row.to_dict()
         cached = cache.get(row_dict.get("Keyword", "")) if cache else None
-        results.append(evaluate_metadata_suitability(row_dict, config, cached))
+        result = evaluate_metadata_suitability(row_dict, config, cached)
+        if result["SuitabilityRule"] == SUITABILITY_PENDING_AUDIT:
+            pending_keywords.append(str(row_dict.get("Keyword", "")))
+        results.append(result)
+
+    if pending_keywords and policy.get("fail_on_missing_audit", True):
+        candidate_pool_path = _write_candidate_pool_csv(frame, config, market)
+        sample = ", ".join(pending_keywords[:10])
+        more = f" (+{len(pending_keywords) - 10} more)" if len(pending_keywords) > 10 else ""
+        raise SuitabilityAuditError(
+            f"Metadata suitability audit is cache-only: {len(pending_keywords)} keyword(s) need a "
+            "subagent suitability review before this pipeline can run. "
+            f"Candidate pool exported to {candidate_pool_path} -- run "
+            f"'python tools/suitability_cache_helper.py find-misses --app <alias> --csv {candidate_pool_path} "
+            "--market <MARKET>' then prepare-batches/save-results/verify-cache "
+            f"(see .agents/skills/warm-suitability-cache/SKILL.md). Pending: {sample}{more}"
+        )
+
     for column in SUITABILITY_COLUMNS:
         frame[column] = [result[column] for result in results]
     return frame

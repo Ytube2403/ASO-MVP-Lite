@@ -825,7 +825,7 @@ df[['Bucket', 'DecisionRule', 'Reason']] = df.apply(override_row, axis=1)
 
 # Shortlist building & duplicate checking
 print("[Step 8] Main Shortlist Equivalent-Variant Cleanup & Shortlist building...")
-df = _shared_keyword_filter.apply_metadata_suitability(df, config)
+df = _shared_keyword_filter.apply_metadata_suitability(df, config, app_profile=app_profile, market=config["market"])
 shortlist_result = _shared_keyword_filter.build_main_keyword_shortlist(df, config)
 selected_core = shortlist_result.core
 selected_core_feature = shortlist_result.feature
