@@ -12,7 +12,16 @@ FILTER_POLICY = {
         "rocket league", "pubg", "free fire", "roblox", "minecraft", "minicraft", "call of duty",
         "cod", "bully", "burnout", "once human", "brawlhalla", "cuphead", "dead space",
         "def jam", "delta force", "nascar", "rdr2", "toy story", "garena", "mobile legends",
-        "pubg mobile", "freefire"
+        "pubg mobile", "freefire",
+        # Game PUBLISHERS (label brands) as ROOT words -- word-boundary matching catches
+        # every variant ("rockstar games/emulator", "2k sports") so new variants don't need
+        # to be listed one-by-one in force_drop. Naming a publisher implies playing that
+        # label's copyrighted catalogue -> same IP risk as a title. Excludes ambiguous roots
+        # (bare "ea"/"square"/"rare") and hardware makers (sega/atari/nintendo/sony stay in
+        # risky_platform_terms as functional emulator vocabulary).
+        "rockstar", "2k", "take two", "take-two", "square enix", "squaresoft", "enix",
+        "capcom", "konami", "taito", "snk", "bandai namco", "namco", "bandai",
+        "ea sports", "electronic arts", "ubisoft", "activision", "bethesda"
     ],
     # Trademark platform/console-maker names: functional vocabulary for an emulator app
     # (e.g. "nintendo switch emulator"), so these get the softer risky_platform_terms

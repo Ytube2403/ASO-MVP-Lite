@@ -171,7 +171,15 @@ APP_CONFIG = {
         # KHÔNG để tên nhà sản xuất/hệ máy (Nintendo, Sony, Sega...) vào đây - xem risky_platform_terms.
         "pokemon", "mario", "zelda", "metroid", "fire emblem", "donkey kong",
         "kirby", "animal crossing", "sonic", "gta", "grand theft auto", "megaman", "mega man",
-        "harvest moon", "castlevania", "chrono trigger", "dragon quest"
+        "harvest moon", "castlevania", "chrono trigger", "dragon quest", "dragon ball",
+
+        # Nhà PHÁT HÀNH game (game publisher): nhắc tên hãng ngụ ý cho chơi kho game bản quyền
+        # của hãng đó -> rủi ro IP như tựa game. Dùng ROOT (word-boundary) nên tự bắt mọi biến thể:
+        # "rockstar" -> "rockstar games/emulator/classic"; "2k" -> "2k games/sports". Nhờ vậy KHÔNG
+        # phải liệt kê từng chuỗi thủ công trong user_overrides.force_drop_terms mỗi lần xuất hiện biến thể mới.
+        "rockstar", "2k", "take two", "take-two", "square enix", "squaresoft", "enix",
+        "capcom", "konami", "taito", "snk", "bandai namco", "namco", "bandai",
+        "ea sports", "electronic arts", "ubisoft", "activision", "bethesda"
     ],
     "truncation_policy": {
         "enabled": True,
@@ -385,12 +393,16 @@ APP_CONFIG = {
         "force_consider_terms": [],
         "force_drop_terms": [
             # Standalone console / IP terms (broad/misleading intent when alone)
-            "ds", "psp", "ps", "playstation", "nintendo", "mario", "zelda", "gba", "gameboy", "snes", "nes", "n64", "1980s", "1990s", "80s",
-            # Competitors & Unwanted terms
-            "sboy", "sboy emulator", "ideas emulator", "gamer boy emulator", "manic emu", "naruto emulator",
-            "ideas", "gamer boy", "manic", "naruto", "retro bowl", "boy", "pspad", "xb", "game remote",
+            "80s", "1980s", "1990s", "ds", "gameboy", "gba", "mario", "n64", "nes", "nintendo", "playstation", "ps", "psp", "snes", "zelda",
+            
+            # Competitors & Unwanted apps
+            "boy", "game remote", "gamer boy", "gamer boy emulator", "ideas", "ideas emulator", "manic", "manic emu", "naruto", "naruto emulator", "pspad", "retro bowl", "sboy", "sboy emulator", "xb",
+            
             # Trademarked / Misleading brand/platform terms
-            "my nintendo", "nintendo switch", "nitendo switch", "psx2", "ps game emulator"
+            "my nintendo", "nitendo switch", "nintendo switch", "ps game emulator", "psx2",
+            
+            # Publisher & Store Brands / Irrelevant terms
+            "2k", "2k games", "fsp", "google play", "google play games", "pp games", "rockstar", "rockstar games"
         ],
         "force_top30_terms": [],
         "notes": []

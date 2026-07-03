@@ -138,6 +138,18 @@ def _context_hash(config, app_profile=None):
         "irrelevant_intent_terms": (config or {}).get("irrelevant_intent_terms", []),
         "profile_summary": (app_profile or {}).get("live_store_metadata", {}),
     }
+    # Manual cache-invalidation knob. The brand/risk lists (risky_ip_terms,
+    # risky_platform_terms, competitor_brands, ...) are applied deterministically on
+    # every run, so editing them takes effect live WITHOUT re-warming; they are
+    # intentionally NOT hashed here. But when you change the classification RULESET in
+    # a way that should force the cached AI semantic buckets to be recomputed (e.g. a
+    # new prompt policy, or you want previously-classified keywords re-judged), bump
+    # `ruleset_version` in the app config: the hash changes, old rows stop matching,
+    # and the next `warm_cache_helper` run re-classifies. Included only when set, so
+    # apps that never set it keep their existing cache untouched (no forced re-warm).
+    ruleset_version = str((config or {}).get("ruleset_version", "") or "")
+    if ruleset_version:
+        relevant["ruleset_version"] = ruleset_version
     return config_hash(relevant)
 
 

@@ -3,7 +3,7 @@ import re
 from shared.language_detector import get_market_language_policy
 
 from .hard_filters import evaluate_hard_filters
-from .matcher import has_any_term, normalize_filter_text
+from .matcher import has_any_term, normalize_filter_text, row_texts, tokenize
 from .scoring import has_core_intent, has_feature_intent, has_style_intent
 
 
@@ -109,6 +109,89 @@ def _matches_declared_safe_term(row, config, terms):
     return matched_terms.issubset(safe)
 
 
+# Generic connective / marketing / catch-all tokens that must NEVER count as the
+# "functional anchor" that justifies rescuing a platform/IP brand keyword. Without
+# this, a bare brand word next to filler ("my nintendo") -- or next to an
+# ultra-generic word the app happens to list in a compound feature term ("nintendo
+# games", where "games" is only a token of the declared "nds games") -- would look
+# like it carries real app functionality and get swept into Consider. The anchor
+# must be a DISTINCTIVE functional token the app actually declared (e.g. "emulator",
+# "roms", "console", "gba", "nds"), not a stopword, not the brand word itself, and
+# not a generic "game"/"games"/"play" that describes the whole category rather than
+# this app's function.
+_ANCHOR_STOP_TOKENS = {
+    "my", "the", "a", "an", "and", "or", "of", "for", "with", "to", "in", "on",
+    "app", "apps", "free", "download", "android", "ios", "new", "best", "top",
+    "pro", "plus", "lite", "online", "offline", "account", "store", "official",
+    "game", "games", "gaming", "play",
+}
+
+
+def _brand_risk_tokens(config):
+    # Only SINGLE-WORD brand entries contribute an excluded token (the distinctive
+    # brand word itself: "nintendo", "psp", "rockstar", "2k", "drastic"). Multi-word
+    # brand entries must NOT donate their generic tokens -- competitor_brands lists
+    # things like "dolphin emulator" / "drastic ds", and excluding "emulator" / "ds"
+    # would strip the app's own core-function words out of the anchor set and wrongly
+    # drop legit keywords like "nintendo ds" or "psp emulator".
+    tokens = set()
+    for key in (
+        "competitor_brands", "risky_ip_terms", "risky_platform_terms",
+        "ambiguous_brand_terms", "platform_affiliation_terms",
+    ):
+        for term in config.get(key, []) or []:
+            parts = tokenize(term)
+            if len(parts) == 1:
+                tokens.add(parts[0])
+    return tokens
+
+
+def _declared_functional_anchor_tokens(config):
+    # A brand word is only "app functionality" when the SAME keyword also carries a
+    # distinctive functional token the app declared in its core/feature vocabulary.
+    # We exclude the brand words themselves (a brand can't anchor itself) and generic
+    # stop/category tokens (see _ANCHOR_STOP_TOKENS) so only meaningful tokens qualify.
+    brand_tokens = _brand_risk_tokens(config)
+    stop = set(_ANCHOR_STOP_TOKENS)
+    stop.update(
+        token
+        for term in config.get("noise_terms", []) or []
+        for token in tokenize(term)
+    )
+    anchors = set()
+    for key in ("intent_core_terms", "intent_core_words", "feature_terms"):
+        for term in config.get(key, []) or []:
+            for token in tokenize(term):
+                if token in brand_tokens or token in stop:
+                    continue
+                anchors.add(token)
+    return anchors
+
+
+def _row_has_functional_anchor(row, config):
+    anchors = _declared_functional_anchor_tokens(config)
+    if not anchors:
+        return False
+    for _source, text in row_texts(row):
+        if anchors & set(tokenize(text)):
+            return True
+    return False
+
+
+def _core_override_active(row, config, terms):
+    # The platform/IP "core intent override" only fires when BOTH hold:
+    #  1) every risky term the keyword matched is one the app declared safe
+    #     (_matches_declared_safe_term), AND
+    #  2) the keyword actually carries a distinctive declared functional token
+    #     (_row_has_functional_anchor) -- i.e. real app context, not just a bare
+    #     brand word. (2) is what stops "my nintendo" / "nintendo games" from being
+    #     rescued while still rescuing "nds pro emulator" / "nintendo ds emulator".
+    return (
+        _matches_declared_safe_term(row, config, terms)
+        and _row_has_functional_anchor(row, config)
+    )
+
+
 def _is_explicit_core_term(row, config):
     keyword = normalize_filter_text(row.get("Keyword", ""))
     core_terms = {
@@ -202,7 +285,7 @@ def classify_keyword(row, config):
         # the brand word itself is one the app has explicitly declared as core (see
         # _declared_safe_terms) -- checked against risky_platform_terms specifically,
         # since is_platform_only is only ever set when is_platform_risk already fired.
-        if policy.get("core_intent_override", False) and _matches_declared_safe_term(row, config, config.get("risky_platform_terms", [])):
+        if policy.get("core_intent_override", False) and _core_override_active(row, config, config.get("risky_platform_terms", [])):
             return "Consider Keywords", "platform_only_core_override", "Consider: Core app intent term also matches a platform/hardware brand word"
         return _action_result(policy["platform_only_action"], "platform_only", "Platform-only keyword")
     if flags["is_risky_ip"]:
@@ -214,13 +297,13 @@ def classify_keyword(row, config):
         # specifically, NOT risky_platform_terms, so a declared-safe platform word (e.g.
         # "nintendo") appearing incidentally in the same row can't rescue an unrelated,
         # undeclared risky_ip_terms hit (e.g. "mario" in "Super Mario (Nintendo game)").
-        if policy.get("core_intent_override", False) and _matches_declared_safe_term(row, config, config.get("risky_ip_terms", [])):
+        if policy.get("core_intent_override", False) and _core_override_active(row, config, config.get("risky_ip_terms", [])):
             return "Consider Keywords", "risky_ip_core_override", "Consider: Core app intent term also matches a sensitive IP/brand word"
         return _action_result(policy["risky_ip_action"], "risky_ip", "Sensitive IP term")
     if flags["is_ambiguous_brand"]:
         return _action_result(policy["ambiguous_brand_action"], "ambiguous_brand", "Ambiguous brand term")
     if flags["is_platform_risk"]:
-        if policy.get("core_intent_override", False) and _matches_declared_safe_term(row, config, config.get("risky_platform_terms", [])):
+        if policy.get("core_intent_override", False) and _core_override_active(row, config, config.get("risky_platform_terms", [])):
             return "Consider Keywords", "platform_risk_core_override", "Consider: Core app intent term also matches a platform/hardware brand word"
         return _action_result(policy["platform_context_action"], "platform_style_risk", "Platform-style context")
 

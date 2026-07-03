@@ -230,10 +230,30 @@ class KeywordFilterTests(unittest.TestCase):
             )[1],
             "risky_ip",
         )
-        # But a keyword actually about the declared-safe platform still gets rescued.
+        # But a keyword that ALSO carries a distinctive declared functional token
+        # ("prank" is in intent_core_words) alongside the declared-safe platform word
+        # still gets rescued -- that combination is real app context.
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("nintendo prank"), config)[1],
+            "platform_risk_core_override",
+        )
+        # ...whereas the declared-safe brand word next to only an UNDECLARED word
+        # ("emulator" is not this app's vocabulary) is NOT enough to rescue. Without
+        # this guard, any "nintendo <filler>" -- "my nintendo", "nintendo games",
+        # "nintendo account" -- would leak into Consider just because "nintendo" was
+        # declared safe once. The override now requires genuine declared app context.
         self.assertEqual(
             keyword_filter.classify_keyword(row("nintendo emulator"), config)[1],
-            "platform_risk_core_override",
+            "platform_style_risk",
+        )
+        # "my nintendo": the only non-brand token is the stopword "my", so no genuine
+        # anchor -> the override does NOT fire (rule is the plain risk rule, not the
+        # *_core_override variant). (Here it lands on platform_style_risk because this
+        # fixture lists "nintendo" itself as a feature term; in a config where the
+        # brand word is platform-only it would be dropped as platform_only.)
+        self.assertEqual(
+            keyword_filter.classify_keyword(row("my nintendo"), config)[1],
+            "platform_style_risk",
         )
 
     def test_risk_flags_override_ai_classification(self):
