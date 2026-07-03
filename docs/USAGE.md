@@ -56,20 +56,27 @@ python tools/warm_cache_helper.py verify-cache --app <AppName> --csv "apps/<AppN
 
 Chi chay pipeline sau khi `verify-cache` pass.
 
-## 4. Kiem tra metadata/ads suitability cache
+## 4. Metadata/ads suitability audit sau candidate pool
 
 Sau agentic cache, pipeline con co post-candidate gate rieng cho `MetadataEligible`/`AdsEligible`. Gate nay khong thay the relevancy: no chi tra loi cau hoi "keyword nay co dang dung trong metadata/ads khong?". Vi du `arcade`, `pizza`, `moonlight`, `turbospeed` co the lien quan den feature nhung qua rong khi dung mot minh, nen se vao `ResearchOnly`. Cac atomic platform terms nhu `nds`, `ds`, `gba` duoc giu neu nam trong config keep list.
 
-Kiem tra cache suitability neu app/market co broad single-token hoac feature ambiguous:
+Suitability audit khong chay tren raw AppTweak CSV. No can candidate pool sau classification/scoring, co cac cot nhu `Keyword`, `Bucket`, `DecisionRule`, `Volume`. Vi vay flow dung la:
+
+1. Chay pipeline sau khi agentic cache da pass.
+2. Neu co AI-inferred Feature/System keyword can audit ma cache chua co, pipeline fail-fast voi loi `Metadata suitability audit is cache-only`.
+3. Loi nay se export candidate pool vao `.cache/candidate_pools/..._candidates.csv`.
+4. Dung file candidate pool do de warm suitability cache, roi chay lai pipeline.
+
+Kiem tra file candidate pool:
 
 ```powershell
-python tools/suitability_cache_helper.py verify-cache --app <AppName> --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <AppName> --csv ".cache/candidate_pools/<exported_candidates>.csv" --market <MARKET>
 ```
 
-Neu fail, tao batch cho subagent audit:
+Neu fail, tao batch cho subagent audit tu candidate pool:
 
 ```powershell
-python tools/suitability_cache_helper.py find-misses --app <AppName> --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --market <MARKET> --output .cache/<app>_<market>_suitability_missing.json
+python tools/suitability_cache_helper.py find-misses --app <AppName> --csv ".cache/candidate_pools/<exported_candidates>.csv" --market <MARKET> --output .cache/<app>_<market>_suitability_missing.json
 python tools/suitability_cache_helper.py prepare-batches --misses .cache/<app>_<market>_suitability_missing.json --output-dir .cache/suitability_batches
 ```
 
@@ -77,10 +84,10 @@ Subagent result phai co cac field `keyword`, `suitability_bucket`, `metadata_eli
 
 ```powershell
 python tools/suitability_cache_helper.py save-results --app <AppName> --batch <batch_path> --results <result_path> --market <MARKET>
-python tools/suitability_cache_helper.py verify-cache --app <AppName> --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <AppName> --csv ".cache/candidate_pools/<exported_candidates>.csv" --market <MARKET>
 ```
 
-Ghi chu: deterministic rule van thang subagent. Risk/drop/language/manual-review khong duoc rescue; single-token block terms van bi `SINGLE_TOKEN_TOO_BROAD`; single-token keep terms van duoc eligible.
+Ghi chu: deterministic rule van thang subagent. Risk/drop/language/manual-review khong duoc rescue; single-token block terms van bi `SINGLE_TOKEN_TOO_BROAD`; single-token keep terms van duoc eligible. Hand-declared `feature_terms`/`intent_core_terms` khong can subagent audit; gate fail-loud chu yeu cho AI-inferred Feature/System keyword co volume du cao.
 
 ## 5. Chay pipeline
 

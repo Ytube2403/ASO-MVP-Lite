@@ -1,5 +1,6 @@
 import os
 import sys
+import tempfile
 import unittest
 
 import pandas as pd
@@ -10,6 +11,7 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 from shared import keyword_filter
+from shared.keyword_filter import suitability
 
 
 def row(keyword, **overrides):
@@ -92,6 +94,56 @@ class MetadataSuitabilityTests(unittest.TestCase):
         arcade_log = next(item for item in result.not_selected_log if item["Keyword"] == "arcade")
         self.assertEqual(arcade_log["NotSelectedReason"], "SINGLE_TOKEN_TOO_BROAD")
         self.assertEqual(arcade_log["SuitabilityRule"], "single_token_too_broad")
+
+    def test_ai_inferred_feature_without_cache_fails_loud_and_exports_candidate_pool(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            old_root = suitability.PROJECT_ROOT
+            suitability.PROJECT_ROOT = temp_dir
+            try:
+                config = {
+                    **self.config(),
+                    "app_id": "com.example.test",
+                    "metadata_suitability": {
+                        **self.config()["metadata_suitability"],
+                        "cache_path": os.path.join(temp_dir, "agentic.sqlite3"),
+                    },
+                }
+                frame = pd.DataFrame([
+                    row("gba retro games", DecisionRule="ai_feature", Volume=50),
+                ])
+                with self.assertRaisesRegex(keyword_filter.SuitabilityAuditError, "cache-only"):
+                    keyword_filter.apply_metadata_suitability(frame, config, market="US_EN")
+                expected = os.path.join(
+                    temp_dir,
+                    ".cache",
+                    "candidate_pools",
+                    "com.example.test_US_EN_candidates.csv",
+                )
+                self.assertTrue(os.path.exists(expected))
+            finally:
+                suitability.PROJECT_ROOT = old_root
+
+    def test_declared_feature_keyword_does_not_require_subagent_audit(self):
+        result = keyword_filter.apply_metadata_suitability(
+            pd.DataFrame([row("gba emulator", DecisionRule="feature_keywords", Volume=80)]),
+            self.config(),
+        )
+        self.assertTrue(bool(result.iloc[0]["MetadataEligible"]))
+        self.assertEqual(result.iloc[0]["SuitabilityRule"], "suitability_default_eligible")
+
+    def test_csv_round_trip_blank_hard_filter_does_not_block_everything(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            csv_path = os.path.join(temp_dir, "candidates.csv")
+            pd.DataFrame([
+                {
+                    **row("gba emulator", DecisionRule="feature_keywords", Volume=80),
+                    "HardFilterRule": "",
+                }
+            ]).to_csv(csv_path, index=False)
+            round_tripped = pd.read_csv(csv_path)
+            result = keyword_filter.apply_metadata_suitability(round_tripped, self.config())
+            self.assertTrue(bool(result.iloc[0]["MetadataEligible"]))
+            self.assertNotEqual(result.iloc[0]["SuitabilityRule"], "blocked_risk")
 
 
 if __name__ == "__main__":

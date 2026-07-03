@@ -74,6 +74,8 @@ Wrapper tai root duoc giu de cac lenh cu van chay.
 - `.agents/skills/aso-keyword-research/agents/openai.yaml`: metadata UI toi thieu cho skill, gom display name, short description va default prompt.
 - `.agents/skills/warm-agentic-cache/SKILL.md`: skill huong dan orchestrator (Antigravity, Claude Code, hoac tool tuong tu) tu dong nap cache phan loai agentic con thieu bang subagent that (find-misses -> prepare-batches -> spawn subagent phan loai -> save-results -> verify-cache) roi moi chay pipeline that, thay vi nguoi dung phai tu chay tung lenh CLI cua `tools/warm_cache_helper.py` thu cong.
 - `.agents/skills/warm-agentic-cache/agents/openai.yaml`: metadata UI toi thieu cho skill nay, cung dinh dang voi skill `aso-keyword-research`.
+- `.agents/skills/warm-suitability-cache/SKILL.md`: skill huong dan orchestrator nap cache metadata/ads suitability sau candidate pool bang subagent that. Dung candidate pool CSV do pipeline export khi gap `SuitabilityAuditError`, khong dung raw AppTweak CSV.
+- `.agents/skills/warm-suitability-cache/agents/openai.yaml`: metadata UI toi thieu cho skill suitability.
 
 Validation hien tai: parser cuc bo pass; skill khong con `file:///`, `search_web`, mismatch giua folder va skill name. `quick_validate.py` cua skill-creator can module Python `yaml`/`PyYAML`; neu moi truong chua cai PyYAML thi validator chuan se khong chay duoc, nhung cac rule form chinh da duoc kiem bang script cuc bo.
 

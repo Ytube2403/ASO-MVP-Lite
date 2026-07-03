@@ -24,6 +24,8 @@ from .report_export import write_quality_log_sheet
 from .runtime import FilterRuntime, build_filter_runtime
 from .suitability import (
     SUITABILITY_COLUMNS,
+    SUITABILITY_PENDING_AUDIT,
+    SuitabilityAuditError,
     SuitabilityAnalysis,
     SuitabilityCache,
     apply_metadata_suitability,
@@ -76,6 +78,7 @@ __all__ = [
     "NOT_SELECTED_LOG_COLUMNS",
     "QUALITY_LOG_COLUMNS",
     "SUITABILITY_COLUMNS",
+    "SUITABILITY_PENDING_AUDIT",
     "apply_user_overrides",
     "apply_metadata_suitability",
     "atomic_write_json",
@@ -112,6 +115,7 @@ __all__ = [
     "normalize_filter_text",
     "safe_reach_ceiling",
     "selection_cache_path",
+    "SuitabilityAuditError",
     "SuitabilityAnalysis",
     "SuitabilityCache",
     "tokenize",

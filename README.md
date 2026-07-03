@@ -100,13 +100,13 @@ Sau khi keyword da vao candidate pool va da co scoring/classification, runner go
 
 Audit columns duoc ghi ra workbook: `MetadataEligible`, `AdsEligible`, `ResearchOnly`, `SuitabilityBucket`, `SuitabilityRule`, `SuitabilityReason`, `SuitabilityConfidence`, `SuitabilitySource`. `01_Main_Keyword_Shortlist` chi nhan row co `MetadataEligible=True`; row research-only se hien trong `14_Not_Selected_Audit` voi reason `SINGLE_TOKEN_TOO_BROAD` hoac `SUITABILITY_RESEARCH_ONLY`.
 
-Neu co case mo ho can subagent audit, dung helper rieng:
+Neu co AI-inferred Feature/System keyword can subagent audit ma cache chua co, pipeline se fail-fast va export candidate pool vao `.cache/candidate_pools/`. Dung file candidate pool do cho helper rieng:
 
 ```powershell
-python tools/suitability_cache_helper.py find-misses --app NDS_Emulator --csv "apps/NDS_Emulator/Input/072026/NDS Emulator_US_EN.csv" --market US_EN
+python tools/suitability_cache_helper.py find-misses --app NDS_Emulator --csv ".cache/candidate_pools/com.emulator.nds.super.game.console.handheld_US_EN_candidates.csv" --market US_EN
 python tools/suitability_cache_helper.py prepare-batches --misses .cache/nds_emulator_us_en_suitability_missing.json
 python tools/suitability_cache_helper.py save-results --app NDS_Emulator --batch .cache/suitability_batches/us_en_suitability_batch_1.json --results .cache/suitability_batches/us_en_suitability_batch_1_result.json --market US_EN
-python tools/suitability_cache_helper.py verify-cache --app NDS_Emulator --csv "apps/NDS_Emulator/Input/072026/NDS Emulator_US_EN.csv" --market US_EN
+python tools/suitability_cache_helper.py verify-cache --app NDS_Emulator --csv ".cache/candidate_pools/com.emulator.nds.super.game.console.handheld_US_EN_candidates.csv" --market US_EN
 ```
 
 ## Cai dat

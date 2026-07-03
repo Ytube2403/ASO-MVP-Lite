@@ -2801,7 +2801,7 @@ shared/keyword_filter/shortlist.py
 Runner bat buoc goi suitability gate sau khi row da co candidate classification/scoring va truoc khi build `01_Main_Keyword_Shortlist`:
 
 ```python
-df = _shared_keyword_filter.apply_metadata_suitability(df, config)
+df = _shared_keyword_filter.apply_metadata_suitability(df, config, app_profile=app_profile, market=config["market"])
 shortlist_result = _shared_keyword_filter.build_main_keyword_shortlist(df, config)
 ```
 
@@ -2853,6 +2853,8 @@ Y nghia:
 
 `metadata_selector.exclude_single_token_from_main` duoc giu de tuong thich, nhung policy chinh moi la `metadata_suitability.single_token_policy`.
 
+Mac dinh `metadata_suitability.fail_on_missing_audit = True`. Nghia la khi mot AI-inferred `Feature Keywords`/`System Keywords` co `Volume >= audit_min_volume` can subagent audit nhung chua co cache, pipeline phai fail-fast thay vi silently cho vao metadata.
+
 ### 37.3 Deterministic precedence
 
 Final decision do code deterministic quyet dinh:
@@ -2862,16 +2864,24 @@ Final decision do code deterministic quyet dinh:
 3. Single-token trong `block_terms` bi research-only voi rule `single_token_too_broad`.
 4. Cached subagent suitability chi duoc dung cho case mo ho, khong duoc rescue case da bi deterministic block.
 5. Single-token unlisted mac dinh research-only neu `default_action="research_only"` va chua co cached audit.
+6. Hand-declared feature/core terms (`DecisionRule` khong bat dau bang `ai_`) khong can suitability subagent audit.
+7. AI-inferred Feature/System keyword (`DecisionRule` bat dau bang `ai_`) va du volume se bi `suitability_pending_audit` neu chua co cache; `apply_metadata_suitability` raise `SuitabilityAuditError` va export candidate pool CSV.
 
 ### 37.4 Subagent suitability audit
 
 Helper CLI:
 
 ```powershell
-python tools/suitability_cache_helper.py find-misses --app <alias> --csv <csv-path> --market <MARKET>
+python tools/suitability_cache_helper.py find-misses --app <alias> --csv <candidate-pool-csv> --market <MARKET>
 python tools/suitability_cache_helper.py prepare-batches --misses <misses-json> --output-dir .cache/suitability_batches
 python tools/suitability_cache_helper.py save-results --app <alias> --batch <batch_path> --results <result_path> --market <MARKET>
-python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <csv-path> --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <candidate-pool-csv> --market <MARKET>
+```
+
+`<candidate-pool-csv>` khong phai raw AppTweak CSV. Neu pipeline gap missing suitability audit, no se export file san dung vao:
+
+```text
+.cache/candidate_pools/<app_id>_<MARKET>_candidates.csv
 ```
 
 SQLite dung chung file `.cache/agentic_keyword_analysis.sqlite3`, table rieng:

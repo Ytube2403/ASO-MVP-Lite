@@ -128,19 +128,21 @@ Do not finish until every box is true. If any is false, fix it before replying.
 
 ## Addendum - metadata/ads suitability gate
 
-After Step 4 passes and before running `run_aso_filter.py`, verify the post-candidate suitability cache whenever `metadata_suitability.enabled` is true:
+After Step 4 passes, run `run_aso_filter.py`. The post-candidate suitability gate runs inside the app runner after classification/scoring. If suitability cache is missing for an AI-inferred Feature/System keyword, the runner fails fast with `Metadata suitability audit is cache-only...` and exports a candidate pool CSV under `.cache/candidate_pools/`.
+
+Use that exported candidate pool CSV for the suitability helper:
 
 ```powershell
-python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <csv-path> --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <candidate-pool-csv> --market <MARKET>
 ```
 
 If it fails, warm the suitability cache with real subagents:
 
 ```powershell
-python tools/suitability_cache_helper.py find-misses --app <alias> --csv <csv-path> --market <MARKET>
+python tools/suitability_cache_helper.py find-misses --app <alias> --csv <candidate-pool-csv> --market <MARKET>
 python tools/suitability_cache_helper.py prepare-batches --misses <suitability-misses-json> --output-dir .cache/suitability_batches
 python tools/suitability_cache_helper.py save-results --app <alias> --batch <batch_path> --results <result_path> --market <MARKET>
-python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <csv-path> --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <candidate-pool-csv> --market <MARKET>
 ```
 
 Result schema for each suitability subagent batch:
