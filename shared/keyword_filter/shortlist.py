@@ -3,7 +3,8 @@ import re
 
 from shared import text_dedup
 
-from .matcher import normalize_filter_text
+from . import suitability
+from .matcher import normalize_filter_text, tokenize
 from .scoring import is_low_volume_tier, is_shortlist_volume_eligible, safe_reach_ceiling
 
 
@@ -27,6 +28,16 @@ DEFAULT_METADATA_SELECTOR = {
     "quality_min_volume": 6.0,
     "quality_min_reach": 1.0,
     "generic_safe_descriptors": ["retro", "classic"],
+    # Keep single-word head terms out of the MAIN shortlist (01) only. A 1-token
+    # keyword ("arcade", "joypad", "games", "nds") is a broad head term: high volume
+    # but low app-specific intent -- it won't surface THIS app on the store and burns
+    # ad budget. Multi-word phrases are untouched, and this never changes a keyword's
+    # bucket/classification or the Feature file. Off by default; opt in per app.
+    # Single tokens the app declares as core (single-word intent_core_terms /
+    # intent_core_words, e.g. "supernds") are always kept, plus anything in
+    # single_token_keep.
+    "exclude_single_token_from_main": False,
+    "single_token_keep": [],
 }
 
 DEFAULT_SECTION_BUCKETS = {
@@ -87,6 +98,14 @@ NOT_SELECTED_LOG_COLUMNS = [
     "ClusterId",
     "ClusterRank",
     "SelectionPhase",
+    "MetadataEligible",
+    "AdsEligible",
+    "ResearchOnly",
+    "SuitabilityBucket",
+    "SuitabilityRule",
+    "SuitabilityReason",
+    "SuitabilityConfidence",
+    "SuitabilitySource",
 ]
 
 QUALITY_LOG_COLUMNS = [
@@ -166,6 +185,32 @@ class MainKeywordShortlistBuilder:
         self.not_selected_log = []
         self.diversity_log = []
         self.quality_log = []
+        self.core_single_tokens = self._compute_core_single_tokens()
+
+    def _compute_core_single_tokens(self):
+        tokens = set()
+        for key in ("intent_core_terms", "intent_core_words"):
+            for term in self.config.get(key, []) or []:
+                parts = tokenize(term)
+                if len(parts) == 1:
+                    tokens.add(parts[0])
+        for term in self.selector_config.get("single_token_keep", []) or []:
+            normalized = normalize_filter_text(term)
+            if normalized:
+                tokens.add(normalized)
+        return tokens
+
+    def _is_broad_single_token(self, row):
+        # True only for a single-word keyword that the app hasn't declared as a core
+        # term -- i.e. a generic broad head term ("arcade", "joypad", "games") to keep
+        # OUT of the main shortlist. Declared single-word core terms ("supernds") and
+        # anything in single_token_keep are spared. Multi-word keywords always pass.
+        if not self.selector_config.get("exclude_single_token_from_main", False):
+            return False
+        keyword_tokens = tokenize(_text_value(row, "Keyword"))
+        if len(keyword_tokens) != 1:
+            return False
+        return keyword_tokens[0] not in self.core_single_tokens
 
     def build(self, df_all):
         if df_all is None:
@@ -188,6 +233,7 @@ class MainKeywordShortlistBuilder:
         for index, row in enumerate(rows):
             row["_SourceIndex"] = index
             row["Section"] = self._section_for_row(row)
+            row.update(suitability.evaluate_metadata_suitability(row, self.config))
             safe, reason = self._is_metadata_safe(row)
             row["UtilityScore"] = round(self._utility_score(row, market_stats), 4)
             row["ClusterId"] = self._cluster_key(_text_value(row, "Keyword"))
@@ -470,6 +516,14 @@ class MainKeywordShortlistBuilder:
         if naturalness and naturalness != "OK":
             return False, "BLOCKED_RISK"
 
+        if "MetadataEligible" in row and not bool(row.get("MetadataEligible")):
+            if _text_value(row, "SuitabilityRule") == suitability.SINGLE_TOKEN_TOO_BROAD:
+                return False, "SINGLE_TOKEN_TOO_BROAD"
+            return False, "SUITABILITY_RESEARCH_ONLY"
+
+        if self._is_broad_single_token(row):
+            return False, "BROAD_SINGLE_TOKEN"
+
         decision_rule = _decision_rule(row)
         if decision_rule == "ambiguous_brand" and self._ambiguous_brand_is_generic_descriptor(row):
             return True, ""
@@ -592,6 +646,14 @@ class MainKeywordShortlistBuilder:
                 "ClusterId": row.get("ClusterId", ""),
                 "ClusterRank": row.get("ClusterRank", ""),
                 "SelectionPhase": row.get("SelectionReason", ""),
+                "MetadataEligible": row.get("MetadataEligible", ""),
+                "AdsEligible": row.get("AdsEligible", ""),
+                "ResearchOnly": row.get("ResearchOnly", ""),
+                "SuitabilityBucket": row.get("SuitabilityBucket", ""),
+                "SuitabilityRule": row.get("SuitabilityRule", ""),
+                "SuitabilityReason": row.get("SuitabilityReason", ""),
+                "SuitabilityConfidence": row.get("SuitabilityConfidence", ""),
+                "SuitabilitySource": row.get("SuitabilitySource", ""),
             }
         )
 

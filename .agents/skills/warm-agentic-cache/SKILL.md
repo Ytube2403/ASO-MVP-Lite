@@ -27,6 +27,8 @@ python tools/warm_cache_helper.py find-misses --app <alias> --csv <path-to-csv> 
 
 Read the printed `missing_count` and the JSON file it wrote (default `.cache/<alias>_<market>_missing.json`, or pass `--output` to control the path). If `missing_count` is 0, skip straight to step 5 (verify-cache) and run the pipeline — no subagent needed.
 
+If the app recently bumped top-level `ruleset_version`, expect old rows to stop matching and `missing_count` to jump for every market that uses the new config. That is intentional cache invalidation. Do not delete SQLite just for this; regenerate batches and save new rows under the new context hash.
+
 ### 2. Chunk into batches
 
 ```powershell
@@ -113,6 +115,33 @@ Do not finish until every box is true. If any is false, fix it before replying.
 
 Ground every field in the app's actual identity (`app_config.py`'s `intent_core_terms`/`feature_terms`/`style_terms`/`market_language_policy`/category) — do not classify keywords generically.
 
+### Strict Game Emulator (NDS Emulator) Rubric
+Apply these strict rules for Game Emulator apps (e.g., NDS Emulator / SuperNDS) to prevent broad/IP leakages:
+1. **Dropped for ALL Game IPs / Franchises / Characters**:
+   - Any specific game/franchise/character name (e.g., `mario`, `super mario`, `zelda`, `pokemon`, `pokedex`, `pokemon fire red`, `gta`, `grand theft auto`, `mortal kombat`, `naruto`, `resident evil`, `pac man`, `metal slug`, `sonic`, `crash`, `goku`, `dragon ball`, `metroid`, `kirby`, `fifa`, `pes`, etc.) must be strictly dropped.
+   - **`semantic_bucket`**: `Dropped`
+   - **`decision_rule`**: `ai_classic_ip` (or `classic_ip_intent` if preserving a legacy label)
+2. **Dropped for Competitor Brands / Publishers / Hardware Accessories**:
+   - Competitor emulator apps (`vgbanext`, `drastic`, `citra`, etc.), controller brands (`gamesir`), publishers (`rockstar`, `rockstargames`, `2k`, `konami`, `capcom`, etc.), or stores (`google play`) must be dropped.
+   - **`semantic_bucket`**: `Dropped`
+   - **`decision_rule`**: `ai_competitor` (or `ai_classic_ip` for publisher/game-IP rows)
+3. **Core Intent Final**:
+   - ONLY when matching core intent terms (e.g., `nds emulator`, `ds emulator`, `nintendo ds emulator`, `nds emulador`, `supernds`, `retro emulator`, etc.).
+   - **`decision_rule`**: `ai_core_intent`
+4. **Feature Keywords**:
+   - ONLY for specific features in `feature_terms` (e.g., `controller skins`, `gamepad skins`, `custom buttons`, `save state`, `cheat codes`, etc.) or specific supported emulator consoles (e.g., `gba emulator`, `snes emulator`, `nds roms`, `ds games`).
+   - Never use for generic retro keywords or bare device/retro terms.
+   - **`decision_rule`**: `ai_feature`
+5. **Broad Expansion**:
+   - Genuinely related but generic/bare-category terms, or device attributes that don't state a specific feature (e.g., `emulator`, `emulador`, `games`, `jogos`, `videogame`, bare `gba`/`snes`/`nes`, `gaming emulator`, `retro games`, `games retro`, `gba retro`, `boy gba`, `retro console`, `portable`, `portátil`, `tilt`, `inclinação`, `arcade`).
+   - **`decision_rule`**: `ai_broad_expansion`
+6. **Style Keywords**:
+   - Matching style terms (e.g., `retro`, `nostalgia`, `classic`, `vintage`, `8-bit`, `oldschool`, `childhood`).
+   - **`decision_rule`**: `ai_style`
+7. **Consider Keywords**:
+   - Only for neutral terms that don't fall into the categories above. **Never** use `Consider Keywords` to avoid dropping an IP/competitor keyword.
+
+### Standard Field Rubric
 - **`detected_language`**: lowercase ISO code of the keyword's actual language (e.g. `en`, `pt`, `es`, `id`, `hi`). Use `"en"` only when the keyword is genuinely English.
 - **`language_group`**: one of `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`, relative to the app's `market_language_policy` for this market (primary language of the market, its configured secondary languages, and whether the policy allows mixing). A market-primary-language keyword mixed with a common English loanword (e.g. a console/brand/tech term) is `MIXED`, not `FOREIGN` — mixing primary + a loanword is normal search behavior, not a language mismatch.
 - **`semantic_bucket`**: exactly one of `Core Intent Final`, `Broad Expansion`, `Feature Keywords`, `Style Keywords`, `Consider Keywords`, `Generic Style Reserve`, `Language Mismatch Audit`, `Manual Review`, `Dropped`. Match the keyword against the app's own `intent_core_terms` (-> Core Intent Final), `feature_terms` (-> Feature Keywords), `style_terms` (-> Style Keywords); genuinely off-topic/competitor/IP content -> `Dropped`; wrong-language content -> `Language Mismatch Audit`; ambiguous/unclear -> `Manual Review`.
@@ -121,7 +150,7 @@ Ground every field in the app's actual identity (`app_config.py`'s `intent_core_
 - **`decision_rule`**: a short snake_case label prefixed `ai_` (e.g. `ai_core_intent`, `ai_feature`, `ai_style`, `ai_broad_expansion`, `ai_lang_mismatch`, `ai_manual_review`, `ai_dropped`, `ai_irrelevant`) — matches the convention already used across every existing cache entry in this project.
 - **`reason`**: one short sentence justifying the decision (e.g. `"Core intent: DS emulator in Portuguese"`).
 
-This classification is a supplementary signal, not the final word: `shared/keyword_filter/classifier.py` still runs its own deterministic hard-filter/risk checks first and only falls back to this cached result when nothing else already resolved the keyword. Getting `language_group`/`detected_language`/`english_gloss` right matters most, since those feed the pipeline directly and pervasively; `semantic_bucket` mostly matters for keywords with no other signal.
+This classification is a supplementary signal, not the final word: `shared/keyword_filter/classifier.py` still runs its own deterministic hard-filter/risk checks first and only falls back to this cached result when nothing else already resolved the keyword. Current guardrails are stricter than the AI cache: core override only rescues declared-safe risky/platform terms when the row also has a functional anchor; `platform_affiliation_terms` are never rescued; `classic_ip_intent`/`ip_intent`/`franchise_intent`/`ai_classic_ip` are treated as classic game IP risk and mapped through `risky_ip_action`. Getting `language_group`/`detected_language`/`english_gloss` right matters most, since those feed the pipeline directly and pervasively; `semantic_bucket` mostly matters for keywords with no other signal.
 
 ## Notes
 

@@ -53,7 +53,7 @@ Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.
 - `shared/agentic_keyword_classifier.py`: classifier/cache-only runtime dung provider `antigravity_subagent`; runner fail-fast neu thieu cache.
 - `shared/ai_keyword_classifier.py`: shim tuong thich, re-export sang `agentic_keyword_classifier`.
 - `shared/en_gloss_resolver.py`: resolve cot `EN` tu CSV hoac `AIEnglishGloss`, khong goi translation network.
-- `shared/keyword_filter/`: matcher precompiled, hard filter, classifier, validator, audit, cache atomic, truncation hardening complete-token aware va `shortlist.py` cho main keyword shortlist chung `target 40 utility + diversity` (dedup theo utility, semantic cluster diversity qua Jaccard similarity, safe-backfill co kiem tra day du score/relevancy/demand). `scoring.py` la source of truth cho scoring v4.5: `VolumeN` log-reach, `calculate_rubric_relevancy` tu cache AI, `resolve_balanced_weights` bo KEIN khoi BalancedScore, `safe_reach_ceiling` (reach ceiling percentile 95 chong outlier competitor/irrelevant) va `dampen_stacked_relevancy` (cap RelevancyScore cho keyword nhoi tu khoa nhung demand yeu). `report_export.py::write_quality_log_sheet` xuat canh bao selector (`SAFE_POOL_EXHAUSTED`) ra sheet `15_Selector_Quality_Log`. Xem section 36 trong `ASO_Keyword_Planner_v4_5.md`.
+- `shared/keyword_filter/`: matcher precompiled, hard filter, classifier, validator, audit, cache atomic, truncation hardening complete-token aware va `shortlist.py` cho main keyword shortlist chung `target 40 utility + diversity` (dedup theo utility, semantic cluster diversity qua Jaccard similarity, safe-backfill co kiem tra day du score/relevancy/demand). `suitability.py` la post-candidate metadata/ads suitability gate: ghi `MetadataEligible`/`AdsEligible`/`ResearchOnly`, chan broad single-token nhu `arcade` nhung giu atomic platform term nhu `nds` theo config, va doc subagent audit tu SQLite table `keyword_suitability_analysis`. `classifier.py` la source of truth cho risk precedence: declared-safe + functional-anchor core override, no override cho `platform_affiliation_terms`, va `ai_classic_ip` cho AI-recognized classic game IP. `scoring.py` la source of truth cho scoring v4.5: `VolumeN` log-reach, `calculate_rubric_relevancy` tu cache AI, `resolve_balanced_weights` bo KEIN khoi BalancedScore, `safe_reach_ceiling` (reach ceiling percentile 95 chong outlier competitor/irrelevant) va `dampen_stacked_relevancy` (cap RelevancyScore cho keyword nhoi tu khoa nhung demand yeu). `report_export.py::write_quality_log_sheet` xuat canh bao selector (`SAFE_POOL_EXHAUSTED`) ra sheet `15_Selector_Quality_Log`. Xem section 36 trong `ASO_Keyword_Planner_v4_5.md`.
 - `shared/text_dedup.py`: dedup Unicode cho `01_Main_Keyword_Shortlist`.
 - `shared/profile_service.py`: custom/generated profile cache va stale fallback.
 - `shared/project_memory.py`: doc `app_config.py` va `App_Profile.json` de render Project Memory cho Dashboard, workbook va `PROJECT_MEMORY.md`.
@@ -62,7 +62,8 @@ Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.
 
 - `tools/run_aso_batch.py`: batch implementation.
 - `tools/export_master_keywords.py`: Master Keywords exporter implementation.
-- `tools/warm_cache_helper.py`: workflow chinh thuc cho agentic cache toan du an: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`.
+- `tools/warm_cache_helper.py`: workflow chinh thuc cho agentic cache toan du an: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`; khi app bump `ruleset_version`, tool se xem cache cu la miss theo context hash moi va buoc re-warm market can chay.
+- `tools/suitability_cache_helper.py`: workflow subagent audit cho metadata/ads suitability: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`; dung SQLite chung `.cache/agentic_keyword_analysis.sqlite3` nhung table rieng `keyword_suitability_analysis`.
 - `tools/generate_funvid_csv.py`, `tools/generate_animalface_csv.py`, `tools/generate_100_keywords_csv.py`: tao seed CSV mau cho app FunVid.
 
 Wrapper tai root duoc giu de cac lenh cu van chay.
@@ -88,6 +89,7 @@ Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
 ## `docs/`
 
 - `docs/ASO_Keyword_Planner_v4_5.md`: dac ta logic pipeline v4.5, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid` va agentic cache-only.
+- `docs/USAGE.md`: huong dan su dung hien hanh cho operator: chuan bi app/CSV, verify-cache, warm cache, run pipeline, review workbook, va khi nao can bump `ruleset_version`.
 - `apps/Game_Emulator/AGENTIC_CACHE_WORKFLOW.md`: huong dan flow cache-only moi cho Game Emulator, thay cho cac script scratch.
 - `docs/SETUP_WINDOWS.md`: checklist phan mem, extension, Python packages va cach kiem tra moi truong Windows.
 - `docs/App_Config_Template.py`: template config.
@@ -107,6 +109,8 @@ Regression test cho registry, parser locale, hard filter, truncation false posit
 `tests/test_ai_keyword_classifier.py` bao phu cache-only hit/miss, canonical duplicate reuse va pre-AI skip/preserve rule.
 `tests/test_en_gloss_resolver.py` bao phu uu tien cot `EN`, fallback `AIEnglishGloss` va fail-fast khi keyword non-English thieu gloss.
 `tests/test_warm_cache_helper.py` bao phu effective config, batch contract va validation result cua agentic cache.
+`tests/test_metadata_suitability.py` bao phu single-token keep/block policy va shortlist exclusion.
+`tests/test_suitability_cache_helper.py` bao phu schema validation, duplicate/missing keyword rejection, context hash mismatch va verify-cache cho suitability audit.
 
 ## `releases/`
 

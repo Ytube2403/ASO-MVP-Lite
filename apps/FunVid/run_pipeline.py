@@ -543,7 +543,7 @@ def check_naturalness(kw, config):
         if re.search(pat, kw_lower):
             return 'UNNATURAL', 'Fails structural validation'
     for char in kw_lower:
-        if ord(char) > 127 and char not in 'áéíóúüñ¿¡íóú':
+        if ord(char) > 127 and char not in 'Ã¡Ã©Ã­Ã³ÃºÃ¼Ã±Â¿Â¡Ã­Ã³Ãº':
             return 'LANGUAGE_BLEED', 'Foreign script character detected'
     return 'OK', 'Natural enough for keyword research'
 
@@ -830,6 +830,7 @@ for idx, row in df.iterrows():
 
 # Shortlist building & duplicate checking
 print("[Step 8] Main Shortlist Equivalent-Variant Cleanup & Shortlist building...")
+df = _shared_keyword_filter.apply_metadata_suitability(df, config)
 shortlist_result = _shared_keyword_filter.build_main_keyword_shortlist(df, config)
 selected_core = shortlist_result.core
 selected_core_feature = shortlist_result.feature
@@ -996,15 +997,15 @@ for idx, entry in enumerate(all_shortlist):
     sec = entry['Section']
     if sec == 'Core Intent Final':
         if idx < 2:
-            entry['WhereToUse'] = '🏷️ Title'
+            entry['WhereToUse'] = 'ðŸ·ï¸ Title'
         elif idx < 9:
-            entry['WhereToUse'] = '📱 Short Description'
+            entry['WhereToUse'] = 'ðŸ“± Short Description'
         else:
-            entry['WhereToUse'] = '📄 Full Description'
+            entry['WhereToUse'] = 'ðŸ“„ Full Description'
     elif sec in ['Broad Expansion', 'Feature Keywords']:
-        entry['WhereToUse'] = '📄 Full Description'
+        entry['WhereToUse'] = 'ðŸ“„ Full Description'
     else:
-        entry['WhereToUse'] = '🔍 Consider / Research Only'
+        entry['WhereToUse'] = 'ðŸ” Consider / Research Only'
 
 df_shortlist = pd.DataFrame(all_shortlist)
 
@@ -1102,7 +1103,7 @@ ws_readme.column_dimensions['B'].width = 80
 
 # --- 01_Main_Keyword_Shortlist ---
 ws_shortlist = wb.create_sheet(title="01_Main_Keyword_Shortlist")
-cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'UtilityScore', 'DiversityPenalty', 'ClusterId', 'ClusterRank', 'SelectionReason', 'MergedVariants',
+cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'UtilityScore', 'DiversityPenalty', 'ClusterId', 'ClusterRank', 'SelectionReason', 'MergedVariants', 'MetadataEligible', 'AdsEligible', 'ResearchOnly', 'SuitabilityBucket', 'SuitabilityRule', 'SuitabilityReason', 'SuitabilityConfidence', 'SuitabilitySource',
                   'CompetitorProven', 'ProvenDetails', 'DetectedLanguage', 'LanguageGroup', 'NaturalnessFlag', 'WhereToUse', 'QuotaStatus', 'FillSource', 'FillReason', 'Reason']
 for col_idx, col in enumerate(cols_shortlist, 1):
     ws_shortlist.cell(row=1, column=col_idx, value=col)
@@ -1230,7 +1231,7 @@ ws_report.column_dimensions['E'].width = 65
 # --- 06_All_Candidates ---
 ws_all = wb.create_sheet(title="06_All_Candidates")
 cols_all = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'RelevancyScore', 'CompetitorProven', 'ProvenDetails', 'Bucket', 'DecisionRule',
-            'NeedsAI', 'PreAIAction', 'PreAIRule', 'PreAIReason', 'CanonicalKeyword', 'AISemanticBucket', 'AIDecisionRule', 'AIReason', 'AIConfidence', 'AIStatus',
+            'NeedsAI', 'PreAIAction', 'PreAIRule', 'PreAIReason', 'CanonicalKeyword', 'AISemanticBucket', 'AIDecisionRule', 'AIReason', 'AIConfidence', 'AIStatus', 'MetadataEligible', 'AdsEligible', 'ResearchOnly', 'SuitabilityBucket', 'SuitabilityRule', 'SuitabilityReason', 'SuitabilityConfidence', 'SuitabilitySource',
             'DetectedLanguage', 'LanguageGroup', 'NaturalnessFlag', 'Reason', 'HardFilterRule', 'HardFilterTerm', 'HardFilterSource', 'PolicyFlags']
 for col_idx, col in enumerate(cols_all, 1):
     ws_all.cell(row=1, column=col_idx, value=col)

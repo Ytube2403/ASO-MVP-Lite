@@ -2,7 +2,7 @@
 
 `FILTER_LOGIC_VERSION = v4.5_logreach_rubric_relevancy`
 
-Bản cập nhật này gộp vào release 4.5, tập trung vào **cách chấm điểm** (Volume, Relevancy, BalancedScore), **độ gọn của output**, và **bộ skill điều phối**. Cache phân loại AI (`agentic_keyword_analysis.sqlite3`) **không bị ảnh hưởng**; chỉ selection cache bị làm mới do logic chấm điểm thay đổi.
+Bản cập nhật này gộp vào release 4.5, tập trung vào **cách chấm điểm** (Volume, Relevancy, BalancedScore), **độ gọn của output**, **bộ skill điều phối**, và các guardrail mới quanh risk/cache. Selection cache bị làm mới do logic chấm điểm đổi. Cache phân loại AI (`agentic_keyword_analysis.sqlite3`) chỉ cần re-warm khi app config bump `ruleset_version`; riêng brand/risk list vẫn là deterministic filter và có hiệu lực ngay mỗi lần chạy.
 
 ## 1. Scoring — điểm chính
 
@@ -36,17 +36,24 @@ base(AISemanticBucket) − (1 − AIConfidence)·0.15 + language_adjust   (clamp
 - `save-results`: fill gloss-only không ghi đè phân loại tốt; chuẩn hóa hoa/thường + alias cho `semantic_bucket`/`language_group`.
 - Gom toàn bộ lỗi thay vì dừng ở lỗi đầu; `--partial` lưu phần hợp lệ + ghi `<batch>_remaining.json` để re-spawn phần lỗi; `--source` (hoặc `$AGENTIC_SUBAGENT_SOURCE`).
 - `AIKeywordClassifier._update_english_gloss()` (patch gloss có mục tiêu).
+- `ruleset_version`: top-level app config key dùng để invalidate cache semantic khi prompt/rubric agentic đổi. Risk/brand lists không nằm trong context hash vì `classifier.py` hard-filter lại mỗi run.
 
-## 4. Skills điều phối (`.agents/skills/`)
+## 4. Risk guardrails
+- `classifier.py` chỉ cho core override với risky/platform term khi term đó là declared-safe trong core/feature vocabulary và keyword có functional anchor riêng. Generic token như `game`, `games`, `play`, `app`, `free` không tự cứu brand.
+- `platform_affiliation_terms` không có core override; các phrase kiểu official/affiliation/brand-claim vẫn bị xử lý theo `platform_affiliation_action`.
+- AI-recognized classic game IP dùng `AIDecisionRule` như `classic_ip_intent`, `ip_intent`, `franchise_intent`, `ai_classic_ip`; nếu không có override hợp lệ thì classifier áp dụng `risky_ip_action` và ghi rule `ai_classic_ip`.
+
+## 5. Skills điều phối (`.agents/skills/`)
 - `run-pipeline-aso`: chạy pipeline đầu-cuối (resolve app → preflight profile/config → warm cache bằng subagent → verify → filter → report).
 - `create-profile`: tạo `App_Profile.json` chuẩn schema 2.0, validate bằng `build_project_memory_for_app`.
 - `warm-agentic-cache`, `aso-keyword-research`: bổ sung "Execution contract" (MUST/NEVER) + "Definition of done" để tăng tuân thủ.
 
-## 5. Tests
+## 6. Tests
 - Mới: `tests/test_scoring_upgrades.py` (log-reach, resolve_balanced_weights, rubric), `tests/test_report_builder.py`, `tests/test_warm_cache_helper.py` (mở rộng).
 - Cập nhật `tests/test_volume_score.py` sang ngữ nghĩa log-reach.
 
 ## Ghi chú migrate
 - App có quy mô reach khác biệt nên chỉnh `reach_reference` trong `volume_score_policy`.
 - Selection cache cũ sẽ được tính lại (do `FILTER_LOGIC_VERSION` đổi) — đúng và mong muốn.
-- Còn lại (tùy chọn): dọn dead code `apply_volume_penalty` / `calculate_relevancy` / `calculate_expansion` local trong runner; rubric v2 (`positioning_fit`/`specificity` từ subagent).
+- Agentic cache cũ vẫn dùng được nếu `ruleset_version` không đổi. Khi bump `ruleset_version`, chạy lại `warm_cache_helper` cho các market cần pipeline; row cũ không bị xóa, chỉ không còn match context hash mới.
+- Dead code runner cũ như `apply_volume_penalty` đã được dọn; phần tùy chọn còn lại là rubric v2 (`positioning_fit`/`specificity` từ subagent) nếu sau này muốn mở rộng.

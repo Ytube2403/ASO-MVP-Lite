@@ -16,6 +16,7 @@ APP_CONFIG = {
     "market": "US_EN",                                            # Mã thị trường mặc định (thay đổi linh hoạt)
     "platform_mode": "google_play",                               # Nền tảng: 'google_play' hoặc 'app_store'
     "semantic_mode": "game_emulator",
+    "ruleset_version": "2026-07-strict-v1",
 
     # =========================================================================
     # 2. MARKET LANGUAGE POLICY (Chính sách ngôn ngữ)
@@ -140,7 +141,7 @@ APP_CONFIG = {
         "pizza boy gba", "easy emu", "mock emulator", "lucky emulator", "gk emulator",
         "gas emulator", "folium emulator", "jeans emulator", "emulsio", "emulator guia",
         "emulator md2", "emulator anak permainan", "emulator juegos pro", "retro game master",
-        "retro game hub"
+        "retro game hub", "gb4", "gb4 emulator", "game boy 4"
     ],
 
     "noise_terms": [
@@ -177,7 +178,7 @@ APP_CONFIG = {
         # của hãng đó -> rủi ro IP như tựa game. Dùng ROOT (word-boundary) nên tự bắt mọi biến thể:
         # "rockstar" -> "rockstar games/emulator/classic"; "2k" -> "2k games/sports". Nhờ vậy KHÔNG
         # phải liệt kê từng chuỗi thủ công trong user_overrides.force_drop_terms mỗi lần xuất hiện biến thể mới.
-        "rockstar", "2k", "take two", "take-two", "square enix", "squaresoft", "enix",
+        "rockstar", "2k", "take two", "square enix", "squaresoft", "enix",
         "capcom", "konami", "taito", "snk", "bandai namco", "namco", "bandai",
         "ea sports", "electronic arts", "ubisoft", "activision", "bethesda"
     ],
@@ -250,6 +251,23 @@ APP_CONFIG = {
         "quality_min_volume": 6.0,
         "quality_min_reach": 1.0,
         "generic_safe_descriptors": ["retro", "classic"],
+        # Loại từ đơn (1-token) generic khỏi Main Shortlist (01) — head term rộng,
+        # không ra đúng app khi search & đốt tiền ads. Chỉ ảnh hưởng sheet 01; không
+        # đổi phân loại, không đụng Feature file. Từ đơn đã khai báo trong
+        # intent_core_terms (vd "supernds") vẫn được giữ; thêm vào single_token_keep
+        # nếu muốn giữ thêm (vd "nds", "ds").
+        "exclude_single_token_from_main": True,
+        "single_token_keep": ["nds", "ds", "gba", "snes", "psp", "3ds", "n64", "supernds"],
+    },
+
+    "metadata_suitability": {
+        "enabled": True,
+        "single_token_policy": {
+            "enabled": True,
+            "default_action": "research_only",
+            "keep_terms": ["nds", "ds", "gba", "snes", "psp", "3ds", "n64", "supernds"],
+            "block_terms": ["arcade", "pizza", "moonlight", "turbospeed", "portable", "games", "game"],
+        },
     },
 
     # =========================================================================
@@ -402,7 +420,9 @@ APP_CONFIG = {
             "my nintendo", "nitendo switch", "nintendo switch", "ps game emulator", "psx2",
             
             # Publisher & Store Brands / Irrelevant terms
-            "2k", "2k games", "fsp", "google play", "google play games", "pp games", "rockstar", "rockstar games"
+            "2k", "2k games", "fsp", "google play", "google play games", "pp games", "rockstar", "rockstar games",
+            # Broad / Standalone Generic single terms
+            "games", "game", "play", "portable", "portátil", "jogos", "juegos", "emulator", "emulador"
         ],
         "force_top30_terms": [],
         "notes": []

@@ -2747,26 +2747,165 @@ Van de phu sinh: tu qua pho bien (vd "emulator" xuat hien 37% pool, "game" 34%) 
 _shared_keyword_filter.write_quality_log_sheet(wb, shortlist_result, style_sheet)
 ```
 
-### 36.6 Risk core-intent override - `_core_declared_risk_terms`
+### 36.6 Risk core-intent override - declared-safe term + functional anchor
 
 `shared/keyword_filter/classifier.py` mo rong `risk_policy.core_intent_override` (da co san cho `is_irrelevant`, mac dinh `True`) sang ca `is_risky_ip`, `is_platform_risk`, va `is_platform_only`.
 
 Van de: mot brand term co the bi flag chi vi ban dich EN gloss do AI sinh ra viet day du ten brand (vd "nds" -> "Nintendo DS emulator"), du Keyword goc khong he nhac brand. Neu app do la emulator cho chinh he may do, `intent_core_terms` cua app da khai bao ro rang brand nay la core intent (vd "nintendo ds emulator" nam trong `intent_core_terms`) - luc do khong nen Drop cung.
 
-Fix: `_core_declared_risk_terms(config)` tinh tap cac term trong `risky_ip_terms`/`risky_platform_terms` MA CUNG xuat hien nhu substring trong it nhat 1 phrase cua `intent_core_terms`. Chi khi keyword khop dung 1 trong cac term "da duoc khai bao" nay (`_matches_core_declared_risk_term`), classifier moi tra ve `Consider Keywords` voi rule moi (`risky_ip_core_override`, `platform_risk_core_override`, `platform_only_core_override`) thay vi Drop/block theo policy mac dinh.
+Fix hien hanh: override chi kich hoat qua `_core_override_active(row, config, terms)` khi DONG THOI thoa 2 dieu kien:
 
-Co tinh THU HEP pham vi: neu brand term KHONG xuat hien trong bat ky `intent_core_terms` nao cua app (vd "pokemon" trong 1 app Prank Sounds co core term chi la "prank"), override khong kich hoat - keyword van bi xu ly rui ro nhu binh thuong. Dieu nay tranh viec 1 core-intent word qua chung chung (nhu "prank") vo tinh mo khoa moi brand term khong lien quan.
+1. Tat ca risky/platform term ma keyword match deu nam trong tap declared-safe cua app (`_matches_declared_safe_term`). Declared-safe duoc tinh tu cac term trong `risky_ip_terms`/`risky_platform_terms`/risk list tuong ung co xuat hien bang word-boundary trong `intent_core_terms`, `intent_core_words` hoac `feature_terms`.
+2. Keyword phai co mot functional anchor rieng biet (`_row_has_functional_anchor`) - token chuc nang app da khai bao, khong phai brand word, khong phai stop/generic token nhu `game`, `games`, `play`, `app`, `free`, va khong phai noise token.
+
+Noi cach khac: brand/platform term khong duoc tu cuu chinh no. `nintendo ds emulator`, `nds emulator`, `psp emulator` co anchor chuc nang (`ds`, `emulator`, `psp` tuy config) nen co the xuong `Consider Keywords`; `my nintendo`, `nintendo games`, `nintendo switch` khong co anchor hop le hoac match affiliation/platform phrase rui ro nen khong duoc cuu.
+
+Co tinh THU HEP pham vi: neu brand term KHONG duoc app khai bao safe, hoac keyword chi chua generic/filler token, override khong kich hoat - keyword van bi xu ly rui ro nhu binh thuong. Dieu nay tranh viec 1 core-intent word qua chung chung (nhu "game", "play", "emulator" khi bi xep vao stop/noise) vo tinh mo khoa moi brand term khong lien quan.
 
 `shared/keyword_filter/shortlist.py::_is_metadata_safe` cung duoc cap nhat de tin tuong 3 rule override tren (`_CORE_DECLARED_RISK_OVERRIDE_RULES`), khong bi chan lai boi co `HardFilterRule` tho (doc lap voi `DecisionRule`, khong biet ve override moi).
 
 ### 36.7 Vi du config: `risky_ip_terms` vs `risky_platform_terms`
 
-`risky_ip_terms` chi nen chua ten NHAN VAT/TUA GAME cu the (Mario, Pokemon, Zelda, Sonic...) - dung ten nay ngu y app cho choi DUNG game do, rui ro ban quyen cao, mac dinh Drop cung. Ten HANG SAN XUAT/HE MAY (Nintendo, Sony, Sega, Microsoft, PlayStation, Xbox, 3DS, PSP...) thuoc `risky_platform_terms` - day la tu vung mo ta chuc nang can thiet cho app emulator/phu kien, rui ro thap hon nhieu, mac dinh chi `Consider Keywords`. Xem `docs/App_Config_Template.py` (section `risky_ip_terms`) de biet chi tiet + vi du that tu NDS_Emulator (chuyen "nintendo" tu `risky_ip_terms` sang `risky_platform_terms`).
+`risky_ip_terms` chi nen chua ten NHAN VAT/TUA GAME/SAN PHAM SANG TAO cu the (Mario, Pokemon, Zelda, Sonic, Mortal Kombat...) - dung ten nay ngu y app cho choi DUNG game do, rui ro ban quyen cao, mac dinh Drop cung voi app emulator. Ten HANG SAN XUAT/HE MAY/PHAN CUNG (Nintendo, Sony, Sega, Microsoft, PlayStation, Xbox, 3DS, PSP...) thuoc `risky_platform_terms` - day la tu vung mo ta chuc nang can thiet cho app emulator/phu kien, rui ro thap hon nhieu, mac dinh chi `Consider Keywords` khi co functional anchor. Cac cum claim lien ket/official/brand phrase nhu `my nintendo`, `official nintendo`, `nintendo switch`, `ps game emulator`, `psx2` nen nam trong `platform_affiliation_terms`, `competitor_brands` hoac `user_overrides.force_drop_terms` de Drop ro rang. Xem `docs/App_Config_Template.py` (section `risky_ip_terms`) de biet chi tiet + vi du that tu NDS_Emulator.
 
-### 36.8 Regression tests
+### 36.8 AI-recognized classic IP - `ai_classic_ip`
+
+Subagent co the nhan dien tu khoa la IP game cu the bang `AIDecisionRule` nhu `classic_ip_intent`, `ip_intent`, `franchise_intent` hoac `ai_classic_ip`, nhung van tra bucket mem nhu `Consider Keywords`. `shared/keyword_filter/classifier.py` coi cac rule nay la `_AI_IP_DECISION_RULES`: neu keyword khong duoc core override hop le, classifier ap dung `risk_policy.risky_ip_action` va ghi `DecisionRule = ai_classic_ip`.
+
+Muc dich: bat cac franchise/tua game khong co trong list thu cong (`mortal kombat`, `naruto`, `resident evil`, `pac man`, `metal slug`, ...), ma khong phai liet ke vo han trong `risky_ip_terms`. Voi app emulator, `risky_ip_action` nen la `drop`; voi app co chien luoc khac co the de `consider`.
+
+### 36.9 Agentic cache invalidation - `ruleset_version`
+
+`shared/agentic_keyword_classifier.py::_context_hash` khong hash cac brand/risk lists (`risky_ip_terms`, `risky_platform_terms`, `competitor_brands`, ...), vi cac list nay duoc hard-filter deterministic moi lan chay va co hieu luc ngay, khong can warm lai AI cache. Khi thay doi PROMPT/RULESET agentic ma muon cac `AISemanticBucket`/`AIDecisionRule` cu duoc phan loai lai, tang `ruleset_version` trong app config. Gia tri nay duoc dua vao cache context hash, lam cache key doi va buoc `warm_cache_helper` tao batch moi.
+
+### 36.10 Regression tests
 
 ```powershell
 python -m unittest tests.test_main_shortlist_builder tests.test_pipeline_shared_contract tests.test_volume_score tests.test_relevancy_stacking tests.test_keyword_filter -v
+```
+
+---
+
+## 37. Cap nhat v4.5 - Post-candidate metadata/ads suitability gate
+
+Muc nay la contract hien hanh cho van de keyword dung la lien quan den app nhung qua rong de dung trong metadata hoac ads khi dung mot minh.
+
+Source of truth:
+
+```text
+shared/keyword_filter/suitability.py
+tools/suitability_cache_helper.py
+shared/keyword_filter/shortlist.py
+```
+
+Runner bat buoc goi suitability gate sau khi row da co candidate classification/scoring va truoc khi build `01_Main_Keyword_Shortlist`:
+
+```python
+df = _shared_keyword_filter.apply_metadata_suitability(df, config)
+shortlist_result = _shared_keyword_filter.build_main_keyword_shortlist(df, config)
+```
+
+### 37.1 Output columns
+
+Gate them cac cot audit sau vao candidate/main shortlist/export columns:
+
+```text
+MetadataEligible
+AdsEligible
+ResearchOnly
+SuitabilityBucket
+SuitabilityRule
+SuitabilityReason
+SuitabilityConfidence
+SuitabilitySource
+```
+
+`01_Main_Keyword_Shortlist` chi duoc chon row co `MetadataEligible=True`. Ads v1 chua tao sheet rieng; `AdsEligible` chi la cot audit/export de dung sau.
+
+`14_Not_Selected_Audit` ghi them cac cot suitability va reason:
+
+```text
+SINGLE_TOKEN_TOO_BROAD
+SUITABILITY_RESEARCH_ONLY
+```
+
+### 37.2 Config
+
+Config moi:
+
+```python
+"metadata_suitability": {
+    "enabled": True,
+    "single_token_policy": {
+        "enabled": True,
+        "default_action": "research_only",
+        "keep_terms": ["nds", "ds", "gba", "snes", "psp", "3ds", "n64", "supernds"],
+        "block_terms": ["arcade", "pizza", "moonlight", "turbospeed", "portable", "games"],
+    },
+}
+```
+
+Y nghia:
+
+- `keep_terms`: atomic app/platform terms van co intent ro khi dung mot token, vi du `nds`, `ds`, `gba`.
+- `block_terms`: feature/style/category terms qua rong khi dung mot token, vi du `arcade`, `pizza`, `moonlight`, `turbospeed`.
+- Multi-word keywords co anchor app intent nhu `arcade emulator`, `gba emulator`, `nds roms` khong bi block boi single-token policy.
+
+`metadata_selector.exclude_single_token_from_main` duoc giu de tuong thich, nhung policy chinh moi la `metadata_suitability.single_token_policy`.
+
+### 37.3 Deterministic precedence
+
+Final decision do code deterministic quyet dinh:
+
+1. Risk/drop/language/manual-review/naturalness/hard-filter thang tuyet doi va tra `MetadataEligible=False`, `AdsEligible=False`, `ResearchOnly=True`.
+2. Single-token trong `keep_terms` duoc eligible.
+3. Single-token trong `block_terms` bi research-only voi rule `single_token_too_broad`.
+4. Cached subagent suitability chi duoc dung cho case mo ho, khong duoc rescue case da bi deterministic block.
+5. Single-token unlisted mac dinh research-only neu `default_action="research_only"` va chua co cached audit.
+
+### 37.4 Subagent suitability audit
+
+Helper CLI:
+
+```powershell
+python tools/suitability_cache_helper.py find-misses --app <alias> --csv <csv-path> --market <MARKET>
+python tools/suitability_cache_helper.py prepare-batches --misses <misses-json> --output-dir .cache/suitability_batches
+python tools/suitability_cache_helper.py save-results --app <alias> --batch <batch_path> --results <result_path> --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <csv-path> --market <MARKET>
+```
+
+SQLite dung chung file `.cache/agentic_keyword_analysis.sqlite3`, table rieng:
+
+```text
+keyword_suitability_analysis
+```
+
+Subagent result schema:
+
+```json
+{
+  "batch_id": "us_en_suitability_batch_1",
+  "items": [
+    {
+      "keyword": "singleword",
+      "suitability_bucket": "Research Only",
+      "metadata_eligible": false,
+      "ads_eligible": false,
+      "research_only": true,
+      "confidence": 0.8,
+      "decision_rule": "subagent_too_broad",
+      "reason": "Single-word feature is too broad for metadata."
+    }
+  ]
+}
+```
+
+`save-results` phai reject missing/duplicate keyword, keyword ngoai batch, invalid boolean, invalid confidence va context hash mismatch.
+
+### 37.5 Regression tests
+
+```powershell
+python -m unittest tests.test_metadata_suitability tests.test_suitability_cache_helper tests.test_main_shortlist_builder tests.test_pipeline_shared_contract -v
 ```
 
 

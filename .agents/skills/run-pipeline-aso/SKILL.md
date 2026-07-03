@@ -125,3 +125,42 @@ Do not finish until every box is true. If any is false, fix it before replying.
 - Scope to the app/market the user asked for; do not batch every app/market unless explicitly requested.
 - If `save-results` reports a `context_hash` mismatch, the app config/profile changed since `find-misses` — redo Step 2 before retrying.
 - This skill only runs the pipeline. Seed keyword *creation* is a separate, earlier step — use `.agents/skills/aso-keyword-research/SKILL.md` when the user needs to build seeds rather than process an existing export.
+
+## Addendum - metadata/ads suitability gate
+
+After Step 4 passes and before running `run_aso_filter.py`, verify the post-candidate suitability cache whenever `metadata_suitability.enabled` is true:
+
+```powershell
+python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <csv-path> --market <MARKET>
+```
+
+If it fails, warm the suitability cache with real subagents:
+
+```powershell
+python tools/suitability_cache_helper.py find-misses --app <alias> --csv <csv-path> --market <MARKET>
+python tools/suitability_cache_helper.py prepare-batches --misses <suitability-misses-json> --output-dir .cache/suitability_batches
+python tools/suitability_cache_helper.py save-results --app <alias> --batch <batch_path> --results <result_path> --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <csv-path> --market <MARKET>
+```
+
+Result schema for each suitability subagent batch:
+
+```json
+{
+  "batch_id": "us_en_suitability_batch_1",
+  "items": [
+    {
+      "keyword": "singleword",
+      "suitability_bucket": "Research Only",
+      "metadata_eligible": false,
+      "ads_eligible": false,
+      "research_only": true,
+      "confidence": 0.8,
+      "decision_rule": "subagent_too_broad",
+      "reason": "Single-word feature is too broad for metadata."
+    }
+  ]
+}
+```
+
+Do not fabricate suitability rows. Deterministic code still wins: risk/drop/language/manual-review cannot be rescued by subagent output, block-listed single tokens stay `SINGLE_TOKEN_TOO_BROAD`, and keep-listed platform terms stay eligible.

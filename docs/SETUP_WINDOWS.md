@@ -91,6 +91,8 @@ Ban Lite khong dich keyword qua network trong runtime. Runner chi doc cot `EN` c
 
 Neu keyword non-English thieu `english_gloss`, pipeline fail-fast truoc scoring. Chay `tools/warm_cache_helper.py find-misses -> prepare-batches -> save-results -> verify-cache` truoc khi chay pipeline that.
 
+Neu app config bump `ruleset_version`, cache context hash se doi va cac row AI cu se khong con match nua. Luc do chay lai flow `find-misses -> prepare-batches -> save-results -> verify-cache` cho tung market can chay pipeline. Khong can xoa SQLite: cache cu chi bi orphan theo hash cu. Neu chi sua brand/risk lists thi khong can re-warm, vi cac list nay duoc hard-filter deterministic moi lan chay.
+
 ## 7. Dang nhap GitHub cho Sync.bat
 
 Chi can neu dung `Sync.bat` hoac tu dong pull/push:
@@ -112,6 +114,8 @@ python tracker\run_dashboard.py
 ```
 
 Dashboard mo tai `http://127.0.0.1:5100`. Sau khi chay pipeline, workbook phai co sheet `00_Project_Memory`, app folder phai co `PROJECT_MEMORY.md`, va Dashboard tab `Setup` phai hien thi setup cua app dang chon.
+
+Quy trinh su dung day du, gom verify/warm agentic cache truoc khi run pipeline, nam o `docs/USAGE.md`.
 
 ## 9. Ket noi mang
 

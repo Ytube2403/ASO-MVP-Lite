@@ -1,4 +1,4 @@
-﻿import pandas as pd
+import pandas as pd
 import numpy as np
 import re
 import os
@@ -266,7 +266,7 @@ config = {
     "typo_blacklist": [
         'gretro', 'restro', 'gaem', 'gam emulador', 'imulator', 'emulsio',
         '0s5', 'pspusado', 'ps4ps5', 'ps ps ps', 'ps5ps4', 'pxp', 'pps', 'pc5', 'eio', 'psdp', 'pspp', 'ppsp', 'ssip', 'ds3',
-        'pintasan', '870 fitness', 'maldives', 'dolphin browser', 'restaurați poza', 'memperlambat',
+        'pintasan', '870 fitness', 'maldives', 'dolphin browser', 'restaura?i poza', 'memperlambat',
         'ukuran panjang', 'seperti apa', 'seperti apa itu', 'tujuan', 'posisi', 'tercepat',
         'calculator', 'calendar', 'weather', 'clock', 'alarm', 'reminder',
         'note', 'notes', 'file manager', 'gallery', 'camera', 'video player',
@@ -1100,6 +1100,7 @@ df[['Bucket', 'DecisionRule', 'Reason']] = df.apply(override_row, axis=1)
 
 # Shortlist building & duplicate checking
 print("[Step 8] Main Shortlist Equivalent-Variant Cleanup & Shortlist building...")
+df = _shared_keyword_filter.apply_metadata_suitability(df, config)
 shortlist_result = _shared_keyword_filter.build_main_keyword_shortlist(df, config)
 selected_core = shortlist_result.core
 selected_core_feature = shortlist_result.feature
@@ -1234,15 +1235,15 @@ for idx, entry in enumerate(all_shortlist):
     sec = entry['Section']
     if sec == 'Core Intent Final':
         if idx < 2:
-            entry['WhereToUse'] = '🏷️ Title'
+            entry['WhereToUse'] = '??? Title'
         elif idx < 9:
-            entry['WhereToUse'] = '📱 Short Description'
+            entry['WhereToUse'] = '?? Short Description'
         else:
-            entry['WhereToUse'] = '📄 Full Description'
+            entry['WhereToUse'] = '?? Full Description'
     elif sec in ['Feature Keywords', 'Broad Expansion']:
-        entry['WhereToUse'] = '📄 Full Description'
+        entry['WhereToUse'] = '?? Full Description'
     else:
-        entry['WhereToUse'] = '🔍 Consider / Research Only'
+        entry['WhereToUse'] = '?? Consider / Research Only'
 
 df_shortlist = pd.DataFrame(all_shortlist)
 
@@ -1340,7 +1341,7 @@ ws_readme.column_dimensions['B'].width = 80
 
 # --- 01_Main_Keyword_Shortlist ---
 ws_shortlist = wb.create_sheet(title="01_Main_Keyword_Shortlist")
-cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'UtilityScore', 'DiversityPenalty', 'ClusterId', 'ClusterRank', 'SelectionReason', 'MergedVariants',
+cols_shortlist = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'Section', 'RelevancyScore', 'UtilityScore', 'DiversityPenalty', 'ClusterId', 'ClusterRank', 'SelectionReason', 'MergedVariants', 'MetadataEligible', 'AdsEligible', 'ResearchOnly', 'SuitabilityBucket', 'SuitabilityRule', 'SuitabilityReason', 'SuitabilityConfidence', 'SuitabilitySource',
                   'CompetitorProven', 'ProvenDetails', 'DetectedLanguage', 'LanguageGroup', 'NaturalnessFlag', 'WhereToUse', 'QuotaStatus', 'FillSource', 'FillReason', 'Reason']
 for col_idx, col in enumerate(cols_shortlist, 1):
     ws_shortlist.cell(row=1, column=col_idx, value=col)
@@ -1456,7 +1457,7 @@ ws_report.column_dimensions['E'].width = 65
 # --- 06_All_Candidates ---
 ws_all = wb.create_sheet(title="06_All_Candidates")
 cols_all = ['Keyword', 'EN', 'Volume', 'Max. Volume', 'Difficulty', 'KEI', 'Rank', 'BalancedScore', 'MaximumReach', 'Traffic Stability', 'Stability Class', 'RelevancyScore', 'CompetitorProven', 'ProvenDetails', 'Bucket', 'DecisionRule',
-            'NeedsAI', 'PreAIAction', 'PreAIRule', 'PreAIReason', 'CanonicalKeyword', 'AISemanticBucket', 'AIDecisionRule', 'AIReason', 'AIConfidence', 'AIStatus',
+            'NeedsAI', 'PreAIAction', 'PreAIRule', 'PreAIReason', 'CanonicalKeyword', 'AISemanticBucket', 'AIDecisionRule', 'AIReason', 'AIConfidence', 'AIStatus', 'MetadataEligible', 'AdsEligible', 'ResearchOnly', 'SuitabilityBucket', 'SuitabilityRule', 'SuitabilityReason', 'SuitabilityConfidence', 'SuitabilitySource',
             'DetectedLanguage', 'LanguageGroup', 'NaturalnessFlag', 'Reason', 'HardFilterRule', 'HardFilterTerm', 'HardFilterSource', 'PolicyFlags']
 for col_idx, col in enumerate(cols_all, 1):
     ws_all.cell(row=1, column=col_idx, value=col)

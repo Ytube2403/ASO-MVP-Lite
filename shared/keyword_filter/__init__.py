@@ -22,6 +22,14 @@ from .hard_filters import (
 from .matcher import has_any_term, has_term, normalize_filter_text, tokenize
 from .report_export import write_quality_log_sheet
 from .runtime import FilterRuntime, build_filter_runtime
+from .suitability import (
+    SUITABILITY_COLUMNS,
+    SuitabilityAnalysis,
+    SuitabilityCache,
+    apply_metadata_suitability,
+    evaluate_metadata_suitability,
+    needs_suitability_audit,
+)
 from .scoring import (
     DEFAULT_BALANCED_WEIGHTS,
     DEFAULT_RELEVANCY_RUBRIC,
@@ -67,7 +75,9 @@ __all__ = [
     "MainShortlistResult",
     "NOT_SELECTED_LOG_COLUMNS",
     "QUALITY_LOG_COLUMNS",
+    "SUITABILITY_COLUMNS",
     "apply_user_overrides",
+    "apply_metadata_suitability",
     "atomic_write_json",
     "build_selection_cache_meta",
     "build_filter_runtime",
@@ -81,6 +91,7 @@ __all__ = [
     "config_hash",
     "dampen_stacked_relevancy",
     "evaluate_hard_filters",
+    "evaluate_metadata_suitability",
     "file_md5",
     "get_language_bonus",
     "has_any_term",
@@ -97,9 +108,12 @@ __all__ = [
     "is_shortlist_volume_eligible",
     "is_truncated_keyword",
     "is_typo_keyword",
+    "needs_suitability_audit",
     "normalize_filter_text",
     "safe_reach_ceiling",
     "selection_cache_path",
+    "SuitabilityAnalysis",
+    "SuitabilityCache",
     "tokenize",
     "unwrap_selection_payload",
     "validate_filter_config",

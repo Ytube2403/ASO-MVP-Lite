@@ -53,6 +53,8 @@ Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu t�
 
 ## 🚀 Cách chạy Lọc từ khóa
 
+Quy trinh su dung hien hanh nam o `../../docs/USAGE.md`: kiem tra `verify-cache` truoc, warm cache neu con miss, roi moi chay pipeline. Neu prompt/rubric agentic doi va da bump `ruleset_version`, phai warm lai cac market se chay.
+
 Nếu đang cấu hình app mới từ `App_Template`, mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/App_Template` và chạy trực tiếp pipeline template:
 
 ```powershell
@@ -117,6 +119,8 @@ Quy tac quan trong:
 - `SECONDARY` giu o `Consider Keywords`.
 - Naturalness khong con drop non-Latin/script khac bang `LANGUAGE_BLEED`; ngon ngu do language detector xu ly.
 - Selection cache chi duoc dung lai khi metadata `app_id`, market, input hash, config hash va engine version khop run hien tai.
+- Agentic cache chi doc SQLite trong runtime. Neu prompt/rubric agentic doi, bump top-level `ruleset_version` trong `app_config.py` de force re-warm; neu chi sua brand/risk lists thi khong can re-warm.
+- Risk policy source of truth nam o `shared/keyword_filter/classifier.py`: core override chi cuu risky/platform term da declared-safe va co functional anchor; `platform_affiliation_terms` khong duoc override; AI classic game IP (`classic_ip_intent`/`ai_classic_ip`) di qua `risky_ip_action`.
 - Main shortlist v4.5 dung `target 40 utility + diversity`; Feature trong main shortlist doc quota rieng voi sheet `02_Feature_Keywords`.
 - Workbook v4.5 co them sheet `13_Top_By_Volume` de audit nhanh top keyword sach theo Volume.
 - Low-volume keyword co the vao shortlist/Consider khi config dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.

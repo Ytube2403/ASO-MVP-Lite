@@ -2743,6 +2743,8 @@ Mode: headless or interactive
 Requirements:
 - Scan Input folder for CSV files.
 - Use current App_Profile.json and app_config.py.
+- Verify agentic cache first; if missing intent/gloss, warm cache with subagents before running the real pipeline.
+- If ruleset_version was bumped, re-warm every market that will be processed.
 - Export Excel workbook with 00_Project_Memory and 12_Text_Dedup_Log.
 - Update PROJECT_MEMORY.md for handoff.
 - Sync data to SQLite database aso_tracker.db.
@@ -4229,6 +4231,8 @@ Mode: headless
 
 Requirements:
 - Use current App_Profile.json and app_config.py.
+- Verify agentic cache first; if missing intent/gloss, warm cache with subagents before running.
+- If ruleset_version was bumped, re-warm this market before running.
 - Export Excel workbook with 00_Project_Memory.
 - Update PROJECT_MEMORY.md for handoff.
 - Summarize top selected keywords and drop reasons.`

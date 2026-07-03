@@ -34,6 +34,7 @@ ASO-MVP-Lite/
 |-- tools/                        # Cong cu van hanh
 |   |-- run_aso_batch.py
 |   |-- warm_cache_helper.py
+|   |-- suitability_cache_helper.py
 |   `-- export_master_keywords.py
 |
 |-- tracker/                      # Dashboard Flask va SQLite local
@@ -68,9 +69,11 @@ ASO-MVP-Lite/
 - Truncation logic v4.5 tiep tuc dung shared engine da harden: token hoan chinh nhu `emoji`, `icon`, `sound`, `filter`, `widget` khong bi drop nham; prefix nghi ngo vao Manual Review thay vi hard-drop.
 - Tat ca app registered dung `agentic_keyword_classifier` cache-only va khong goi AI/translation network trong runner.
 - Cache miss duoc xu ly ngoai runner bang Antigravity subagents qua `tools/warm_cache_helper.py`.
+- Metadata/ads suitability duoc xu ly sau candidate pool: keyword lien quan nhung qua rong de dung metadata/ads se thanh `ResearchOnly` va khong vao `01_Main_Keyword_Shortlist`.
 - Main shortlist v4.5 dung `target 40 utility + diversity`; workbook co them sheet `13_Top_By_Volume` de review nhanh keyword sach theo Volume.
 - App `FunVid` da duoc dang ky trong registry voi alias `FunVid`, `Fun_Vid`, `FunnyFaceFilters`, `FunVid_100_Keywords` va `FunVid_AnimalFace`.
 - Moi runner dung flow agentic cache-only: Antigravity subagents ghi intent/language/`english_gloss` vao SQLite truoc, runner chi doc cache va fail-fast neu con miss.
+- Risk policy hien lay `shared/keyword_filter/classifier.py` lam source of truth: core override chi cuu risky/platform term da declared-safe VA co functional anchor; `platform_affiliation_terms` khong duoc override; AI rule `classic_ip_intent`/`ai_classic_ip` duoc xu ly nhu IP risk theo `risky_ip_action`.
 - Tai nguyen dung chung nam trong `data/`; tai lieu nam trong `docs/`.
 - Lenh cu tai root van duoc giu de khong lam hong workflow hien co.
 
@@ -88,6 +91,23 @@ python tools/warm_cache_helper.py verify-cache --app Game_Emulator --csv "apps/G
 ```
 
 Co the thay `--csv` bang `--input-dir apps/<App>/Input/<MMYYYY>` de quet nhieu market cung luc. Runner chi doc cache; neu con thieu intent hoac `english_gloss` cho keyword non-English, pipeline fail-fast va in sample miss de nap cache truoc.
+
+Cache key co the duoc invalidate co chu dich bang top-level `ruleset_version` trong `app_config.py`. Brand/risk list (`risky_ip_terms`, `risky_platform_terms`, `competitor_brands`, `platform_affiliation_terms`, ...) la deterministic filter va co hieu luc ngay moi lan chay, khong can re-warm. Chi bump `ruleset_version` khi prompt/rubric agentic thay doi va can phan loai lai `AISemanticBucket`/`AIDecisionRule` cu.
+
+## Metadata/ads suitability gate
+
+Sau khi keyword da vao candidate pool va da co scoring/classification, runner goi `shared.keyword_filter.apply_metadata_suitability`. Gate nay tach khoi relevancy: keyword nhu `arcade`, `pizza`, `moonlight`, `turbospeed` co the dung la feature cua app nhung qua rong khi dung mot minh, nen mac dinh `MetadataEligible=False`, `AdsEligible=False`, `ResearchOnly=True`. Cac atomic platform terms nhu `nds`, `ds`, `gba`, `snes`, `psp`, `3ds`, `n64`, `supernds` duoc giu neu nam trong `metadata_suitability.single_token_policy.keep_terms`.
+
+Audit columns duoc ghi ra workbook: `MetadataEligible`, `AdsEligible`, `ResearchOnly`, `SuitabilityBucket`, `SuitabilityRule`, `SuitabilityReason`, `SuitabilityConfidence`, `SuitabilitySource`. `01_Main_Keyword_Shortlist` chi nhan row co `MetadataEligible=True`; row research-only se hien trong `14_Not_Selected_Audit` voi reason `SINGLE_TOKEN_TOO_BROAD` hoac `SUITABILITY_RESEARCH_ONLY`.
+
+Neu co case mo ho can subagent audit, dung helper rieng:
+
+```powershell
+python tools/suitability_cache_helper.py find-misses --app NDS_Emulator --csv "apps/NDS_Emulator/Input/072026/NDS Emulator_US_EN.csv" --market US_EN
+python tools/suitability_cache_helper.py prepare-batches --misses .cache/nds_emulator_us_en_suitability_missing.json
+python tools/suitability_cache_helper.py save-results --app NDS_Emulator --batch .cache/suitability_batches/us_en_suitability_batch_1.json --results .cache/suitability_batches/us_en_suitability_batch_1_result.json --market US_EN
+python tools/suitability_cache_helper.py verify-cache --app NDS_Emulator --csv "apps/NDS_Emulator/Input/072026/NDS Emulator_US_EN.csv" --market US_EN
+```
 
 ## Cai dat
 
@@ -117,6 +137,8 @@ Pipeline khong dich keyword qua network trong runtime. Cot `EN` duoc lay theo th
 Neu keyword non-English chua co `english_gloss`, runner fail-fast va yeu cau nap cache bang `tools/warm_cache_helper.py` truoc khi chay pipeline.
 
 ## Chay pipeline
+
+Huong dan su dung day du: [docs/USAGE.md](docs/USAGE.md). Thu tu khuyen nghi la `verify-cache` truoc, warm cache neu con miss, roi moi chay pipeline.
 
 Luon uu tien orchestrator trung tam:
 

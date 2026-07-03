@@ -1,12 +1,12 @@
 # Project Memory
 
-Generated: 2026-07-02 18:22:40
+Generated: 2026-07-03 11:01:28
 
 ## Identity
 - App: SuperNDS: Retro Games Emulator
 - App ID: com.emulator.nds.super.game.console.handheld
 - Category: Game Emulator
-- Market: MX_ES
+- Market: US_EN
 - Semantic mode: game_emulator
 
 ## Positioning
@@ -24,7 +24,7 @@ Generated: 2026-07-02 18:22:40
 - visual_terms: touch screen, virtual buttons, screen layout, horizontal, vertical, portrait, landscape, button skins, transparent buttons, haptic feedback, screen layout customization
 
 ## Competitors
-- Blocked brands: drastic, melonds, supernds, lemuroid, retroarch, john gba, my boy, citra, yuzu, ryujinx, dolphin, nostalgia gba, my oldboy, pizza boy, superds64, super3ds, moniqtap, emulator pro, ppsspp, ppsspp gold, dolphin emulator, retroarch emulator, delta emulator, delta nintendo emulator, citra emulator, lime3ds, lime3ds emulator, aethersx2, aethersx2 emulator, lemuroid emulator, my boy emulator, my boy free, my boy gba, john gba lite, john gba emulator, gameboid, gameboid emulator, gba4ios, gba4ios emulator, vgbanext (+81 more)
+- Blocked brands: drastic, melonds, supernds, lemuroid, retroarch, john gba, my boy, citra, yuzu, ryujinx, dolphin, nostalgia gba, my oldboy, pizza boy, superds64, super3ds, moniqtap, emulator pro, ppsspp, ppsspp gold, dolphin emulator, retroarch emulator, delta emulator, delta nintendo emulator, citra emulator, lime3ds, lime3ds emulator, aethersx2, aethersx2 emulator, lemuroid emulator, my boy emulator, my boy free, my boy gba, john gba lite, john gba emulator, gameboid, gameboid emulator, gba4ios, gba4ios emulator, vgbanext (+84 more)
 - SuperNDS Emulator (com.supernds.free)
 - Super3DS Multi Emulator (com.superds64.plus)
 - Lemuroid (com.swordfish.lemuroid)

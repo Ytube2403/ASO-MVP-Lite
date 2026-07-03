@@ -4,6 +4,10 @@ Registered app runners use `agentic_keyword_classifier` in cache-only mode. If a
 keyword is not already in the SQLite cache, or a non-English keyword lacks
 `english_gloss`, the pipeline fails fast and prints sample misses.
 
+If `app_config.py` bumps top-level `ruleset_version`, old cache rows stop
+matching by design. Re-run this workflow for every market you plan to process.
+Editing deterministic risk/brand lists does not require cache re-warm.
+
 ## Standard sequence
 
 1. Find uncached keywords for a market:
@@ -56,3 +60,8 @@ keyword from the batch and include:
 `english_gloss` is required for every non-English keyword. Invalid buckets,
 invalid language groups, duplicate keywords, missing keywords, and keywords that
 were not in the batch are rejected before anything is written to cache.
+
+For game/emulator apps, subagents must drop specific game/franchise/character IP
+and use a recognized IP decision rule such as `ai_classic_ip` or
+`classic_ip_intent`. The deterministic classifier treats these as IP risk through
+`risky_ip_action`; platform affiliation phrases are not rescued by core intent.

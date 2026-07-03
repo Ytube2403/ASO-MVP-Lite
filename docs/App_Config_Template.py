@@ -76,6 +76,12 @@ APP_CONFIG = {
         }
     },
 
+    # Optional manual invalidation knob for agentic cache semantic buckets.
+    # Brand/risk lists are deterministic and take effect every run WITHOUT re-warming.
+    # Bump this only when the AI classification prompt/ruleset changes and old
+    # AISemanticBucket/AIDecisionRule values should stop matching the cache.
+    # "ruleset_version": "agentic-keyword-classifier-v2",
+
     # ==========================================
     # 3. SEMANTIC GROUPS (NhÃ³m tá»« khÃ³a ngá»¯ nghÄ©a)
     # ==========================================
@@ -137,6 +143,10 @@ APP_CONFIG = {
     #   mac dinh chi Consider Keywords (platform_context_action), khong Drop cung.
     # KHONG dat ten hang/he may vao risky_ip_terms - se bi Drop oan ngay ca khi do la platform
     # chinh ma app ho tro (xem section 36 trong ASO_Keyword_Planner_v4_5.md).
+    # Override guardrail:
+    # - matched risky/platform term must be declared-safe in core/feature vocabulary;
+    # - keyword must also carry a distinctive functional anchor (emulator, rom, console, gba, nds...);
+    # - generic tokens like game/games/play/app/free never count as anchors.
     "risky_ip_terms": [
         # Tá»« khÃ³a chá»©a IP hoáº·c báº£n quyá»n nháº¡y cáº£m cáº§n háº¡n cháº¿
         "brandname"
@@ -144,6 +154,9 @@ APP_CONFIG = {
 
     "risky_platform_terms": ["iphone", "ios", "ipad", "apple", "android", "tiktok", "snapchat", "instagram"],
     "ambiguous_brand_terms": [],
+    # Explicit affiliation/official/brand-claim phrases. These have NO
+    # core_intent_override because claiming affiliation is risky even when a plain
+    # platform mention would be functional context.
     "platform_affiliation_terms": ["official tiktok", "official snapchat", "official instagram"],
     "truncation_policy": {
         "enabled": True,
@@ -166,6 +179,10 @@ APP_CONFIG = {
         "platform_only_action": "drop",
         "platform_affiliation_action": "drop",
         "style_only_action": "reserve",
+        # Guardrail: this only rescues declared-safe platform/IP terms when the row
+        # also has a distinctive functional anchor. It does NOT rescue
+        # platform_affiliation_terms, and it does NOT rescue AI-recognized classic
+        # game IP unless explicitly declared.
         "core_intent_override": True  # Náº¿u chá»©a core intent máº¡nh, khÃ´ng tá»± Ä‘á»™ng loáº¡i khi dÃ­nh lá»—i nháº¹
     },
 
@@ -211,6 +228,21 @@ APP_CONFIG = {
         "quality_min_volume": 6.0,
         "quality_min_reach": 1.0,
         "generic_safe_descriptors": ["retro", "classic"],
+    },
+
+    # Post-candidate metadata/ads suitability gate. This is separate from
+    # relevancy/classification: a keyword can be related to the app but still too
+    # broad for metadata or ads when it stands alone.
+    "metadata_suitability": {
+        "enabled": True,
+        "single_token_policy": {
+            "enabled": True,
+            "default_action": "research_only",
+            # Atomic app/platform intent terms that are meaningful even as one token.
+            "keep_terms": [],
+            # Feature/style/marketing terms that are too broad as one-token queries.
+            "block_terms": [],
+        },
     },
 
     # VolumeN/utility reach ceiling: shared/keyword_filter/scoring.py::safe_reach_ceiling

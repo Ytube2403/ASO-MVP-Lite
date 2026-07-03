@@ -53,6 +53,8 @@ Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu t�
 
 ## 🚀 Cách chạy Lọc từ khóa
 
+Quy trinh su dung hien hanh nam o `../../docs/USAGE.md`: kiem tra `verify-cache` truoc, warm cache neu con miss, roi moi chay pipeline. Neu prompt/rubric agentic doi va da bump `ruleset_version`, phai warm lai cac market se chay.
+
 Mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/Prank_Sounds` và chạy trực tiếp pipeline:
 
 ```powershell

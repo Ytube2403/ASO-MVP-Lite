@@ -53,20 +53,22 @@ Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu t�
 
 ## 🚀 Cách chạy Lọc từ khóa
 
-Nếu đang cấu hình app mới từ `App_Template`, mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/App_Template` và chạy trực tiếp pipeline template:
+Quy trinh su dung hien hanh nam o `../../docs/USAGE.md`: kiem tra `verify-cache` truoc, warm cache neu con miss, roi moi chay pipeline. Neu prompt/rubric agentic doi va da bump `ruleset_version`, phai warm lai cac market se chay.
+
+Mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/FunVid` và chạy trực tiếp pipeline:
 
 ```powershell
 # Chạy ở chế độ tự động xuất Excel trực tiếp
-python run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
+python run_pipeline.py --csv C:\duong-dan-den\FunVid_US_EN.csv --market US_EN
 
 # Chạy ở chế độ mở giao diện Web tương tác (để tự tay lựa chọn & viết mô tả)
-python run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN --interactive
+python run_pipeline.py --csv C:\duong-dan-den\FunVid_US_EN.csv --market US_EN --interactive
 ```
 
 Nếu chạy từ thư mục gốc `ASO-MVP-Lite`, dùng đường dẫn script đầy đủ:
 
 ```powershell
-python apps\App_Template\run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
+python apps\FunVid\run_pipeline.py --csv C:\duong-dan-den\FunVid_US_EN.csv --market US_EN
 ```
 
 Kết quả sẽ tự động được xuất ra cùng thư mục với file CSV đầu vào, trừ khi truyền thêm `--output`. File Excel chứa đầy đủ báo cáo, shortlist `target 40 utility + diversity`, sheet `13_Top_By_Volume`, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.

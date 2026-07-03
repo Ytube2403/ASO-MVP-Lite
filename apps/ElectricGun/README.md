@@ -38,6 +38,8 @@ Chứa thông tin live store của app và thông tin 2 đối thủ trực ti�
 
 Đặt file CSV từ khóa thô (tải từ AppTweak hoặc SensorTower) vào thư mục `apps/ElectricGun/Input/` (ví dụ: `ElectricGun_US_EN.csv`).
 
+Quy trinh su dung hien hanh nam o `../../docs/USAGE.md`: kiem tra `verify-cache` truoc, warm cache neu con miss, roi moi chay pipeline. Neu prompt/rubric agentic doi va da bump `ruleset_version`, phai warm lai cac market se chay.
+
 Từ thư mục gốc của project `ASO_MVP`, chạy lệnh sau:
 
 ### Chạy chế độ tự động xuất Excel:

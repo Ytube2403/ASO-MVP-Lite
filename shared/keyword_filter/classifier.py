@@ -210,6 +210,15 @@ def _action_result(action, rule, label):
     return "Consider Keywords", rule, f"Consider: {label}"
 
 
+# Subagent decision_rule values that mean "this is a specific, recognizable game IP".
+# Kept underscore-literal (NOT normalize_filter_text, which would mangle underscores).
+_AI_IP_DECISION_RULES = {"classic_ip_intent", "ip_intent", "franchise_intent", "ai_classic_ip"}
+
+
+def _ai_ip_rule(row):
+    return str(row.get("AIDecisionRule", "") or "").strip().lower() in _AI_IP_DECISION_RULES
+
+
 def _ai_classification_result(row, config):
     bucket = str(row.get("AISemanticBucket", "") or "").strip()
     if not bucket:
@@ -308,6 +317,20 @@ def classify_keyword(row, config):
         return _action_result(policy["platform_context_action"], "platform_style_risk", "Platform-style context")
 
     language_group = str(row.get("LanguageGroup", "PRIMARY")).upper()
+    # The agentic subagent reliably RECOGNIZES specific game IP (it tags the row
+    # decision_rule "classic_ip_intent") but, per its rubric, files it under a soft
+    # "Consider Keywords" bucket rather than dropping it. For an emulator app that must
+    # avoid naming copyrighted titles, treat that AI IP recognition as equivalent to a
+    # risky_ip_terms hit and apply the app's own risky_ip_action -- this catches titles
+    # the hand-maintained risky_ip_terms list misses (mortal kombat, naruto, resident
+    # evil, pac man, metal slug, ...) WITHOUT enumerating every franchise, and it stays
+    # a no-op for apps whose risky_ip_action is "consider". The declared-safe override
+    # still applies, so an app that genuinely declares an IP as its function is spared.
+    if _ai_ip_rule(row) and not (
+        policy.get("core_intent_override", False)
+        and _core_override_active(row, config, config.get("risky_ip_terms", []))
+    ):
+        return _action_result(policy["risky_ip_action"], "ai_classic_ip", "AI-recognized classic game IP")
     ai_result = _ai_classification_result(row, config)
     if ai_result:
         return ai_result
