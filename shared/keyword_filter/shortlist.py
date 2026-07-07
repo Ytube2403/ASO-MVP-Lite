@@ -233,7 +233,8 @@ class MainKeywordShortlistBuilder:
         for index, row in enumerate(rows):
             row["_SourceIndex"] = index
             row["Section"] = self._section_for_row(row)
-            row.update(suitability.evaluate_metadata_suitability(row, self.config))
+            if "MetadataEligible" not in row or _is_blank(row.get("MetadataEligible")):
+                row.update(suitability.evaluate_metadata_suitability(row, self.config))
             safe, reason = self._is_metadata_safe(row)
             row["UtilityScore"] = round(self._utility_score(row, market_stats), 4)
             row["ClusterId"] = self._cluster_key(_text_value(row, "Keyword"))
@@ -516,9 +517,11 @@ class MainKeywordShortlistBuilder:
         if naturalness and naturalness != "OK":
             return False, "BLOCKED_RISK"
 
-        if "MetadataEligible" in row and not bool(row.get("MetadataEligible")):
+        if "MetadataEligible" in row and not _bool_value(row.get("MetadataEligible")):
             if _text_value(row, "SuitabilityRule") == suitability.SINGLE_TOKEN_TOO_BROAD:
                 return False, "SINGLE_TOKEN_TOO_BROAD"
+            if _text_value(row, "SuitabilityRule") == suitability.SUITABILITY_PENDING_AUDIT:
+                return False, "SUITABILITY_PENDING_AUDIT"
             return False, "SUITABILITY_RESEARCH_ONLY"
 
         if self._is_broad_single_token(row):
@@ -780,6 +783,21 @@ def _is_blank(value):
     except TypeError:
         pass
     return str(value).strip() == ""
+
+
+def _bool_value(value):
+    if isinstance(value, bool):
+        return value
+    if _is_blank(value):
+        return False
+    if isinstance(value, (int, float)):
+        return bool(value)
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y"}:
+        return True
+    if text in {"0", "false", "no", "n"}:
+        return False
+    return bool(text)
 
 
 def _text_value(row, *keys, default=""):

@@ -409,6 +409,7 @@ APP_CONFIG = {
     "user_overrides": {
         "do_not_auto_drop_terms": [],
         "force_consider_terms": [],
+        "suitability_keep_terms": ["retro game", "console emulator"],
         "force_drop_terms": [
             # Standalone console / IP terms (broad/misleading intent when alone)
             "80s", "1980s", "1990s", "ds", "gameboy", "gba", "mario", "n64", "nes", "nintendo", "playstation", "ps", "psp", "snes", "zelda",

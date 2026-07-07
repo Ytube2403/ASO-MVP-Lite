@@ -11,7 +11,7 @@
 
 - **App Name**: Game Emulator: GB4 Retro Games
 - **Package ID**: `com.game.emulator.gb4.retro.gameboy.collection`
-- **Positioning**: Game Emulator All-in-One yang ringan, lancar, và hỗ trợ đa nền tảng tốt cho game thủ Indonesia muốn chơi lại game tuổi thơ (GBA, GBC, GB, NES, SNES, N64, PSP) bằng điện thoại Android. Hỗ trợ save/load state nhanh, tua nhanh thời gian (fast forward), ánh xạ phím tay cầm bluetooth và tổ chức thư viện ROM offline.
+- **Positioning**: Lightweight, smooth all-in-one game emulator with strong multi-platform support for Indonesian players who want to replay childhood games (GBA, GBC, GB, NES, SNES, N64, PSP) on Android phones. Supports quick save/load states, fast forward, Bluetooth controller mapping, and offline ROM library organization.
 - **Competitors Scanned**:
   - *PPSSPP* (PSP Emulator - Golden standard for PSP)
   - *Lemuroid* (Multi-console emulator, ad-free)

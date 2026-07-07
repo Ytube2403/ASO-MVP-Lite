@@ -7,31 +7,31 @@ Purpose: Template configuration for deploying ASO Keyword Planner on a new appli
 
 APP_CONFIG = {
     # ==========================================
-    # 1. IDENTITY & META (ThÃ´ng tin Ä‘á»‹nh danh)
+    # 1. IDENTITY & META
     # ==========================================
-    "app_id": "com.example.yourapp",  # Bundle ID / Package ID cá»§a á»©ng dá»¥ng
-    "app_name": "Your App Name",      # TÃªn á»©ng dá»¥ng Ä‘áº§y Ä‘á»§
-    "category": "Widget",             # Danh má»¥c á»©ng dá»¥ng (Widget, Emulator, AR Filter, VPN...)
-    "category_slug": "widget",        # Slug dÃ¹ng cho Ä‘Æ°á»ng dáº«n (viáº¿t thÆ°á»ng, khÃ´ng dáº¥u, phÃ¢n cÃ¡ch bá»Ÿi gáº¡ch dÆ°á»›i)
-    "market": "US_EN",                # Thá»‹ trÆ°á»ng má»¥c tiÃªu máº·c Ä‘á»‹nh (US_EN, VN_VI, BR_PT, IN_EN...)
-    "platform_mode": "google_play",   # Ná»n táº£ng: 'google_play' hoáº·c 'app_store'
+    "app_id": "com.example.yourapp",  # App bundle/package ID
+    "app_name": "Your App Name",      # Full app name
+    "category": "Widget",             # App category (Widget, Emulator, AR Filter, VPN...)
+    "category_slug": "widget",        # URL/path slug: lowercase ASCII, underscore-separated
+    "market": "US_EN",                # Default target market (US_EN, VN_VI, BR_PT, IN_EN...)
+    "platform_mode": "google_play",   # Platform: 'google_play' or 'app_store'
 
     "semantic_mode": "personalization_widget",
 
     # ==========================================
-    # 2. MARKET LANGUAGE POLICY (ChÃ­nh sÃ¡ch ngÃ´n ngá»¯)
+    # 2. MARKET LANGUAGE POLICY
     # ==========================================
     "market_language_policy": {
         "enabled": True,
         "required": True,
-        "primary_languages": ["en"],              # Danh sÃ¡ch ngÃ´n ngá»¯ chÃ­nh Ä‘Æ°á»£c phÃ©p xuáº¥t hiá»‡n trong Top 25 Core
-        "secondary_languages": ["es", "es-MX"],   # NgÃ´n ngá»¯ phá»¥ (vÃ­ dá»¥ tiáº¿ng TÃ¢y Ban Nha táº¡i Má»¹), Ä‘Æ°a vÃ o danh sÃ¡ch Consider
-        "optional_secondary_languages": [],       # NgÃ´n ngá»¯ tÃ¹y chá»n khÃ¡c
+        "primary_languages": ["en"],              # Primary languages allowed in the core shortlist
+        "secondary_languages": ["es", "es-MX"],   # Secondary languages, for example US Spanish, kept for Consider
+        "optional_secondary_languages": [],       # Other optional secondary languages
 
         "primary_language_action": "keep",
         "secondary_language_action": "consider",
         "optional_secondary_action": "audit_or_consider",
-        "foreign_language_action": "drop_to_audit",  # Loáº¡i bá» cÃ¡c tá»« khÃ³a ngoÃ i chÃ­nh sÃ¡ch ngÃ´n ngá»¯ vÃ  Ä‘Æ°a vÃ o Audit
+        "foreign_language_action": "drop_to_audit",  # Drop keywords outside the language policy into audit
 
         "allow_secondary_in_top25_core": False,
         "allow_secondary_in_broad_expansion": False,
@@ -83,72 +83,72 @@ APP_CONFIG = {
     # "ruleset_version": "agentic-keyword-classifier-v2",
 
     # ==========================================
-    # 3. SEMANTIC GROUPS (NhÃ³m tá»« khÃ³a ngá»¯ nghÄ©a)
+    # 3. SEMANTIC GROUPS
     # ==========================================
     "intent_core_terms": [
-        # CÃ¡c tá»« khÃ³a cá»‘t lÃµi thá»ƒ hiá»‡n Ã½ Ä‘á»‹nh tÃ¬m kiáº¿m chÃ­nh cá»§a á»©ng dá»¥ng
-        # VÃ­ dá»¥: "control panel", "control center" cho Control Widget
+        # Core keywords that express the main app-search intent.
+        # Example: "control panel", "control center" for Control Widget.
         "core term 1", "core term 2"
     ],
 
     "feature_terms": [
-        # CÃ¡c tá»« khÃ³a mÃ´ táº£ tÃ­nh nÄƒng / chá»©c nÄƒng cá»¥ thá»ƒ cá»§a á»©ng dá»¥ng
-        # VÃ­ dá»¥: "brightness", "volume", "wifi toggle"
+        # Keywords that describe specific app features or functions.
+        # Example: "brightness", "volume", "wifi toggle".
         "feature 1", "feature 2"
     ],
 
     "style_terms": [
-        # CÃ¡c tá»« khÃ³a mÃ´ táº£ phong cÃ¡ch, giao diá»‡n, IP hoáº·c theme tháº©m má»¹
-        # VÃ­ dá»¥: "aesthetic", "cute", "anime", "neon"
-        # LÆ¯U Ã: style_terms chá»‰ Ä‘Æ°á»£c phÃ¢n bá»• vÃ o Full Description, khÃ´ng dÃ¹ng á»Ÿ Title/Subtitle Ä‘á»ƒ trÃ¡nh vi pháº¡m IP
+        # Keywords that describe style, UI, IP, or visual/aesthetic themes.
+        # Example: "aesthetic", "cute", "anime", "neon".
+        # NOTE: style_terms are allocated only to Full Description, not Title/Subtitle, to reduce IP risk.
         "style 1", "style 2"
     ],
 
     "visual_terms": [
-        # CÃ¡c tá»« khÃ³a mÃ´ táº£ giao diá»‡n phá»¥ trá»£, hiá»‡u á»©ng hÃ¬nh áº£nh
+        # Keywords that describe supporting UI or visual effects.
         "visual 1", "visual 2"
     ],
 
     # ==========================================
-    # 4. FILTERS & BLACKLIST (CÃ¡c bá»™ lá»c vÃ  danh sÃ¡ch Ä‘en)
+    # 4. FILTERS & BLACKLIST
     # ==========================================
     "competitor_brands": [
-        # TÃªn cÃ¡c Ä‘á»‘i thá»§ cáº¡nh tranh. Keyword chá»©a brand Ä‘á»‘i thá»§ sáº½ bá»‹ cáº¥m sá»­ dá»¥ng trong Metadata chÃ­nh
+        # Competitor brand names. Keywords containing competitor brands are blocked from primary metadata.
         "competitor brand 1", "competitor brand 2"
     ],
 
     "noise_terms": [
-        # CÃ¡c tá»« khÃ³a chung chung, generic quÃ¡ rá»™ng khÃ´ng mang Ã½ Ä‘á»‹nh tÃ¬m app cá»¥ thá»ƒ
-        # VÃ­ dá»¥: "app", "free", "download", "android"
+        # Generic terms that are too broad and do not express specific app-search intent.
+        # Example: "app", "free", "download", "android".
         "app", "free", "download", "android", "new", "best"
     ],
 
     "typo_blacklist": [
-        # CÃ¡c tá»« khÃ³a gÃµ sai chÃ­nh táº£ phá»• biáº¿n hoáº·c cÃ¡c tá»« khÃ³a vÃ´ nghÄ©a thu Ä‘Æ°á»£c tá»« auto-suggest
+        # Common misspellings or meaningless auto-suggest noise.
         "typo 1", "typo 2"
     ],
 
     "irrelevant_intent_terms": [
-        # Tá»« khÃ³a thuá»™c danh má»¥c khÃ¡c, hoÃ n toÃ n khÃ´ng liÃªn quan Ä‘áº¿n á»©ng dá»¥ng cá»§a báº¡n
+        # Keywords from a different category that are unrelated to this app.
         "calculator", "weather"
     ],
 
     # PHAN BIET risky_ip_terms vs risky_platform_terms (quan trong):
-    # - risky_ip_terms: ten NHAN VAT/TUA GAME/SAN PHAM SANG TAO cu the (vd Mario, Pokemon,
-    #   Zelda). Dung tu nay ngu y app cho dung/choi DUNG san pham do -> rui ro ban quyen cao,
-    #   mac dinh Drop cung.
-    # - risky_platform_terms: ten HANG SAN XUAT/HE MAY/PHAN CUNG (vd Nintendo, Sony, Sega,
-    #   Microsoft, PlayStation, Xbox). Day la tu vung MO TA CHUC NANG bat buoc cho app dang
-    #   emulator/phu kien (vd "NDS emulator" phai nhac "Nintendo DS") -> rui ro thap hon nhieu,
-    #   mac dinh chi Consider Keywords (platform_context_action), khong Drop cung.
+    # - risky_ip_terms: specific characters, game titles, or creative products
+    #   (for example Mario, Pokemon, Zelda). These imply that the app offers or plays
+    #   the exact protected product, so copyright risk is high and the default is hard drop.
+    # - risky_platform_terms: manufacturer, console, or hardware names
+    #   (for example Nintendo, Sony, Sega, Microsoft, PlayStation, Xbox). These can be
+    #   necessary functional vocabulary for emulator/accessory apps, so the default is
+    #   Consider Keywords through platform_context_action instead of hard drop.
     # KHONG dat ten hang/he may vao risky_ip_terms - se bi Drop oan ngay ca khi do la platform
-    # chinh ma app ho tro (xem section 36 trong ASO_Keyword_Planner_v4_5.md).
+    # supported by the app (see section 36 in ASO_Keyword_Planner_v4_5.md).
     # Override guardrail:
     # - matched risky/platform term must be declared-safe in core/feature vocabulary;
     # - keyword must also carry a distinctive functional anchor (emulator, rom, console, gba, nds...);
     # - generic tokens like game/games/play/app/free never count as anchors.
     "risky_ip_terms": [
-        # Tá»« khÃ³a chá»©a IP hoáº·c báº£n quyá»n nháº¡y cáº£m cáº§n háº¡n cháº¿
+        # Keywords containing sensitive IP or copyright terms that must be restricted.
         "brandname"
     ],
 
@@ -169,7 +169,7 @@ APP_CONFIG = {
     },
 
     # ==========================================
-    # 5. RISK HANDLING & PRECEDENCE (ChÃ­nh sÃ¡ch rá»§i ro & Thá»© tá»± Æ°u tiÃªn)
+    # 5. RISK HANDLING & PRECEDENCE
     # ==========================================
     "risk_policy": {
         "competitor_brand_action": "drop",
@@ -183,18 +183,18 @@ APP_CONFIG = {
         # also has a distinctive functional anchor. It does NOT rescue
         # platform_affiliation_terms, and it does NOT rescue AI-recognized classic
         # game IP unless explicitly declared.
-        "core_intent_override": True  # Náº¿u chá»©a core intent máº¡nh, khÃ´ng tá»± Ä‘á»™ng loáº¡i khi dÃ­nh lá»—i nháº¹
+        "core_intent_override": True  # If strong core intent is present, do not auto-drop for minor risk matches
     },
 
     # ==========================================
-    # 6. KEYWORD QUOTA (Háº¡n ngáº¡ch phÃ¢n bá»• tá»« khÃ³a)
+    # 6. KEYWORD QUOTA
     # ==========================================
     "keyword_quota": {
         "main_file": {
             "core_intent": 25,       # So luong keyword core chinh (Top 25)
             "core_feature": 5,       # So luong keyword feature (Top 5)
-            "broad_expansion": 5,    # Sá»‘ lÆ°á»£ng keyword má»Ÿ rá»™ng rá»™ng hÆ¡n (Top 5)
-            "consider": 5,          # Sá»‘ lÆ°á»£ng keyword Ä‘Æ°a vÃ o danh sÃ¡ch Consider
+            "broad_expansion": 5,    # Number of broader expansion keywords
+            "consider": 5,          # Number of Consider keywords
         },
         "feature_file": {
             "max_keywords": 30,
@@ -220,9 +220,9 @@ APP_CONFIG = {
     "metadata_selector": {
         "enabled": True,
         "target_count": 40,
-        "cluster_cap": 3,                        # Toi da 3 keyword/cum ngu nghia (Jaccard similarity, xem shortlist.py)
-        "cluster_similarity_threshold": 0.5,      # Nguong Jaccard de coi 2 keyword la cung 1 cum
-        "cluster_generic_token_ratio": 0.30,      # Tu xuat hien > 30% pool bi loai khoi phep so sanh cum
+        "cluster_cap": 3,                        # Max 3 keywords per semantic cluster (Jaccard similarity, see shortlist.py)
+        "cluster_similarity_threshold": 0.5,      # Jaccard threshold for treating two keywords as one cluster
+        "cluster_generic_token_ratio": 0.30,      # Tokens appearing in >30% of the pool are ignored in cluster comparison
         "quality_min_balanced_score": 0.40,
         "quality_min_relevancy": 0.45,
         "quality_min_volume": 6.0,
@@ -232,9 +232,11 @@ APP_CONFIG = {
 
     # Post-candidate metadata/ads suitability gate. This is separate from
     # relevancy/classification: a keyword can be related to the app but still too
-    # broad for metadata or ads when it stands alone.
+    # broad or too weak as Play Store acquisition traffic when it stands alone.
     "metadata_suitability": {
         "enabled": True,
+        "audit_min_volume": 5,
+        "fail_on_missing_audit": True,
         "single_token_policy": {
             "enabled": True,
             "default_action": "research_only",
@@ -246,26 +248,26 @@ APP_CONFIG = {
     },
 
     # VolumeN/utility reach ceiling: shared/keyword_filter/scoring.py::safe_reach_ceiling
-    # tinh percentile-95 tren cac dong khong phai competitor/irrelevant (mac dinh, khong can config)
-    # thay vi max() tuyet doi, tranh 1 outlier brand term keo lech chuan hoa cho ca pool.
+    # Computes percentile 95 over non-competitor/non-irrelevant rows by default
+    # instead of absolute max(), avoiding one brand outlier skewing the whole pool.
 
     # RelevancyScore stacking dampener: shared/keyword_filter/scoring.py::dampen_stacked_relevancy
-    # (mac dinh bat, co the override qua "relevancy_stacking_dampener")
+    # Enabled by default; can be overridden through "relevancy_stacking_dampener".
     "relevancy_stacking_dampener": {
         "enabled": True,
-        "min_category_hits": 2,     # Khop >= 2 nhom intent (core/feature/style) cung luc moi xet dampen
-        "max_volume": 10.0,         # Chi dampen neu Volume <= nguong nay
-        "max_reach": 5.0,           # Chi dampen neu MaximumReach <= nguong nay
+        "min_category_hits": 2,     # Dampen only when >=2 intent groups match at once
+        "max_volume": 10.0,         # Dampen only when Volume <= this threshold
+        "max_reach": 5.0,           # Dampen only when MaximumReach <= this threshold
         "score_cap": 0.65,          # Tran RelevancyScore sau khi dampen
     },
 
     # ==========================================
-    # 7. LANGUAGE NATURALNESS (Äá»™ tá»± nhiÃªn ngÃ´n ngá»¯)
+    # 7. LANGUAGE NATURALNESS
     # ==========================================
     "language_naturalness": {
         "enabled": True,
-        "penalty_unnatural": -0.35,      # Äiá»ƒm pháº¡t khi cá»¥m tá»« kÃ©m tá»± nhiÃªn
-        "auto_drop_score_below": 0.15,   # Tá»± Ä‘á»™ng loáº¡i náº¿u Ä‘iá»ƒm Relevancy sau pháº¡t dÆ°á»›i má»©c nÃ y
+        "penalty_unnatural": -0.35,      # Penalty for unnatural phrases
+        "auto_drop_score_below": 0.15,   # Auto-drop if Relevancy after penalty is below this threshold
         "rules": {
             "grammar_violation": {
                 "patterns": [
@@ -292,7 +294,7 @@ APP_CONFIG = {
     },
 
     # ==========================================
-    # 8. SCORING WEIGHTS (Trá»ng sá»‘ Relevancy & Balanced Score)
+    # 8. SCORING WEIGHTS
     # ==========================================
     # Current shared calculate_relevancy reads only "base"; the remaining lexical
     # bonuses/penalties are deterministic in shared/keyword_filter/scoring.py:
@@ -340,7 +342,7 @@ APP_CONFIG = {
     # "relevancy_rubric": {"bucket_base": {"feature keywords": 0.75}, "confidence_span": 0.15},
 
     # ==========================================
-    # 9. METADATA SLOTS & OUTPUT (PhÃ¢n bá»• & Äá»‹nh dáº¡ng Ä‘áº§u ra)
+    # 9. METADATA SLOTS & OUTPUT
     # ==========================================
     "metadata_slots": {
         "google_play": {
@@ -356,7 +358,7 @@ APP_CONFIG = {
         }
     },
 
-    "max_word_overlap": 0.5,  # Tá»· lá»‡ trÃ¹ng láº·p tá»« tá»‘i Ä‘a giá»¯a cÃ¡c keyword trong Top N (trÃ¡nh láº·p Ã½)
+    "max_word_overlap": 0.5,  # Max word-overlap ratio between Top N keywords
     "dedup_policy": {
         "auto_merge_token_bag": False,
         "review_overlap_threshold": 0.80,
@@ -396,11 +398,15 @@ APP_CONFIG = {
     },
 
     # ==========================================
-    # 10. USER OVERRIDES (Ghi Ä‘Ã¨ thá»§ cÃ´ng tá»« User)
+    # 10. USER OVERRIDES
     # ==========================================
     "user_overrides": {
         "do_not_auto_drop_terms": [],
         "force_consider_terms": [],
+        # Exact phrases that should bypass metadata/ads suitability audit after
+        # deterministic risk/language gates pass. Use sparingly for owner-approved
+        # acquisition terms, not as a broad rescue list.
+        "suitability_keep_terms": [],
         "force_drop_terms": [],
         "force_top30_terms": [],
         "notes": []

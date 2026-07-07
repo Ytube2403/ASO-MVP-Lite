@@ -1,140 +1,149 @@
 # ASO MVP Usage Guide
 
-Tai lieu nay la huong dan thao tac hien hanh cho nguoi chay pipeline. Spec chi tiet nam o `docs/ASO_Keyword_Planner_v4_5.md`; file nay chi tap trung vao dung thu tu van hanh.
+This is the current operator guide for running the pipeline. The detailed spec lives in `docs/ASO_Keyword_Planner_v4_5.md`; this file focuses on the correct operating order.
 
-## 1. Chuan bi mot app
+## 1. Prepare An App
 
-Moi app can co:
+Each app needs:
 
 - `apps/<AppName>/app_config.py`: identity, market, semantic groups, filters, scoring/risk policy.
-- `apps/<AppName>/App_Profile.json`: live metadata va competitor profile.
-- CSV keyword dau vao tu AppTweak/SensorTower, dat theo market ro rang, vi du `NDS Emulator_BR_PT.csv`.
+- `apps/<AppName>/App_Profile.json`: live metadata and competitor profile.
+- An input keyword CSV from AppTweak/SensorTower with a clear market name, for example `NDS Emulator_BR_PT.csv`.
 
-Neu sua brand/risk lists nhu `risky_ip_terms`, `risky_platform_terms`, `competitor_brands`, `platform_affiliation_terms`, chay lai pipeline la co hieu luc ngay. Khong can warm lai cache AI.
+If you change deterministic brand/risk lists such as `risky_ip_terms`, `risky_platform_terms`, `competitor_brands`, or `platform_affiliation_terms`, rerun the pipeline. You do not need to re-warm the AI cache.
 
-Chi bump top-level `ruleset_version` khi prompt/rubric agentic thay doi va ban muon phan loai lai `AISemanticBucket`/`AIDecisionRule` cu. Sau khi bump, phai warm lai cac market se chay pipeline.
+Only bump the top-level `ruleset_version` when the agentic prompt/rubric changes and you want old `AISemanticBucket`/`AIDecisionRule` values to be reclassified. After bumping it, warm cache again for every market you plan to run.
 
-## 2. Dat CSV vao dung cho
+## 2. Put The CSV In The Standard Folder
 
-Khuyen nghi de CSV trong:
+Recommended input location:
 
 ```text
 apps/<AppName>/Input/<MMYYYY>/<AppName>_<MARKET>.csv
 ```
 
-Vi du:
+Example:
 
 ```text
 apps/NDS_Emulator/Input/072026/NDS Emulator_BR_PT.csv
 ```
 
-Co the truyen CSV tu bat ky duong dan nao cho `run_aso_filter.py`; orchestrator se archive input vao app folder.
+You can pass a CSV from any path to `run_aso_filter.py`; the orchestrator archives it into the app folder.
 
-## 3. Kiem tra agentic cache truoc khi chay
+## 3. Verify Agentic Cache Before Running
 
-Runtime pipeline la cache-only: runner khong goi AI/translation network. Truoc khi chay pipeline that, kiem tra cache:
+The runtime pipeline is cache-only: runners do not call AI or translation network providers. Before a real pipeline run, verify cache:
 
 ```powershell
 python tools/warm_cache_helper.py verify-cache --app <AppName> --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --market <MARKET>
 ```
 
-Neu output la `PASS ... 0 missing`, co the chay pipeline.
+If the output is `PASS ... 0 missing`, you can run the pipeline.
 
-Neu fail vi thieu intent hoac `english_gloss`, warm cache theo thu tu:
+If verification fails because intent or `english_gloss` is missing, warm cache in this order:
 
 ```powershell
 python tools/warm_cache_helper.py find-misses --app <AppName> --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --market <MARKET> --output .cache/<app>_<market>_missing.json
 python tools/warm_cache_helper.py prepare-batches --misses .cache/<app>_<market>_missing.json --output-dir .cache/agentic_batches
 ```
 
-Sau do dung Antigravity/Codex/subagent de phan loai tung batch theo `.agents/skills/warm-agentic-cache/SKILL.md`, roi luu ket qua:
+Then use Antigravity/Codex/subagents to classify each batch according to `.agents/skills/warm-agentic-cache/SKILL.md`, save the results, and verify again:
 
 ```powershell
 python tools/warm_cache_helper.py save-results --app <AppName> --batch <batch_path> --results <result_path> --market <MARKET>
 python tools/warm_cache_helper.py verify-cache --app <AppName> --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --market <MARKET>
 ```
 
-Chi chay pipeline sau khi `verify-cache` pass.
+Run the pipeline only after `verify-cache` passes.
 
-## 4. Metadata/ads suitability audit sau candidate pool
+## 4. Metadata/Ads Suitability Audit After Candidate Pool
 
-Sau agentic cache, pipeline con co post-candidate gate rieng cho `MetadataEligible`/`AdsEligible`. Gate nay khong thay the relevancy: no chi tra loi cau hoi "keyword nay co dang dung trong metadata/ads khong?". Vi du `arcade`, `pizza`, `moonlight`, `turbospeed` co the lien quan den feature nhung qua rong khi dung mot minh, nen se vao `ResearchOnly`. Cac atomic platform terms nhu `nds`, `ds`, `gba` duoc giu neu nam trong config keep list.
+After agentic cache, the pipeline has a separate post-candidate gate for `MetadataEligible`/`AdsEligible`. This gate does not replace relevancy. It also asks: "If a user searches this keyword on Play Store, can it surface the right app type?" and "If it surfaces this app, is it specific enough for metadata/ads?"
 
-Suitability audit khong chay tren raw AppTweak CSV. No can candidate pool sau classification/scoring, co cac cot nhu `Keyword`, `Bucket`, `DecisionRule`, `Volume`. Vi vay flow dung la:
+For example, `stik bluetooth`, `setting tombol gamepad`, `arcade`, `pizza`, `moonlight`, and `turbospeed` may be related to a feature/category but are too weak by themselves, so they go to `ResearchOnly`. Atomic platform terms such as `nds`, `ds`, and `gba` are kept only when they are in the config keep list. App-specific phrase overrides can be set in `user_overrides.suitability_keep_terms`.
 
-1. Chay pipeline sau khi agentic cache da pass.
-2. Neu co AI-inferred Feature/System keyword can audit ma cache chua co, pipeline fail-fast voi loi `Metadata suitability audit is cache-only`.
-3. Loi nay se export candidate pool vao `.cache/candidate_pools/..._candidates.csv`.
-4. Dung file candidate pool do de warm suitability cache, roi chay lai pipeline.
+Suitability audit does not run on raw AppTweak CSVs. It needs a candidate pool after classification/scoring, with columns such as `Keyword`, `Bucket`, `DecisionRule`, and `Volume`. Correct flow:
 
-Kiem tra file candidate pool:
+1. Run the pipeline after agentic cache passes.
+2. If a keyword needs suitability audit but has no cache row, the pipeline fails fast with `Metadata suitability audit is cache-only`.
+3. The error exports a candidate pool to `.cache/candidate_pools/..._candidates.csv`.
+4. Use that candidate pool to warm suitability cache, then rerun the pipeline.
+
+Check the candidate pool:
 
 ```powershell
 python tools/suitability_cache_helper.py verify-cache --app <AppName> --csv ".cache/candidate_pools/<exported_candidates>.csv" --market <MARKET>
 ```
 
-Neu fail, tao batch cho subagent audit tu candidate pool:
+If verification fails, create subagent audit batches from the candidate pool:
 
 ```powershell
 python tools/suitability_cache_helper.py find-misses --app <AppName> --csv ".cache/candidate_pools/<exported_candidates>.csv" --market <MARKET> --output .cache/<app>_<market>_suitability_missing.json
 python tools/suitability_cache_helper.py prepare-batches --misses .cache/<app>_<market>_suitability_missing.json --output-dir .cache/suitability_batches
 ```
 
-Subagent result phai co cac field `keyword`, `suitability_bucket`, `metadata_eligible`, `ads_eligible`, `research_only`, `confidence`, `decision_rule`, `reason`. Luu va verify lai:
+Each subagent result must include `keyword`, `suitability_bucket`, `metadata_eligible`, `ads_eligible`, `research_only`, `confidence`, `decision_rule`, and `reason`. Save and verify again:
 
 ```powershell
 python tools/suitability_cache_helper.py save-results --app <AppName> --batch <batch_path> --results <result_path> --market <MARKET>
 python tools/suitability_cache_helper.py verify-cache --app <AppName> --csv ".cache/candidate_pools/<exported_candidates>.csv" --market <MARKET>
 ```
 
-Ghi chu: deterministic rule van thang subagent. Risk/drop/language/manual-review khong duoc rescue; single-token block terms van bi `SINGLE_TOKEN_TOO_BROAD`; single-token keep terms van duoc eligible. Hand-declared `feature_terms`/`intent_core_terms` khong can subagent audit; gate fail-loud chu yeu cho AI-inferred Feature/System keyword co volume du cao.
+Notes:
 
-## 5. Chay pipeline
+- Deterministic rules still beat subagent output.
+- Risk/drop/language/manual-review rows cannot be rescued.
+- Single-token block terms stay `SINGLE_TOKEN_TOO_BROAD`.
+- Single-token keep terms and `user_overrides.suitability_keep_terms` stay eligible.
+- Hand-declared `feature_terms`/`intent_core_terms` usually skip subagent audit when they land deterministically in `Feature Keywords`, `System Keywords`, or `Core Intent Final`.
+- The gate fails loud for unlisted single-token terms, AI-inferred keywords, and multi-word keywords in `Feature Keywords`, `System Keywords`, `Broad Expansion`, `Consider Keywords`, `Style Keywords`, `Generic Style Reserve`, and `Game Keywords` when they meet `metadata_suitability.audit_min_volume` (default `5`).
 
-Uu tien orchestrator trung tam tu root repo:
+## 5. Run The Pipeline
+
+Prefer the central orchestrator from the repo root:
 
 ```powershell
 python run_aso_filter.py --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --app <AppName>
 ```
 
-Che do interactive:
+Interactive mode:
 
 ```powershell
 python run_aso_filter.py --csv "apps/<AppName>/Input/<MMYYYY>/<file>.csv" --app <AppName> --interactive
 ```
 
-Neu CSV name du de resolve app, co the bo `--app`. Khi app co alias de nham, nen truyen `--app` ro rang.
+If the CSV name is enough to resolve the app, `--app` can be omitted. If an app has ambiguous aliases, pass `--app` explicitly.
 
-## 6. Review workbook output
+## 6. Review Workbook Output
 
-Sau khi chay xong, mo workbook trong `apps/<AppName>/Output/<MMYYYY>/`.
+After the run finishes, open the workbook in `apps/<AppName>/Output/<MMYYYY>/`.
 
-Can review toi thieu:
+Review at least:
 
-- `00_Project_Memory`: app/profile/config snapshot dung cho audit.
-- `01_Main_Keyword_Shortlist`: danh sach metadata-safe target 40 theo utility + diversity, chi gom row `MetadataEligible=True`.
-- `04_Dropped_Audit`: keyword bi loai va ly do drop.
-- `06_All_Candidates`: audit cot `PreAIRule`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIEnglishGloss`, `MetadataEligible`, `AdsEligible`, `ResearchOnly`, `SuitabilityRule`, `SuitabilityReason`.
-- `13_Top_By_Volume`: keyword sach co volume cao de kiem tra nhanh co bi bo sot.
-- `14_Not_Selected_Audit`: xem reason `SINGLE_TOKEN_TOO_BROAD` hoac `SUITABILITY_RESEARCH_ONLY` de audit keyword lien quan nhung khong nen dung metadata/ads.
-- `15_Selector_Quality_Log` neu co: canh bao selector/backfill.
+- `00_Project_Memory`: app/profile/config snapshot for audit.
+- `01_Main_Keyword_Shortlist`: metadata-safe target 40 selected by utility + diversity; only rows with `MetadataEligible=True`.
+- `04_Dropped_Audit`: dropped keywords and drop reasons.
+- `06_All_Candidates`: audit columns `PreAIRule`, `AISemanticBucket`, `AIDecisionRule`, `AIReason`, `AIEnglishGloss`, `MetadataEligible`, `AdsEligible`, `ResearchOnly`, `SuitabilityRule`, `SuitabilityReason`.
+- `13_Top_By_Volume`: clean high-volume keywords to quickly check for missed opportunities.
+- `14_Not_Selected_Audit`: reasons such as `SINGLE_TOKEN_TOO_BROAD`, `SUITABILITY_RESEARCH_ONLY`, or `SUITABILITY_PENDING_AUDIT` for related keywords that should not be used in metadata/ads or still need suitability cache.
+- `15_Selector_Quality_Log`, when present: selector/backfill warnings.
 
-Voi game/emulator apps, can chu y keyword IP/game/franchise/brand. Cac tu nhu `mortal kombat`, `naruto`, `resident evil`, `pac man`, `metal slug` chi nen nam trong Dropped Audit, khong vao shortlist/feature sheets.
+For game/emulator apps, pay special attention to IP/game/franchise/brand keywords. Terms such as `mortal kombat`, `naruto`, `resident evil`, `pac man`, and `metal slug` should appear only in Dropped Audit, not in shortlist/feature sheets.
 
-## 7. Khi nao can chay lai
+## 7. When To Rerun
 
-- Sua `app_config.py` risk/brand/noise/feature/core terms: chay lai pipeline; cache AI khong can warm lai.
-- Sua `App_Profile.json`: chay lai pipeline; neu profile anh huong context agentic va verify-cache bao miss thi warm them.
-- Bump `ruleset_version`: warm lai moi market can chay, roi moi run pipeline.
-- Sua `metadata_suitability.single_token_policy.keep_terms`/`block_terms`: chay lai pipeline. Neu verify suitability bao miss vi context hash doi, warm lai suitability audit cho market do.
-- CSV moi hoac market moi: verify-cache truoc; neu miss thi warm cache.
+- Change `app_config.py` risk/brand/noise/feature/core terms: rerun the pipeline; AI cache does not need re-warming.
+- Change `App_Profile.json`: rerun the pipeline; if profile changes affect agentic context and `verify-cache` reports misses, warm them.
+- Bump `ruleset_version`: warm every market you plan to run, then run the pipeline.
+- Change `metadata_suitability.single_token_policy.keep_terms`/`block_terms`, `metadata_suitability.audit_min_volume`, or `user_overrides.suitability_keep_terms`: rerun the pipeline. If suitability verification reports misses because the context hash changed, warm suitability audit for that market.
+- New CSV or new market: run `verify-cache` first; warm cache if there are misses.
 
-## 8. Lenh batch
+## 8. Batch Command
 
-Dung manifest:
+Use a manifest:
 
 ```powershell
 python run_aso_batch.py --manifest path\to\manifest.json
 ```
 
-Batch runner van tuan thu cache-only. Neu market nao con miss, job do fail-fast; warm cache cho market do roi chay lai.
+The batch runner is also cache-only. If any market has misses, that job fails fast; warm cache for that market and rerun.

@@ -1,6 +1,6 @@
----
+﻿---
 name: create-profile
-description: Create or repair a complete, schema-correct App_Profile.json for a registered app so the ASO pipeline understands the app's real identity, positioning, features, exclusions, and competitors — and therefore evaluates keyword relevancy and blacklists correctly instead of guessing. Use when the user asks to create/build/fix an app profile, e.g. "Create profile <AppName>", "Tạo profile cho <AppName>", "Làm profile chuẩn cho <AppName>", when App_Profile.json is missing/incomplete, or when a pipeline/preflight reports ProfileStatus EMPTY_FETCH_FAILED, GENERATED_STALE_FALLBACK, or "No competitor apps found".
+description: Create or repair a complete, schema-correct App_Profile.json for a registered app so the ASO pipeline understands the app's real identity, positioning, features, exclusions, and competitors, and therefore evaluates keyword relevancy and blacklists correctly instead of guessing. Use when the user asks to create, build, or fix an app profile, for example "Create profile <AppName>", "Build profile <AppName>", or "Fix App_Profile.json for <AppName>", when App_Profile.json is missing/incomplete, or when a pipeline/preflight reports ProfileStatus EMPTY_FETCH_FAILED, GENERATED_STALE_FALLBACK, or "No competitor apps found".
 
 ---
 
@@ -106,7 +106,7 @@ Rules that keep the system from getting confused:
 - `not_the_right_positioning` should name the intents this app must NOT rank for (e.g. a retro emulator that is not a "video editor") so wrong-intent keywords are dropped, not scored.
 - Every `suggested_competitors` entry needs at least `package_id`, `title`, and `short_description` (or `why_relevant`) so it adapts cleanly; otherwise it is silently dropped and you lose competitor keyword coverage.
 - Preserve accurate content from an existing `App_Profile.json`; only correct what is wrong or missing.
-- Write valid JSON (double quotes, no trailing commas, UTF-8). Do not leave template placeholder text like "Điền một câu..." in a real profile.
+- Write valid JSON (double quotes, no trailing commas, UTF-8). Do not leave template placeholder text like "Fill in one sentence..." in a real profile.
 
 ## Step 3 — Cross-check profile ↔ config (avoid keyword-eval confusion)
 

@@ -1,106 +1,99 @@
-# 🛠️ Prank Sounds ASO Pipeline — Hướng Dẫn Chạy & Cấu Hình
+# Prank Sounds ASO Pipeline - Run & Configuration Guide
 
-Thư mục này chứa pipeline thực tế cho nhóm app Prank Sounds. Có thể chạy trực tiếp bằng `run_pipeline.py` hoặc chạy qua orchestrator `ASO-MVP-Lite/run_aso_filter.py` với file CSV có tên chứa `Prank`/`Pranky`.
+This folder contains the production pipeline for the Prank Sounds app family. It can run directly through `run_pipeline.py` or through the root orchestrator `run_aso_filter.py` with CSV names containing `Prank` or `Pranky`.
 
-Hệ thống được thiết kế theo hướng **tách biệt cấu hình và mã nguồn**: toàn bộ thông số cấu hình nằm trong file `app_config.py` và hồ sơ ứng dụng nằm trong file `App_Profile.json`.
+Configuration is separated from source code:
 
-Trước khi chạy lần đầu trên máy Windows mới, làm theo [hướng dẫn cài đặt đầy đủ](../../docs/SETUP_WINDOWS.md).
+- App-specific configuration lives in `app_config.py`.
+- Store/profile context lives in `App_Profile.json`.
 
----
+Before running on a fresh Windows machine, follow [the full setup guide](../../docs/SETUP_WINDOWS.md).
 
-## 📁 Cấu trúc thư mục
+## Folder Structure
 
 ```text
 apps/Prank_Sounds/
-├── README.md                      (Tài liệu hướng dẫn này)
-├── app_config.py                  (Nơi điền từ khóa, thương hiệu đối thủ, trọng số điểm)
-├── App_Profile.json               (Nơi điền mô tả hiện tại và đối thủ của app)
-├── PROJECT_MEMORY.md              (Snapshot setup tự sinh sau mỗi lần chạy pipeline thành công)
-├── run_pipeline.py                (Mã nguồn chạy 10 bước lọc - KHÔNG cần chỉnh sửa)
-├── interactive_optimizer.html     (Giao diện Web tối ưu hóa từ khóa)
-└── interactive_description_editor.html (Giao diện Web soạn thảo mô tả ASO)
+|-- README.md
+|-- app_config.py
+|-- App_Profile.json
+|-- PROJECT_MEMORY.md
+|-- run_pipeline.py
+|-- interactive_optimizer.html
+`-- interactive_description_editor.html
 ```
 
----
+## Configure Prank Sounds
 
-## ⚙️ Cấu hình Prank Sounds
+Edit `app_config.py` when needed:
 
-### Bước 1: Khai báo thông tin định danh và từ khóa trong `app_config.py`
-Mở file `app_config.py` bằng bất kỳ trình soạn thảo mã nguồn nào và chỉnh sửa các mục sau:
-1. **Thông tin cơ bản (Identity):** Cập nhật `app_id` (package id), `app_name`, `category` và thị trường mục tiêu mặc định (`market`).
-2. **Bộ từ khóa chính (Semantic Groups):**
-   * `intent_core_terms`: Các từ khóa chính thể hiện ý định tìm kiếm app (ví dụ: `photo editor`, `crop photo`).
-   * `feature_terms`: Các tính năng chính (ví dụ: `retouch`, `filter`, `collage`).
-   * `style_terms`: Các phong cách thiết kế, IP hoặc giao diện (ví dụ: `aesthetic`, `vintage`). LƯU Ý: Những từ này chỉ được phân bổ vào Full Description để tránh vi phạm bản quyền.
-3. **Bộ lọc loại bỏ (Filters):**
-   * `competitor_brands`: Thương hiệu đối thủ (sẽ bị loại khỏi các slot metadata chính để tránh bị quét vi phạm).
-   * `noise_terms`: Các từ chung chung quá rộng (như `app`, `free`, `download`, `android`).
-   * `typo_blacklist`: Từ viết sai chính tả hoặc từ vô nghĩa từ auto-suggest.
+- **Identity:** `app_id`, `app_name`, `category`, and default target `market`.
+- **Semantic groups:**
+  - `intent_core_terms`: main app-search intent.
+  - `feature_terms`: concrete sound/prank features.
+  - `style_terms`: style, UI, IP, or aesthetic themes allocated only to safer fields.
+- **Filters:**
+  - `competitor_brands`: competitor brands blocked from primary metadata.
+  - `noise_terms`: broad generic terms such as `app`, `free`, `download`, `android`.
+  - `typo_blacklist`: misspellings or auto-suggest noise.
 
-### Bước 2: Điền thông tin cửa hàng trong `App_Profile.json`
-Mở file `App_Profile.json` và điền:
-1. `app_identity`: ID, tên ứng dụng và danh mục.
-2. `live_store_metadata`: Short Description hiện tại của bạn.
-3. `suggested_competitors`: Danh sách từ 3-5 đối thủ cạnh tranh chính. Đối với mỗi đối thủ, điền `package_id`, `title`, `short_description` và một đoạn mô tả ngắn (`desc200`). Script sẽ quét thông tin này để tự động cộng điểm ưu tiên (`Competitor Boost`) cho các từ khóa mà đối thủ của bạn đang sử dụng hiệu quả.
+`App_Profile.json` stores live metadata and 3-5 main competitors. Project Memory reads `app_config.py` and `App_Profile.json` directly and renders the current setup into dashboard tab `Setup`, workbook sheet `00_Project_Memory`, and `PROJECT_MEMORY.md`.
 
-Project Memory đọc trực tiếp `app_config.py` và `App_Profile.json` để hiển thị lại setup hiện tại trong Dashboard tab `Setup`, sheet `00_Project_Memory` và file `PROJECT_MEMORY.md`. Không cần nhập thêm dữ liệu riêng cho phần này.
+## Input File Naming
 
-### Bước 3: Đặt tên file dữ liệu đầu vào chuẩn
-Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu tên theo chuẩn:
-`[AppName]_[Country]_[Language].csv` (Ví dụ: `PrankSounds_US_EN.csv`, `Pranky_PH_FIL.csv`).
+Use:
 
----
+```text
+<AppName>_<Country>_<Language>.csv
+```
 
-## 🚀 Cách chạy Lọc từ khóa
+Examples:
 
-Quy trinh su dung hien hanh nam o `../../docs/USAGE.md`: kiem tra `verify-cache` truoc, warm cache neu con miss, roi moi chay pipeline. Neu prompt/rubric agentic doi va da bump `ruleset_version`, phai warm lai cac market se chay.
+- `PrankSounds_US_EN.csv`
+- `Pranky_PH_FIL.csv`
 
-Mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/Prank_Sounds` và chạy trực tiếp pipeline:
+## Run Keyword Filtering
+
+Use the current operating flow in `../../docs/USAGE.md`: verify cache first, warm cache if there are misses, then run the pipeline. If the agentic prompt/rubric changes and `ruleset_version` is bumped, warm every market you plan to run.
+
+From `ASO-MVP-Lite/apps/Prank_Sounds`:
 
 ```powershell
-# Chạy ở chế độ tự động xuất Excel trực tiếp
-python run_pipeline.py --csv C:\duong-dan-den\PrankSounds_US_EN.csv --market US_EN
-
-# Chạy ở chế độ mở giao diện Web tương tác (để tự tay lựa chọn & viết mô tả)
-python run_pipeline.py --csv C:\duong-dan-den\PrankSounds_US_EN.csv --market US_EN --interactive
+python run_pipeline.py --csv C:\path\to\PrankSounds_US_EN.csv --market US_EN
+python run_pipeline.py --csv C:\path\to\PrankSounds_US_EN.csv --market US_EN --interactive
 ```
 
-Hoặc chạy từ thư mục gốc `ASO-MVP-Lite` qua orchestrator để tự archive input vào `apps/Prank_Sounds/Input/[MMYYYY]/` và xuất output vào `apps/Prank_Sounds/Output/[MMYYYY]/`:
+Or from the repo root through the orchestrator:
 
 ```powershell
-python run_aso_filter.py --csv C:\duong-dan-den\PrankSounds_US_EN.csv
-python run_aso_filter.py --csv C:\duong-dan-den\Pranky_PH_FIL.csv --interactive
+python run_aso_filter.py --csv C:\path\to\PrankSounds_US_EN.csv
+python run_aso_filter.py --csv C:\path\to\Pranky_PH_FIL.csv --interactive
 ```
 
-Kết quả sẽ được xuất thành một file Excel duy nhất chứa đầy đủ báo cáo, shortlist `target 40 utility + diversity`, sheet `13_Top_By_Volume`, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.
+The orchestrator archives inputs into `apps/Prank_Sounds/Input/<MMYYYY>/` and writes outputs into `apps/Prank_Sounds/Output/<MMYYYY>/`.
 
----
+The workbook includes the full report, `target 40 utility + diversity` shortlist, `13_Top_By_Volume`, `00_Project_Memory`, and audit reasons for keeping/dropping each keyword. The pipeline also updates `PROJECT_MEMORY.md`.
 
-## Shared platform logic v4.5
+## Shared Platform Logic v4.5
 
-Pipeline hiện sử dụng các module chung trong `ASO-MVP-Lite/shared/`:
+Prank Sounds uses shared modules under `ASO-MVP-Lite/shared/`:
 
-- `shared/language_detector.py`: detect ngôn ngữ theo market policy và phân nhóm `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
-- `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache và version.
-- `shared/text_dedup.py`: dedup Unicode indexed `NFKC` + `casefold()`, stemming theo locale, và ghi `MergedVariants` cho main shortlist.
-- `shared/en_gloss_resolver.py`: resolve EN từ CSV hoặc `AIEnglishGloss` đã được nạp bằng agentic cache.
-- `shared/profile_service.py`: ưu tiên tuyệt đối `App_Profile.json`, generated cache atomic và stale fallback.
-- `shared/project_memory.py`: tạo setup overview cho Tracker tab `Setup`, sheet `00_Project_Memory` và `PROJECT_MEMORY.md`.
+- `shared/language_detector.py`: market-policy-aware grouping into `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
+- `shared/keyword_filter/`: matcher, hard filter, classifier, validator, audit, cache, and versioning.
+- `shared/text_dedup.py`: Unicode `NFKC` + `casefold()` deduplication, locale-aware stemming, and `MergedVariants`.
+- `shared/en_gloss_resolver.py`: resolves `EN` from CSV or `AIEnglishGloss` warmed by agentic cache.
+- `shared/profile_service.py`: strict `App_Profile.json` priority, generated cache, and stale fallback.
+- `shared/project_memory.py`: setup overview for tracker tab `Setup`, sheet `00_Project_Memory`, and `PROJECT_MEMORY.md`.
 
-Quy tắc cần nhớ:
+Important rules:
 
-- `FOREIGN` vào `Language Mismatch Audit`.
-- `UNKNOWN` vào `Manual Review`.
-- `MIXED` vào `Consider Keywords` nếu market cho phép `mixed_allowed=True`.
-- `SECONDARY` mặc định giữ ở `Consider Keywords`; raw keyword khớp chính xác `intent_core_terms` vẫn giữ vai trò Core.
-- Naturalness không hard-drop non-Latin/script khác bằng `LANGUAGE_BLEED`; ngôn ngữ do language detector xử lý.
-- Selection cache chỉ được dùng lại khi metadata `app_id`, market, input hash, config hash và engine version khớp run hiện tại.
-- Low-volume keyword co the vao shortlist/Consider khi config v4.5 dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.
-- Truncation v4.5 bao ve complete token va singular/plural: `prank sound`, `hair clipper prank`, `battery icon`, `emoji` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.
-- Hoan vi thu tu tu duoc giu nhu keyword doc lap khi `auto_merge_token_bag=False`.
-- Dedup chỉ áp dụng cho `01_Main_Keyword_Shortlist`. Các sheet âm thanh chỉ sort theo ưu tiên thông thường.
-- Accent-fold và keyword chỉ gần giống được giữ như keyword độc lập; không còn `ReviewVariants`.
+- `FOREIGN` -> `Language Mismatch Audit`.
+- `UNKNOWN` -> `Manual Review`.
+- `MIXED` -> `Consider Keywords` when `mixed_allowed=True`.
+- `SECONDARY` normally stays in `Consider Keywords`; exact raw matches to `intent_core_terms` can still keep Core behavior.
+- Naturalness does not hard-drop other scripts through `LANGUAGE_BLEED`; language detection owns that decision.
+- Selection cache can be reused only when `app_id`, market, input hash, config hash, and engine version match the current run.
+- Dedup applies only to `01_Main_Keyword_Shortlist`; topic sheets remain independent review lists.
 
-### Quy tắc overlap giữa các sheet
+## Sheet Overlap Rule
 
-`01_Main_Keyword_Shortlist` và các sheet chủ đề (`02_Hairclipper_Keywords`, `03_Taser_Keywords`, `04_Gun_Sound_Keywords`, `05_Prank_Sound_General`) là các danh sách độc lập. Keyword mạnh được phép xuất hiện lại ở Main List và sheet chủ đề phù hợp. Dedup chỉ áp dụng trong Main List; sheet chủ đề giữ đầy đủ keyword để đánh giá.
+`01_Main_Keyword_Shortlist` and topic sheets such as `02_Hairclipper_Keywords`, `03_Taser_Keywords`, `04_Gun_Sound_Keywords`, and `05_Prank_Sound_General` are independent lists. Strong keywords may appear in both the Main List and the relevant topic sheet. Dedup applies only inside the Main List; topic sheets keep the full keyword set for evaluation.
