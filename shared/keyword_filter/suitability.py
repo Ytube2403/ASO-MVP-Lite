@@ -39,7 +39,7 @@ DEFAULT_METADATA_SUITABILITY = {
         "keep_terms": [],
         "block_terms": [],
     },
-    "audit_min_volume": 20,
+    "audit_min_volume": 5,
     # Mirrors agentic_keyword_classifier's fail_on_api_error: this module is cache-only
     # for keywords needing a subagent audit, so a missing entry must be a loud error
     # -- not a silent "Eligible" default -- or the audit step is a no-op and nothing
@@ -220,6 +220,13 @@ def evaluate_metadata_suitability(row, config=None, cached_analysis=None):
         return _result(False, False, True, "Research Only", "blocked_risk", "Blocked by risk/language/manual-review gate")
 
     keyword = str(row.get("Keyword", "") or "")
+    normalized_kw = normalize_filter_text(keyword)
+    suitability_config = config.get("metadata_suitability", {}) if config else {}
+    keep_terms = {normalize_filter_text(term) for term in suitability_config.get("keep_terms", []) or [] if normalize_filter_text(term)}
+    overrides = (config or {}).get("user_overrides", {}) or {}
+    keep_terms.update({normalize_filter_text(term) for term in overrides.get("suitability_keep_terms", []) or [] if normalize_filter_text(term)})
+    if normalized_kw in keep_terms:
+        return _result(True, True, False, "Eligible", "user_override_keep", "Keyword explicitly allowed by user suitability configuration")
     tokens = tokenize(keyword)
     single_policy = policy.get("single_token_policy", {}) or {}
     if single_policy.get("enabled", True) and len(tokens) == 1:
@@ -240,7 +247,7 @@ def evaluate_metadata_suitability(row, config=None, cached_analysis=None):
         return _from_analysis(cached_analysis)
     # A multi-word keyword the deterministic gates didn't already resolve (blocked/
     # single-token) still needs a real subagent verdict if it matches
-    # needs_suitability_audit's own criteria (high-volume Feature/System Keywords).
+    # needs_suitability_audit's own criteria (audited buckets above min volume).
     # Defaulting this to "Eligible" when uncached would make the whole audit step a
     # silent no-op -- nothing would ever surface that a subagent run is needed. Return
     # a distinguishable pending state instead; apply_metadata_suitability decides
@@ -269,19 +276,36 @@ def needs_suitability_audit(row, config=None):
             return False
         return True
     bucket = str(row.get("Bucket", "") or "").strip()
-    if bucket not in {"Feature Keywords", "System Keywords"}:
+    eligible_buckets = {
+        "Feature Keywords",
+        "System Keywords",
+        "Broad Expansion",
+        "Consider Keywords",
+        "Style Keywords",
+        "Generic Style Reserve",
+        "Game Keywords"
+    }
+    if bucket not in eligible_buckets:
         return False
-    if _number(row.get("Volume"), 0) < _number(policy.get("audit_min_volume"), 20):
+
+    if _number(row.get("Volume"), 0) < _number(policy.get("audit_min_volume"), 5):
         return False
-    # Only AI-INFERRED feature buckets (DecisionRule prefixed "ai_", e.g. "ai_feature")
-    # need a second-pass specificity audit. A keyword that landed in Feature/System
-    # Keywords by matching the app's own hand-declared feature_terms/intent_core_terms
-    # (deterministic rules like "feature_keywords"/"system_keywords") was already
-    # vetted by the app owner -- re-auditing every declared feature would block the
-    # pipeline on legitimate, specific keywords ("gba emulator", "nds roms") and make
-    # this gate useless. The AI can bucket broad head terms ("gba retro games",
-    # "joypad", "turbospeed") as Feature too; those need the extra check.
-    return _decision_rule(row).strip().lower().startswith("ai_")
+
+    decision_rule = _decision_rule(row).strip().lower()
+
+    # AI-bucketed terms always get audited
+    if decision_rule.startswith("ai_"):
+        return True
+
+    # Explicitly declared feature/core terms skip audit to prevent blocking legitimate
+    # app specifics. They usually land in Feature/System with deterministic rules
+    # (e.g. "feature_keywords", "intent_core_terms").
+    # If it landed in a non-feature bucket (Broad, Consider), it's not a core feature
+    # and should be audited.
+    if bucket not in {"Feature Keywords", "System Keywords", "Core Intent Final"}:
+        return True
+
+    return False
 
 
 def _context_hash(config, app_profile=None):

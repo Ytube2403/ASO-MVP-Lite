@@ -31,6 +31,20 @@ def candidate(keyword, bucket, score, rel=0.7, volume=30, rule=""):
     }
 
 
+def suitability_eligible(item):
+    item.update({
+        "MetadataEligible": True,
+        "AdsEligible": True,
+        "ResearchOnly": False,
+        "SuitabilityBucket": "Eligible",
+        "SuitabilityRule": "test_suitability_eligible",
+        "SuitabilityReason": "Pre-audited test fixture",
+        "SuitabilityConfidence": 1.0,
+        "SuitabilitySource": "test",
+    })
+    return item
+
+
 class MainKeywordShortlistBuilderTests(unittest.TestCase):
     def test_builds_target_list_by_utility_not_hard_bucket_quota(self):
         rows = []
@@ -55,8 +69,8 @@ class MainKeywordShortlistBuilderTests(unittest.TestCase):
             candidate("pokemon core", "Core Intent Final", 0.95, rel=0.9, volume=80, rule="risky_ip"),
             candidate("weak core", "Core Intent Final", 0.2, rel=0.2, volume=80),
             candidate("safe feature", "System Keywords", 0.8, rel=0.7, volume=50),
-            candidate("safe broad", "Broad Expansion", 0.7, rel=0.7, volume=50),
-            candidate("safe consider", "Consider Keywords", 0.6, rel=0.7, volume=50),
+            suitability_eligible(candidate("safe broad", "Broad Expansion", 0.7, rel=0.7, volume=50)),
+            suitability_eligible(candidate("safe consider", "Consider Keywords", 0.6, rel=0.7, volume=50)),
             candidate("pokemon consider", "Consider Keywords", 0.9, rel=0.9, volume=90, rule="risky_ip"),
         ]
         config = {
@@ -92,6 +106,33 @@ class MainKeywordShortlistBuilderTests(unittest.TestCase):
         self.assertNotIn("pokemon consider", selected)
         self.assertNotIn("weak core", selected)
 
+    def test_string_false_metadata_eligible_is_not_selected(self):
+        row = candidate("bad query", "Feature Keywords", 0.9, rel=0.9, volume=50)
+        row.update({
+            "MetadataEligible": "False",
+            "AdsEligible": "False",
+            "ResearchOnly": "True",
+            "SuitabilityBucket": "Research Only",
+            "SuitabilityRule": "suitability_research_only",
+        })
+        result = keyword_filter.build_main_keyword_shortlist(
+            pd.DataFrame([row]),
+            {"market": "US_EN", "metadata_selector": {"target_count": 1}},
+        )
+
+        self.assertEqual(result.all_rows, [])
+        self.assertEqual(result.not_selected_log[0]["NotSelectedReason"], "SUITABILITY_RESEARCH_ONLY")
+
+    def test_pending_suitability_audit_logs_pending_reason(self):
+        row = candidate("safe broad", "Broad Expansion", 0.7, rel=0.7, volume=50)
+        result = keyword_filter.build_main_keyword_shortlist(
+            pd.DataFrame([row]),
+            {"market": "US_EN", "metadata_selector": {"target_count": 1}},
+        )
+
+        self.assertEqual(result.all_rows, [])
+        self.assertEqual(result.not_selected_log[0]["NotSelectedReason"], "SUITABILITY_PENDING_AUDIT")
+
     def test_semantic_cluster_cap_prevents_crowding(self):
         rows = []
         rows.extend(candidate(f"retro game emulator {i}", "Core Intent Final", 0.95 - i / 100, rel=0.9, volume=80 - i) for i in range(10))
@@ -120,7 +161,7 @@ class MainKeywordShortlistBuilderTests(unittest.TestCase):
     def test_safe_only_backfill_marks_lower_utility_rows(self):
         rows = []
         rows.extend(candidate(f"strong keyword {i}", "Core Intent Final", 0.9 - i / 100, rel=0.8, volume=50) for i in range(3))
-        rows.extend(candidate(f"safe weak keyword {i}", "Broad Expansion", 0.22, rel=0.35, volume=20) for i in range(3))
+        rows.extend(suitability_eligible(candidate(f"safe weak keyword {i}", "Broad Expansion", 0.22, rel=0.35, volume=20)) for i in range(3))
         config = {
             "market": "US_EN",
             "metadata_selector": {
@@ -213,8 +254,8 @@ class MainKeywordShortlistBuilderTests(unittest.TestCase):
 
     def test_generic_retro_and_classic_are_not_ambiguous_brand_blocked(self):
         rows = [
-            candidate("retro games emulator", "Consider Keywords", 0.9, rel=0.9, volume=60, rule="ambiguous_brand"),
-            candidate("delta game emulator", "Consider Keywords", 0.95, rel=0.9, volume=80, rule="ambiguous_brand"),
+            suitability_eligible(candidate("retro games emulator", "Consider Keywords", 0.9, rel=0.9, volume=60, rule="ambiguous_brand")),
+            suitability_eligible(candidate("delta game emulator", "Consider Keywords", 0.95, rel=0.9, volume=80, rule="ambiguous_brand")),
             candidate("safe game emulator", "Core Intent Final", 0.7, rel=0.7, volume=40),
         ]
         config = {

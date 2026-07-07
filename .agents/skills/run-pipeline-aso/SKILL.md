@@ -1,6 +1,6 @@
----
+﻿---
 name: run-pipeline-aso
-description: Run the full ASO keyword pipeline end-to-end for a registered app from an Input CSV, in the correct order — resolve app/market, check app config + Google Play profile health, detect and warm any missing agentic cache with real subagents, then run the actual filter pipeline and report the Output workbook. Use when the user asks to run/execute the ASO pipeline for an app, e.g. "Run pipeline ASO", "Chạy pipeline ASO cho <AppName>", "Chạy toàn bộ pipeline cho <AppName> <Market>", or drops a normalized AppTweak CSV into an app's Input folder and asks to process it.
+description: Run the full ASO keyword pipeline end-to-end for a registered app from an Input CSV, in the correct order: resolve app/market, check app config + Google Play profile health, detect and warm any missing agentic cache with real subagents, then run the actual filter pipeline and report the Output workbook. Use when the user asks to run or execute the ASO pipeline for an app, for example "Run pipeline ASO", "Run ASO pipeline for <AppName>", "Run the full pipeline for <AppName> <Market>", or drops a normalized AppTweak CSV into an app's Input folder and asks to process it.
 ---
 
 # Run Pipeline ASO (end-to-end orchestrator)
@@ -128,7 +128,9 @@ Do not finish until every box is true. If any is false, fix it before replying.
 
 ## Addendum - metadata/ads suitability gate
 
-After Step 4 passes, run `run_aso_filter.py`. The post-candidate suitability gate runs inside the app runner after classification/scoring. If suitability cache is missing for an AI-inferred Feature/System keyword, the runner fails fast with `Metadata suitability audit is cache-only...` and exports a candidate pool CSV under `.cache/candidate_pools/`.
+After Step 4 passes, run `run_aso_filter.py`. The post-candidate suitability gate runs inside the app runner after classification/scoring. If suitability cache is missing for a keyword that needs metadata/ads suitability audit, the runner fails fast with `Metadata suitability audit is cache-only...` and exports a candidate pool CSV under `.cache/candidate_pools/`.
+
+Suitability audit answers whether the exact query can surface the right app type on Google Play and whether it is specific enough for this app's metadata/ads. It covers unlisted single-token terms and multi-word candidates in audited buckets such as `Feature Keywords`, `System Keywords`, `Broad Expansion`, `Consider Keywords`, `Style Keywords`, `Generic Style Reserve`, and `Game Keywords` when they meet the configured volume rule.
 
 Use that exported candidate pool CSV for the suitability helper:
 
@@ -165,4 +167,4 @@ Result schema for each suitability subagent batch:
 }
 ```
 
-Do not fabricate suitability rows. Deterministic code still wins: risk/drop/language/manual-review cannot be rescued by subagent output, block-listed single tokens stay `SINGLE_TOKEN_TOO_BROAD`, and keep-listed platform terms stay eligible.
+Do not fabricate suitability rows. Deterministic code still wins: risk/drop/language/manual-review cannot be rescued by subagent output, block-listed single tokens stay `SINGLE_TOKEN_TOO_BROAD`, keep-listed platform terms stay eligible, and app-specific `user_overrides.suitability_keep_terms` bypass the subagent audit only for exact phrases the app owner has accepted.

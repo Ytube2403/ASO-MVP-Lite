@@ -1,138 +1,129 @@
-# 🛠️ ASO App Template — Hướng Dẫn Cấu Hình Ứng Dụng Mới
+# ASO App Template - New App Configuration Guide
 
-Thư mục mẫu này được thiết kế để giúp bạn dễ dàng thiết lập quy trình lọc từ khóa ASO cho bất kỳ ứng dụng mới nào mà không cần phải can thiệp trực tiếp vào mã nguồn của pipeline (khoảng 1500 dòng code).
+This template helps you set up the ASO keyword filtering workflow for a new app without editing the shared pipeline source code.
 
-Hệ thống được thiết kế theo hướng **tách biệt cấu hình và mã nguồn**: toàn bộ thông số cấu hình nằm trong file `app_config.py` và hồ sơ ứng dụng nằm trong file `App_Profile.json`.
+The system separates configuration from code:
 
-Trước khi chạy lần đầu trên máy Windows mới, làm theo [hướng dẫn cài đặt đầy đủ](../../docs/SETUP_WINDOWS.md).
+- App-specific configuration lives in `app_config.py`.
+- Store/profile context lives in `App_Profile.json`.
+- Shared runtime logic lives under `../../shared/`.
 
----
+Before running on a new Windows machine, follow [the full setup guide](../../docs/SETUP_WINDOWS.md).
 
-## 📁 Cấu trúc thư mục mẫu
+## Folder Structure
 
 ```text
 apps/App_Template/
-├── README.md                      (Tài liệu hướng dẫn này)
-├── app_config.py                  (Nơi điền từ khóa, thương hiệu đối thủ, trọng số điểm)
-├── App_Profile.json               (Nơi điền mô tả hiện tại và đối thủ của app)
-├── PROJECT_MEMORY.md              (Snapshot setup tự sinh sau mỗi lần chạy pipeline thành công)
-├── run_pipeline.py                (Mã nguồn chạy 10 bước lọc - KHÔNG cần chỉnh sửa)
-├── interactive_optimizer.html     (Giao diện Web tối ưu hóa từ khóa)
-└── interactive_description_editor.html (Giao diện Web soạn thảo mô tả ASO)
+|-- README.md
+|-- app_config.py
+|-- App_Profile.json
+|-- PROJECT_MEMORY.md
+|-- run_pipeline.py
+|-- interactive_optimizer.html
+`-- interactive_description_editor.html
 ```
 
----
+## Configure A New App
 
-## ⚙️ Các bước cấu hình ứng dụng mới
+### 1. Edit `app_config.py`
 
-### Bước 1: Khai báo thông tin định danh và từ khóa trong `app_config.py`
-Mở file `app_config.py` bằng bất kỳ trình soạn thảo mã nguồn nào và chỉnh sửa các mục sau:
-1. **Thông tin cơ bản (Identity):** Cập nhật `app_id` (package id), `app_name`, `category` và thị trường mục tiêu mặc định (`market`).
-2. **Bộ từ khóa chính (Semantic Groups):**
-   * `intent_core_terms`: Các từ khóa chính thể hiện ý định tìm kiếm app (ví dụ: `photo editor`, `crop photo`).
-   * `feature_terms`: Các tính năng chính (ví dụ: `retouch`, `filter`, `collage`).
-   * `style_terms`: Các phong cách thiết kế, IP hoặc giao diện (ví dụ: `aesthetic`, `vintage`). LƯU Ý: Những từ này chỉ được phân bổ vào Full Description để tránh vi phạm bản quyền.
-3. **Bộ lọc loại bỏ (Filters):**
-   * `competitor_brands`: Thương hiệu đối thủ (sẽ bị loại khỏi các slot metadata chính để tránh bị quét vi phạm).
-   * `noise_terms`: Các từ chung chung quá rộng (như `app`, `free`, `download`, `android`).
-   * `typo_blacklist`: Từ viết sai chính tả hoặc từ vô nghĩa từ auto-suggest.
+Update these sections:
 
-### Bước 2: Điền thông tin cửa hàng trong `App_Profile.json`
-Mở file `App_Profile.json` và điền:
-1. `app_identity`: ID, tên ứng dụng và danh mục.
-2. `live_store_metadata`: Short Description hiện tại của bạn.
-3. `suggested_competitors`: Danh sách từ 3-5 đối thủ cạnh tranh chính. Đối với mỗi đối thủ, điền `package_id`, `title`, `short_description` và một đoạn mô tả ngắn (`desc200`). Script sẽ quét thông tin này để tự động cộng điểm ưu tiên (`Competitor Boost`) cho các từ khóa mà đối thủ của bạn đang sử dụng hiệu quả.
+- **Identity:** `app_id`, `app_name`, `category`, and default target `market`.
+- **Semantic groups:**
+  - `intent_core_terms`: main app-search intent, for example `photo editor`, `crop photo`.
+  - `feature_terms`: concrete app features, for example `retouch`, `filter`, `collage`.
+  - `style_terms`: style, UI, IP, or aesthetic themes, for example `aesthetic`, `vintage`. These are allocated only to Full Description to reduce IP risk.
+- **Filters:**
+  - `competitor_brands`: competitor names blocked from primary metadata.
+  - `noise_terms`: generic broad words such as `app`, `free`, `download`, `android`.
+  - `typo_blacklist`: misspellings or meaningless auto-suggest noise.
 
-Project Memory sẽ đọc trực tiếp `app_config.py` và `App_Profile.json` để hiển thị lại setup hiện tại trong Dashboard tab `Setup`, sheet `00_Project_Memory` và file `PROJECT_MEMORY.md`. Không cần nhập thêm dữ liệu riêng cho phần này.
+### 2. Fill `App_Profile.json`
 
-### Bước 3: Đặt tên file dữ liệu đầu vào chuẩn
-Lấy file CSV từ khoá thô từ Apptweak hoặc SensorTower về và lưu tên theo chuẩn:
-`[AppName]_[Country]_[Language].csv` (Ví dụ: `MyNewApp_US_EN.csv`).
+Provide:
 
----
+- `app_identity`: package ID, app name, and category.
+- `live_store_metadata`: current short description and related store text.
+- `suggested_competitors`: 3-5 main competitors with `package_id`, `title`, `short_description`, and `desc200`.
 
-## 🚀 Cách chạy Lọc từ khóa
+Project Memory reads `app_config.py` and `App_Profile.json` directly. It renders the current setup in dashboard tab `Setup`, workbook sheet `00_Project_Memory`, and `PROJECT_MEMORY.md`.
 
-Quy trinh su dung hien hanh nam o `../../docs/USAGE.md`: kiem tra `verify-cache` truoc, warm cache neu con miss, roi moi chay pipeline. Neu prompt/rubric agentic doi va da bump `ruleset_version`, phai warm lai cac market se chay.
+### 3. Name Input CSVs Clearly
 
-Nếu đang cấu hình app mới từ `App_Template`, mở terminal/powershell tại thư mục `ASO-MVP-Lite/apps/App_Template` và chạy trực tiếp pipeline template:
+Use:
 
-```powershell
-# Chạy ở chế độ tự động xuất Excel trực tiếp
-python run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
-
-# Chạy ở chế độ mở giao diện Web tương tác (để tự tay lựa chọn & viết mô tả)
-python run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN --interactive
+```text
+<AppName>_<Country>_<Language>.csv
 ```
 
-Nếu chạy từ thư mục gốc `ASO-MVP-Lite`, dùng đường dẫn script đầy đủ:
+Example:
 
-```powershell
-python apps\App_Template\run_pipeline.py --csv C:\duong-dan-den\MyNewApp_US_EN.csv --market US_EN
+```text
+MyNewApp_US_EN.csv
 ```
 
-Kết quả sẽ tự động được xuất ra cùng thư mục với file CSV đầu vào, trừ khi truyền thêm `--output`. File Excel chứa đầy đủ báo cáo, shortlist `target 40 utility + diversity`, sheet `13_Top_By_Volume`, sheet `00_Project_Memory` và lý do cụ thể loại/giữ từng từ khóa. Pipeline cũng cập nhật `PROJECT_MEMORY.md` trong thư mục app để bàn giao hoặc audit setup.
+## Run Keyword Filtering
 
----
+Current usage flow is in `../../docs/USAGE.md`: verify cache first, warm misses if any, then run the pipeline. If the agentic prompt/rubric changes and `ruleset_version` is bumped, warm every market you plan to run.
 
-## 📊 Các bước tiếp theo sau khi lọc
+From `ASO-MVP-Lite/apps/App_Template`:
 
-Sau khi chạy pipeline lọc từ khóa thành công, mở terminal tại thư mục gốc `ASO-MVP-Lite` nếu muốn sử dụng thêm 2 công cụ bổ trợ:
-
-### Xuất danh sách Master Keywords
-Gộp tất cả keyword đã thu thập (từ mọi tháng) thành 1 danh sách sạch sau khi loại bỏ keyword không liên quan (`irrelevant_intent`, `noise_only`). Danh sách này dùng để nhập batch vào AppTweak mỗi tháng:
 ```powershell
-# Xuất cho 1 app cụ thể
-python export_master_keywords.py --app <TênApp>
+python run_pipeline.py --csv C:\path\to\MyNewApp_US_EN.csv --market US_EN
+python run_pipeline.py --csv C:\path\to\MyNewApp_US_EN.csv --market US_EN --interactive
+```
 
-# Xuất cho tất cả app
+From the repo root:
+
+```powershell
+python apps\App_Template\run_pipeline.py --csv C:\path\to\MyNewApp_US_EN.csv --market US_EN
+```
+
+The workbook includes the full report, `target 40 utility + diversity` shortlist, `13_Top_By_Volume`, `00_Project_Memory`, and audit reasons for keeping/dropping each keyword. The pipeline also updates `PROJECT_MEMORY.md` for handoff and setup audit.
+
+## After Filtering
+
+From the repo root, you can run:
+
+```powershell
+python export_master_keywords.py --app <AppName>
 python export_master_keywords.py --all
-```
-Kết quả nằm trong thư mục `data/master_keywords/` dưới dạng Excel (mỗi sheet = 1 locale).
-
-### Mở Keyword Tracker Dashboard
-Theo dõi và so sánh hiệu suất keyword qua các tháng bằng giao diện web trực quan:
-```powershell
 python tracker/run_dashboard.py
 ```
-Dashboard sẽ tự động mở trình duyệt tại `http://127.0.0.1:5100` với các biểu đồ ASO Power Score, bảng so sánh keyword chi tiết, danh sách biến động thứ hạng và tab `Setup` để xem Project Memory của app đang chọn.
 
----
+Master Keywords exports are written to `data/master_keywords/`. The dashboard opens at `http://127.0.0.1:5100`.
 
-## Shared platform logic v4.5
+## Shared Platform Logic v4.5
 
-Template pipeline hien su dung cac module chung trong `ASO-MVP-Lite/shared/`:
+The template pipeline uses shared modules under `ASO-MVP-Lite/shared/`:
 
-- `shared/language_detector.py`: detect ngon ngu theo market policy va phan nhom `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
-- `shared/keyword_filter/`: package matcher precompiled, hard filter, classifier, validator, audit, cache va version.
-- `shared/text_dedup.py`: dedup Unicode indexed `NFKC` + `casefold()`, stemming theo locale, va ghi `MergedVariants` cho main shortlist.
-- `shared/en_gloss_resolver.py`: resolve EN tu CSV hoac `AIEnglishGloss` da duoc nap bang agentic cache.
-- `shared/profile_service.py`: doc custom profile uu tien tuyet doi, generated cache atomic va stale fallback.
-- `shared/project_memory.py`: tao setup overview cho Tracker tab `Setup`, sheet `00_Project_Memory` va `PROJECT_MEMORY.md`.
-- `shared/locale_parser.py`: parse locale dung chung cho orchestrator, exporter, tracker va batch runner.
+- `shared/language_detector.py`: market-policy-aware language grouping into `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
+- `shared/keyword_filter/`: precompiled matcher, hard filter, classifier, validator, audit, cache, and versioning.
+- `shared/text_dedup.py`: Unicode `NFKC` + `casefold()` deduplication, locale-aware stemming, and `MergedVariants`.
+- `shared/en_gloss_resolver.py`: resolves `EN` from CSV or `AIEnglishGloss` warmed by agentic cache.
+- `shared/profile_service.py`: strict custom profile priority, atomic generated cache, and stale fallback.
+- `shared/project_memory.py`: setup overview for tracker tab `Setup`, sheet `00_Project_Memory`, and `PROJECT_MEMORY.md`.
+- `shared/locale_parser.py`: shared locale parsing for orchestrator, exporter, tracker, and batch runner.
 
-Quy tac quan trong:
+Important rules:
 
-- `FOREIGN` vao `Language Mismatch Audit`.
-- `UNKNOWN` vao `Manual Review`.
-- `MIXED` vao `Consider Keywords` neu market cho phep `mixed_allowed=True`.
-- `SECONDARY` giu o `Consider Keywords`.
-- Naturalness khong con drop non-Latin/script khac bang `LANGUAGE_BLEED`; ngon ngu do language detector xu ly.
-- Selection cache chi duoc dung lai khi metadata `app_id`, market, input hash, config hash va engine version khop run hien tai.
-- Agentic cache chi doc SQLite trong runtime. Neu prompt/rubric agentic doi, bump top-level `ruleset_version` trong `app_config.py` de force re-warm; neu chi sua brand/risk lists thi khong can re-warm.
-- Risk policy source of truth nam o `shared/keyword_filter/classifier.py`: core override chi cuu risky/platform term da declared-safe va co functional anchor; `platform_affiliation_terms` khong duoc override; AI classic game IP (`classic_ip_intent`/`ai_classic_ip`) di qua `risky_ip_action`.
-- Main shortlist v4.5 dung `target 40 utility + diversity`; Feature trong main shortlist doc quota rieng voi sheet `02_Feature_Keywords`.
-- Workbook v4.5 co them sheet `13_Top_By_Volume` de audit nhanh top keyword sach theo Volume.
-- Low-volume keyword co the vao shortlist/Consider khi config dat `exclude_low_tier_from_metadata_shortlist=False` va `max_low_tier_consider_keywords=999`.
-- Truncation v4.5 bao ve complete token va singular/plural: `battery emoji`, `battery icon`, `prank sound`, `ar filter`, `control widget` khong bi hard-drop; prefix nghi ngo se vao `possible_truncated_keyword`/Manual Review.
-- Hoan vi thu tu tu duoc giu nhu keyword doc lap khi `auto_merge_token_bag=False`.
-- Dedup chi ap dung cho `01_Main_Keyword_Shortlist`. Cac sheet tinh nang/style chi sort theo uu tien thong thuong.
-- Accent-fold va keyword chi gan giong duoc giu nhu keyword doc lap; khong con `ReviewVariants`.
+- `FOREIGN` -> `Language Mismatch Audit`.
+- `UNKNOWN` -> `Manual Review`.
+- `MIXED` -> `Consider Keywords` when `mixed_allowed=True`.
+- `SECONDARY` stays in `Consider Keywords`.
+- Naturalness no longer hard-drops non-Latin scripts through `LANGUAGE_BLEED`; language is handled by the language detector.
+- Agentic cache is read-only at runtime. If the prompt/rubric changes, bump top-level `ruleset_version` in `app_config.py` to force re-warm. Brand/risk list edits do not require re-warm.
+- Risk policy source of truth is `shared/keyword_filter/classifier.py`.
+- Main shortlist v4.5 uses `target 40 utility + diversity`; Feature has its own quota and sheet `02_Feature_Keywords`.
+- Workbook v4.5 includes `13_Top_By_Volume`.
+- Truncation v4.5 protects complete tokens and singular/plural variants.
+- Word-order permutations remain separate when `auto_merge_token_bag=False`.
+- Dedup applies only to `01_Main_Keyword_Shortlist`; feature/style sheets sort by normal priority.
+- Accent-fold and near-duplicate keywords remain independent; `ReviewVariants` is no longer used.
 
-Chay batch nhieu locale:
+Batch command:
 
 ```powershell
 python ..\..\run_aso_batch.py --manifest path\to\manifest.json --max-workers 3
 ```
-
-

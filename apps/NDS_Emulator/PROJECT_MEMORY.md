@@ -1,6 +1,6 @@
-# Project Memory
+﻿# Project Memory
 
-Generated: 2026-07-03 15:20:03
+Generated: 2026-07-06 17:23:38
 
 ## Identity
 - App: SuperNDS: Retro Games Emulator
@@ -12,9 +12,9 @@ Generated: 2026-07-03 15:20:03
 ## Positioning
 - store_title: SuperNDS: Retro Games Emulator
 - short_description: All-in-one NDS, GBA, SNES, N64 & PSP emulator on mobile - Advance Version
-- primary_positioning: Bản giả lập NDS (Nintendo DS) nâng cấp toàn diện, mượt mà, chuyên sâu kết hợp kho skin tay cầm ảo (controller skin) độc quyền siêu đẹp.
-- not_the_right_positioning: Không bao gồm sẵn bất kỳ tệp ROM game thương mại có bản quyền nào., Không hỗ trợ giả lập các hệ máy hiện đại đời mới như 3DS, Switch, PS2, PS3.
-- strongest_differentiators: Kho giao diện nút bấm ảo/skin tay cầm cực kỳ đẹp mắt, tinh tế so với các đối thủ thô ráp., Hiệu năng tối ưu mượt mà cho hệ máy NDS kết hợp khả năng All-in-one linh hoạt.
+- primary_positioning: A full-featured, smooth, advanced NDS (Nintendo DS) emulator combined with an exclusive, polished virtual controller skin library.
+- not_the_right_positioning: Does not include any bundled copyrighted commercial game ROM files., Does not emulate newer modern systems such as 3DS, Switch, PS2, or PS3.
+- strongest_differentiators: A polished virtual button/controller skin library compared with rougher competitors., Smooth optimized NDS performance combined with flexible all-in-one emulator support.
 
 ## Keyword Setup
 - core_terms: nds emulator, ds emulator, nintendo ds emulator, nintendo ds emulador, nds emulador, ds emulador, supernds, super nds, super nds emulator, nds emulator android, ds emulator android, nds console, ds console, all in one emulator, multi emulator, retro emulator, retro game emulator, retro games emulator, handheld emulator, console emulator, game emulator, games emulator, classic emulator, old games emulator

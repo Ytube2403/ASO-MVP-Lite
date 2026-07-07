@@ -1,6 +1,6 @@
----
+﻿---
 name: aso-keyword-research
-description: Expand and build ASO seed keyword sets for a registered app in this workspace using app config/profile, competitor analysis, local search behavior, and web research. Use when the user asks in Vietnamese or English to research, expand, collect, or build keywords for an app, including prompts like "Nghien cuu tu khoa <AppName>", "Nghiên cứu từ khóa <AppName>", "Research keywords <AppName>", or market-specific requests such as BR_PT keyword research for FunVid.
+description: Expand and build ASO seed keyword sets for a registered app in this workspace using app config/profile, competitor analysis, local search behavior, and web research. Use when the user asks to research, expand, collect, or build keywords for an app, including prompts like "Research keywords <AppName>", "Build keyword seeds for <AppName>", "Expand ASO keywords for <AppName>", or market-specific requests such as BR_PT keyword research for FunVid.
 ---
 
 # ASO Keyword Research
@@ -49,7 +49,7 @@ Cover these five research lanes. Per the Execution contract above, each lane MUS
 3. **Bilingual Search Analyst (`bilingual_search_agent`)**:
    - Focus: Analyzing how local users code-switch/mix English technical terms (e.g., *emulator, GBA, ROM, save state*) with local verbs, prepositions, or device terms (e.g., *cara main*, *cara pasang*, *di hp*, *pakai stik*).
 4. **Console & IP Brand Mapper (`console_ip_mapper_agent`)**:
-   - Focus: Compiling a comprehensive database of all classic consoles, clones (e.g., *Spica, Polystation*), and game IPs (e.g., *Mario, Sonic, Pokémon, GTA, Winning Eleven*) to serve as both search opportunities and blacklist candidates for later filtering stages.
+   - Focus: Compiling a comprehensive database of all classic consoles, clones (e.g., *Spica, Polystation*), and game IPs (e.g., *Mario, Sonic, Pokemon, GTA, Winning Eleven*) to serve as both search opportunities and blacklist candidates for later filtering stages.
 5. **Feature-Based Keyword Expander (`feature_keyword_expander_agent`)**:
    - Focus: Taking the core features of the product (e.g., *save/load state, fast forward, virtual button layout, controller mapping*) as seed keywords and expanding them into related local search variations.
 

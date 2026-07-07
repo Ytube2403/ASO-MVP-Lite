@@ -1,22 +1,26 @@
-# Huong dan cau truc file ASO Keyword Filter v4.5
+# ASO Keyword Filter v4.5 File Structure Guide
 
 ## Root
 
 ### `run_aso_filter.py`
-Entrypoint chinh. Script parse locale, resolve alias qua `shared/app_registry.py`, archive CSV vao `apps/<AppName>/Input/<MMYYYY>/`, chay runner va ghi workbook vao `apps/<AppName>/Output/<MMYYYY>/`.
+
+Main entrypoint. It parses locale, resolves app aliases through `shared/app_registry.py`, archives the CSV into `apps/<AppName>/Input/<MMYYYY>/`, runs the app runner, and writes the workbook to `apps/<AppName>/Output/<MMYYYY>/`.
 
 ### `run_aso_batch.py`
-Wrapper tuong thich cho `tools/run_aso_batch.py`. Chay nhieu locale tu JSON manifest; mac dinh toi da 2 job song song.
+
+Compatibility wrapper for `tools/run_aso_batch.py`. Runs multiple locales from a JSON manifest; defaults to at most 2 parallel jobs.
 
 ### `export_master_keywords.py`
-Wrapper tuong thich cho `tools/export_master_keywords.py`. Quet input va workbook output cua app, tim sheet theo suffix `Dropped_Audit`, loai hard-drop va ghi workbook tong hop vao `data/master_keywords/`.
+
+Compatibility wrapper for `tools/export_master_keywords.py`. Scans app inputs and workbook outputs, finds sheets ending in `Dropped_Audit`, removes hard-dropped terms, and writes aggregate workbooks to `data/master_keywords/`.
 
 ### `Sync.bat`
-Cong cu pull, status va push mot cham cho nguoi dung Windows.
+
+One-click pull, status, and push helper for Windows users.
 
 ## `apps/`
 
-Moi app co workspace rieng:
+Each app has its own workspace:
 
 ```text
 apps/<AppName>/
@@ -28,7 +32,7 @@ apps/<AppName>/
 `-- runner Python
 ```
 
-App da dang ky:
+Registered apps:
 
 - `apps/AR_Filter/`
 - `apps/Control_Widget/`
@@ -40,85 +44,88 @@ App da dang ky:
 - `apps/Prank_Sounds/`
 - `apps/App_Template/`
 
-`AR_Filter` va `Control_Widget` van dung runner `*_v4_3.py`. `Game_Emulator` dung runner `run_game_emulator_v4_4.py`. `ElectricGun`, `Emoji_Battery_Icon_Customize`, `FunVid`, `NDS_Emulator`, `Prank_Sounds` va `App_Template` dung `run_pipeline.py`.
-Seed filename `FunVid_100_Keywords_<locale>.csv` va `FunVid_AnimalFace_<locale>.csv` cung duoc route ve app `FunVid` qua registry alias.
+`AR_Filter` and `Control_Widget` still use `*_v4_3.py` runners. `Game_Emulator` uses `run_game_emulator_v4_4.py`. `ElectricGun`, `Emoji_Battery_Icon_Customize`, `FunVid`, `NDS_Emulator`, `Prank_Sounds`, and `App_Template` use `run_pipeline.py`.
+
+Seed filenames `FunVid_100_Keywords_<locale>.csv` and `FunVid_AnimalFace_<locale>.csv` are routed to `FunVid` through registry aliases.
 
 ## `shared/`
 
-- `shared/paths.py`: nguon path tap trung cho `apps`, `docs`, `data` va `data/master_keywords`.
-- `shared/app_registry.py`: map alias app chinh xac toi folder, runner va config.
-- `shared/effective_config.py`: load effective app config giong runtime, gom ca legacy runner config va `FILTER_POLICY`.
-- `shared/locale_parser.py`: parser locale dung chung cho orchestrator, exporter, tracker va batch.
-- `shared/language_detector.py`: nhan dien ngon ngu theo market policy.
-- `shared/agentic_keyword_classifier.py`: classifier/cache-only runtime dung provider `antigravity_subagent`; runner fail-fast neu thieu cache.
-- `shared/ai_keyword_classifier.py`: shim tuong thich, re-export sang `agentic_keyword_classifier`.
-- `shared/en_gloss_resolver.py`: resolve cot `EN` tu CSV hoac `AIEnglishGloss`, khong goi translation network.
-- `shared/keyword_filter/`: matcher precompiled, hard filter, classifier, validator, audit, cache atomic, truncation hardening complete-token aware va `shortlist.py` cho main keyword shortlist chung `target 40 utility + diversity` (dedup theo utility, semantic cluster diversity qua Jaccard similarity, safe-backfill co kiem tra day du score/relevancy/demand). `suitability.py` la post-candidate metadata/ads suitability gate: ghi `MetadataEligible`/`AdsEligible`/`ResearchOnly`, chan broad single-token nhu `arcade` nhung giu atomic platform term nhu `nds` theo config, va doc subagent audit tu SQLite table `keyword_suitability_analysis`. `classifier.py` la source of truth cho risk precedence: declared-safe + functional-anchor core override, no override cho `platform_affiliation_terms`, va `ai_classic_ip` cho AI-recognized classic game IP. `scoring.py` la source of truth cho scoring v4.5: `VolumeN` log-reach, `calculate_rubric_relevancy` tu cache AI, `resolve_balanced_weights` bo KEIN khoi BalancedScore, `safe_reach_ceiling` (reach ceiling percentile 95 chong outlier competitor/irrelevant) va `dampen_stacked_relevancy` (cap RelevancyScore cho keyword nhoi tu khoa nhung demand yeu). `report_export.py::write_quality_log_sheet` xuat canh bao selector (`SAFE_POOL_EXHAUSTED`) ra sheet `15_Selector_Quality_Log`. Xem section 36 trong `ASO_Keyword_Planner_v4_5.md`.
-- `shared/text_dedup.py`: dedup Unicode cho `01_Main_Keyword_Shortlist`.
-- `shared/profile_service.py`: custom/generated profile cache va stale fallback.
-- `shared/project_memory.py`: doc `app_config.py` va `App_Profile.json` de render Project Memory cho Dashboard, workbook va `PROJECT_MEMORY.md`.
+- `shared/paths.py`: central path source for `apps`, `docs`, `data`, and `data/master_keywords`.
+- `shared/app_registry.py`: maps app aliases to folder, runner, and config.
+- `shared/effective_config.py`: loads runtime-equivalent effective app config, including legacy runner config and `FILTER_POLICY`.
+- `shared/locale_parser.py`: shared locale parser for orchestrator, exporter, tracker, and batch.
+- `shared/language_detector.py`: market-policy-aware language detection.
+- `shared/agentic_keyword_classifier.py`: cache-only classifier/runtime using provider `antigravity_subagent`; runners fail fast when cache is missing.
+- `shared/ai_keyword_classifier.py`: compatibility shim that re-exports `agentic_keyword_classifier`.
+- `shared/en_gloss_resolver.py`: resolves `EN` from CSV or `AIEnglishGloss`; does not call translation networks.
+- `shared/keyword_filter/`: precompiled matcher, hard filter, classifier, validator, audit, atomic cache, complete-token truncation hardening, and `shortlist.py` for the shared `target 40 utility + diversity` main shortlist. It deduplicates by utility, applies semantic cluster diversity with Jaccard similarity, and safe-backfill rechecks score/relevancy/demand. `suitability.py` is the post-candidate metadata/ads suitability gate: it writes `MetadataEligible`/`AdsEligible`/`ResearchOnly`, blocks feature/category queries with weak acquisition intent, keeps owner-approved single-token/phrase overrides, fails fast when a keyword needs subagent audit but has no cache row, and reads subagent audits from SQLite table `keyword_suitability_analysis`. `classifier.py` is the risk-precedence source of truth: declared-safe + functional-anchor core override, no override for `platform_affiliation_terms`, and `ai_classic_ip` for AI-recognized classic game IP. `scoring.py` is the scoring v4.5 source of truth: log-reach `VolumeN`, cache-backed `calculate_rubric_relevancy`, `resolve_balanced_weights` removing KEIN from `BalancedScore`, `safe_reach_ceiling` using percentile 95 over non-competitor/non-irrelevant rows, and `dampen_stacked_relevancy` for low-demand keyword stuffing. `report_export.py::write_quality_log_sheet` exports selector warnings such as `SAFE_POOL_EXHAUSTED` to sheet `15_Selector_Quality_Log`. See section 37 in `ASO_Keyword_Planner_v4_5.md`.
+- `shared/text_dedup.py`: Unicode deduplication for `01_Main_Keyword_Shortlist`.
+- `shared/profile_service.py`: custom/generated profile cache and stale fallback.
+- `shared/project_memory.py`: reads `app_config.py` and `App_Profile.json` to render Project Memory for the dashboard, workbook, and `PROJECT_MEMORY.md`.
 
 ## `tools/`
 
 - `tools/run_aso_batch.py`: batch implementation.
 - `tools/export_master_keywords.py`: Master Keywords exporter implementation.
-- `tools/warm_cache_helper.py`: workflow chinh thuc cho agentic cache toan du an: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`; khi app bump `ruleset_version`, tool se xem cache cu la miss theo context hash moi va buoc re-warm market can chay.
-- `tools/suitability_cache_helper.py`: workflow subagent audit cho metadata/ads suitability: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`; dung SQLite chung `.cache/agentic_keyword_analysis.sqlite3` nhung table rieng `keyword_suitability_analysis`.
-- `tools/generate_funvid_csv.py`, `tools/generate_animalface_csv.py`, `tools/generate_100_keywords_csv.py`: tao seed CSV mau cho app FunVid.
+- `tools/warm_cache_helper.py`: official agentic-cache workflow for the whole project: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`. When an app bumps `ruleset_version`, old cache rows become misses under the new context hash and the tool forces re-warm for markets that need to run.
+- `tools/suitability_cache_helper.py`: subagent-audit workflow for metadata/ads suitability: `find-misses`, `prepare-batches`, `save-results`, `verify-cache`. It uses the shared SQLite file `.cache/agentic_keyword_analysis.sqlite3` but a separate table, `keyword_suitability_analysis`.
+- `tools/generate_funvid_csv.py`, `tools/generate_animalface_csv.py`, `tools/generate_100_keywords_csv.py`: generate sample seed CSVs for `FunVid`.
 
-Wrapper tai root duoc giu de cac lenh cu van chay.
+Root wrappers are kept so old commands still work.
 
 ## `.agents/`
 
-- `.agents/skills/aso-keyword-research/SKILL.md`: skill noi bo huong dan Agent mo rong seed keyword set theo app, dua tren config/profile, competitor research, local search behavior va web research. Skill nay phuc vu buoc nghien cuu dau vao, khong thay the pipeline/filter runner.
-- `.agents/skills/aso-keyword-research/agents/openai.yaml`: metadata UI toi thieu cho skill, gom display name, short description va default prompt.
-- `.agents/skills/warm-agentic-cache/SKILL.md`: skill huong dan orchestrator (Antigravity, Claude Code, hoac tool tuong tu) tu dong nap cache phan loai agentic con thieu bang subagent that (find-misses -> prepare-batches -> spawn subagent phan loai -> save-results -> verify-cache) roi moi chay pipeline that, thay vi nguoi dung phai tu chay tung lenh CLI cua `tools/warm_cache_helper.py` thu cong.
-- `.agents/skills/warm-agentic-cache/agents/openai.yaml`: metadata UI toi thieu cho skill nay, cung dinh dang voi skill `aso-keyword-research`.
-- `.agents/skills/warm-suitability-cache/SKILL.md`: skill huong dan orchestrator nap cache metadata/ads suitability sau candidate pool bang subagent that. Dung candidate pool CSV do pipeline export khi gap `SuitabilityAuditError`, khong dung raw AppTweak CSV.
-- `.agents/skills/warm-suitability-cache/agents/openai.yaml`: metadata UI toi thieu cho skill suitability.
+- `.agents/skills/aso-keyword-research/SKILL.md`: internal skill that guides agents to expand seed keyword sets by app using config/profile, competitor research, local search behavior, and web research. It supports input research and does not replace the pipeline/filter runner.
+- `.agents/skills/aso-keyword-research/agents/openai.yaml`: minimal UI metadata for the skill, including display name, short description, and default prompt.
+- `.agents/skills/warm-agentic-cache/SKILL.md`: skill that guides an orchestrator such as Antigravity, Claude Code, or similar tooling to warm missing agentic classification cache with real subagents (`find-misses -> prepare-batches -> spawn subagent classification -> save-results -> verify-cache`) before the real pipeline run, instead of asking the user to run each `tools/warm_cache_helper.py` command manually.
+- `.agents/skills/warm-agentic-cache/agents/openai.yaml`: minimal UI metadata for this skill, same format as `aso-keyword-research`.
+- `.agents/skills/warm-suitability-cache/SKILL.md`: skill that guides an orchestrator to warm metadata/ads suitability cache after the candidate pool with real subagents. It uses the candidate pool CSV exported by the pipeline on `SuitabilityAuditError`, never the raw AppTweak CSV. Its rubric is generic to the current app and requires an app-specific acquisition brief before choosing `Eligible` or `Research Only`.
+- `.agents/skills/warm-suitability-cache/agents/openai.yaml`: minimal UI metadata for the suitability skill.
 
-Validation hien tai: parser cuc bo pass; skill khong con `file:///`, `search_web`, mismatch giua folder va skill name. `quick_validate.py` cua skill-creator can module Python `yaml`/`PyYAML`; neu moi truong chua cai PyYAML thi validator chuan se khong chay duoc, nhung cac rule form chinh da duoc kiem bang script cuc bo.
+Current validation note: local parser checks pass. The skill no longer contains `file:///`, `search_web`, or folder/skill-name mismatch. `quick_validate.py` from `skill-creator` requires Python module `yaml`/`PyYAML`; if the environment has not installed PyYAML, the official validator cannot run, but the main form rules have been checked with local scripts.
 
 ## `tracker/`
 
-- `tracker/run_dashboard.py`: Flask API, web launcher va API `GET /api/setup/<app_name>` cho tab Setup.
-- `tracker/db_manager.py`: SQLite schema va query.
-- `tracker/data_scanner.py`: quet CSV trong `apps/*/Input/`.
-- `tracker/static/`: SPA HTML, CSS va JavaScript, gom tab `Setup` de xem app identity, keyword setup, competitor setup, drop policy, overrides va warnings.
+- `tracker/run_dashboard.py`: Flask API, web launcher, and `GET /api/setup/<app_name>` API for the Setup tab.
+- `tracker/db_manager.py`: SQLite schema and queries.
+- `tracker/data_scanner.py`: scans CSVs under `apps/*/Input/`.
+- `tracker/static/`: SPA HTML, CSS, and JavaScript, including the `Setup` tab for app identity, keyword setup, competitor setup, drop policy, overrides, and warnings.
 
-Database `tracker/keyword_tracker.db` la file local va khong commit len Git.
+`tracker/keyword_tracker.db` is a local file and should not be committed.
 
 ## `docs/`
 
-- `docs/ASO_Keyword_Planner_v4_5.md`: dac ta logic pipeline v4.5, gom quota shortlist moi, sheet `13_Top_By_Volume`, app `FunVid` va agentic cache-only.
-- `docs/USAGE.md`: huong dan su dung hien hanh cho operator: chuan bi app/CSV, verify-cache, warm cache, run pipeline, review workbook, va khi nao can bump `ruleset_version`.
-- `apps/Game_Emulator/AGENTIC_CACHE_WORKFLOW.md`: huong dan flow cache-only moi cho Game Emulator, thay cho cac script scratch.
-- `docs/SETUP_WINDOWS.md`: checklist phan mem, extension, Python packages va cach kiem tra moi truong Windows.
-- `docs/App_Config_Template.py`: template config.
-- `docs/App_Profile_Template.json`: template profile.
-- `docs/english_words_10k.txt`: whitelist tieng Anh.
-- `docs/DESIGN.md`: design system cua dashboard.
-- `.env.example`: template bien moi truong local neu can cho tooling phu; runner ASO khong doc API key AI runtime.
+- `docs/ASO_Keyword_Planner_v4_5.md`: pipeline v4.5 logic spec, including the new shortlist quota, sheet `13_Top_By_Volume`, app `FunVid`, and agentic cache-only runtime.
+- `docs/USAGE.md`: current operator guide: prepare app/CSV, verify cache, warm cache, run pipeline, review workbook, and decide when to bump `ruleset_version`.
+- `apps/Game_Emulator/AGENTIC_CACHE_WORKFLOW.md`: cache-only workflow guide for Game Emulator, replacing old scratch scripts.
+- `docs/SETUP_WINDOWS.md`: Windows software, extension, Python package, and environment-check checklist.
+- `docs/App_Config_Template.py`: config template.
+- `docs/App_Profile_Template.json`: profile template.
+- `docs/english_words_10k.txt`: English whitelist.
+- `docs/DESIGN.md`: dashboard design system.
+- `.env.example`: local environment-variable template for auxiliary tooling; ASO runners do not read AI runtime API keys.
 
 ## `data/`
 
-- `data/google_play_country_language_map.xlsx`: mapping quoc gia va ngon ngu.
-- `data/master_keywords/`: workbook Master Keywords generated, khong commit len Git.
+- `data/google_play_country_language_map.xlsx`: country and language mapping.
+- `data/master_keywords/`: generated Master Keywords workbooks; do not commit.
 
 ## `tests/`
 
-Regression test cho registry, parser locale, hard filter, truncation false positive, dedup, EN gloss resolver, profile, project memory, exporter va batch runner.
-`tests/test_ai_keyword_classifier.py` bao phu cache-only hit/miss, canonical duplicate reuse va pre-AI skip/preserve rule.
-`tests/test_en_gloss_resolver.py` bao phu uu tien cot `EN`, fallback `AIEnglishGloss` va fail-fast khi keyword non-English thieu gloss.
-`tests/test_warm_cache_helper.py` bao phu effective config, batch contract va validation result cua agentic cache.
-`tests/test_metadata_suitability.py` bao phu single-token keep/block policy va shortlist exclusion.
-`tests/test_suitability_cache_helper.py` bao phu schema validation, duplicate/missing keyword rejection, context hash mismatch va verify-cache cho suitability audit.
+Regression tests cover registry, locale parser, hard filter, truncation false positives, deduplication, EN gloss resolver, profile, project memory, exporter, and batch runner.
+
+- `tests/test_ai_keyword_classifier.py`: cache-only hit/miss behavior, canonical duplicate reuse, and pre-AI skip/preserve rules.
+- `tests/test_en_gloss_resolver.py`: `EN` column priority, `AIEnglishGloss` fallback, and fail-fast behavior when a non-English keyword lacks a gloss.
+- `tests/test_warm_cache_helper.py`: effective config, batch contract, and agentic-cache result validation.
+- `tests/test_metadata_suitability.py`: single-token keep/block policy and shortlist exclusion.
+- `tests/test_main_shortlist_builder.py`: selector quality gate, boolean suitability parsing from CSV/export, and `SUITABILITY_PENDING_AUDIT` in the not-selected log.
+- `tests/test_suitability_cache_helper.py`: schema validation, duplicate/missing keyword rejection, context hash mismatch, and `verify-cache` for suitability audit.
 
 ## `releases/`
 
-Chua zip package local. File zip bi ignore de repository source gon nhe.
+No local zip package is currently checked in. Zip files are ignored to keep the repository source-only and lightweight.
 
-## File setup tai root
+## Root Setup Files
 
-- `requirements.txt`: danh sach Python packages cho moi truong pipeline day du.
-- `.vscode/extensions.json`: de xuat extension VS Code cho Python, Pylance va CSV.
+- `requirements.txt`: Python package list for the full pipeline environment.
+- `.vscode/extensions.json`: recommended VS Code extensions for Python, Pylance, and CSV editing.

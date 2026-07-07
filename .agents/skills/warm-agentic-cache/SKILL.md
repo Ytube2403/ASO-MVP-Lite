@@ -1,6 +1,6 @@
----
+﻿---
 name: warm-agentic-cache
-description: Fill in missing agentic keyword classification cache for a registered app by spawning real subagents, then run the ASO filter pipeline. Use when the user asks to warm the cache, classify keywords, or run the pipeline for an app/market and the pipeline fails with "Agentic keyword classifier is cache-only" / "Agentic English gloss is missing", or when the user explicitly says something like "Hay nap cache bang subagents cho ung dung <AppName> tu file <CSV> cho thi truong <Market>" / "warm the cache for <AppName> <Market>" / "run pipeline for <AppName> <Market>".
+description: Fill in missing agentic keyword classification cache for a registered app by spawning real subagents, then run the ASO filter pipeline. Use when the user asks to warm the cache, classify keywords, or run the pipeline for an app/market and the pipeline fails with "Agentic keyword classifier is cache-only" / "Agentic English gloss is missing", or when the user explicitly says something like "warm the cache for <AppName> <Market>", "classify keywords for <AppName> from <CSV>", or "run pipeline for <AppName> <Market>".
 ---
 
 # Warm Agentic Cache With Real Subagents
@@ -133,7 +133,7 @@ Apply these strict rules for Game Emulator apps (e.g., NDS Emulator / SuperNDS) 
    - Never use for generic retro keywords or bare device/retro terms.
    - **`decision_rule`**: `ai_feature`
 5. **Broad Expansion**:
-   - Genuinely related but generic/bare-category terms, or device attributes that don't state a specific feature (e.g., `emulator`, `emulador`, `games`, `jogos`, `videogame`, bare `gba`/`snes`/`nes`, `gaming emulator`, `retro games`, `games retro`, `gba retro`, `boy gba`, `retro console`, `portable`, `portátil`, `tilt`, `inclinação`, `arcade`).
+   - Genuinely related but generic/bare-category terms, or device attributes that don't state a specific feature (e.g., `emulator`, `emulador`, `games`, `jogos`, `videogame`, bare `gba`/`snes`/`nes`, `gaming emulator`, `retro games`, `games retro`, `gba retro`, `boy gba`, `retro console`, `portable`, `portatil`, `tilt`, `inclinacao`, `arcade`).
    - **`decision_rule`**: `ai_broad_expansion`
 6. **Style Keywords**:
    - Matching style terms (e.g., `retro`, `nostalgia`, `classic`, `vintage`, `8-bit`, `oldschool`, `childhood`).

@@ -1,187 +1,218 @@
 ---
 name: warm-suitability-cache
-description: Fill in missing metadata/ads suitability audit for a registered app by spawning real subagents, then run the ASO filter pipeline. Use when the user asks to audit keyword suitability, check ads/store-search specificity, or run the pipeline for an app/market and it fails with "Metadata suitability audit is cache-only", or when the user explicitly says something like "kiem tra suitability cho <AppName> <Market>" / "audit keyword specificity for <AppName> <Market>" / "warm the suitability cache for <AppName> <Market>".
+description: Warm the metadata and ads suitability cache for a registered ASO app by finding post-classification candidates that need store-search/acquisition suitability audit, spawning real subagents, saving validated results, verifying zero missing suitability entries, and then rerunning the ASO pipeline. Use when the pipeline fails with "Metadata suitability audit is cache-only", when the user asks to audit keyword suitability, store-search fit, or ads suitability, or when running an app/market pipeline may need suitability cache coverage.
 ---
 
-# Warm Metadata/Ads Suitability Cache With Real Subagents
+# Warm Metadata/Ads Suitability Cache
 
-`shared/keyword_filter/suitability.py::apply_metadata_suitability` is **cache-only** for
-any keyword that `needs_suitability_audit` flags: a keyword the AI semantic classifier
-(not the app's own hand-declared `feature_terms`/`intent_core_terms`) bucketed as
-`Feature Keywords`/`System Keywords` with real search volume. If such a keyword has no
-row in the `keyword_suitability_analysis` table, the pipeline **fails fast** with
-`SuitabilityAuditError` instead of guessing — exactly like the agentic keyword
-classifier's cache-only design (see `.agents/skills/warm-agentic-cache/SKILL.md`). A
-plain Python script cannot spawn a subagent; only the orchestrator running this skill
-(Antigravity, Claude Code, or any other multi-agent-capable environment) can.
+Use this skill after semantic classification has already run. The suitability gate answers two questions:
 
-## Why this gate exists
+1. If a user searches this exact keyword on Google Play, is it likely to surface the right type of app for this project?
+2. If the store or an ad surfaces this app for that query, is the phrase specific enough to plausibly convert for THIS app, or is it only broad research/category traffic?
 
-An AI-inferred Feature Keyword can still be a **broad head term**: high search volume,
-genuinely related to the app's category, but too generic to surface *this specific app*
-on the store or to convert efficiently as an ad keyword (e.g. "gba retro games", "game
-boy advance", "joypad", "turbospeed" — related to a GBA emulator, but someone searching
-these won't necessarily find or want this particular app, and ad spend against them is
-inefficient). A keyword the app owner explicitly declared in `feature_terms` (e.g. "gba
-emulator", "nds roms") is already vetted by construction and never needs this audit —
-only the AI's own inferred Feature/System calls do.
+Both questions matter. A keyword can describe a real app feature but still fail Play Store acquisition intent; that is `Research Only`, not `Eligible`. A keyword can also be broad, but still suitable when users plausibly search it to find this app category.
 
-Use this skill to close that gap end-to-end in one request: detect what's missing,
-spawn real subagents to judge specificity, save the results, and then run the actual
-pipeline — instead of the user manually running each `tools/suitability_cache_helper.py`
-subcommand and handing batches to a subagent by hand.
+`shared/keyword_filter/suitability.py::apply_metadata_suitability` is cache-only for candidates that `needs_suitability_audit` flags. If a flagged keyword has no row in the `keyword_suitability_analysis` SQLite table, the pipeline raises `SuitabilityAuditError` and exports a post-classification candidate pool CSV under `.cache/candidate_pools/`.
 
-## When to run this
+Do not guess suitability rows. Warm the cache with real subagents, save only validated JSON, and rerun the pipeline only after `verify-cache` passes.
 
-- The user asks to audit/refresh keyword suitability for an app + market.
-- The user asks to run the pipeline for an app + market and it is not yet known whether
-  the suitability cache is complete.
-- A pipeline run just failed with `Metadata suitability audit is cache-only...`.
+## What Gets Audited
 
-If the user gives an ambiguous app name, resolve it via `shared/app_registry.py` (same
-resolution `.agents/skills/aso-keyword-research/SKILL.md` uses) rather than guessing a
-folder path.
+The helper scans a post-classification candidate CSV, not a raw AppTweak export. A keyword needs suitability audit when all of these are true:
+
+- It is not already blocked by risk, language mismatch, manual review, naturalness, or hard-filter gates.
+- It is either:
+  - a single-token keyword that is not in single-token keep/block terms, or
+  - a multi-word keyword in one of these buckets: `Feature Keywords`, `System Keywords`, `Broad Expansion`, `Consider Keywords`, `Style Keywords`, `Generic Style Reserve`, `Game Keywords`.
+- For multi-word keywords, it meets `metadata_suitability.audit_min_volume` (default currently `5`). Single-token keywords are audited regardless of volume unless they are in single-token keep/block terms.
+- It was AI-inferred (`DecisionRule` or `AIDecisionRule` starts with `ai_`), or it landed in a non-feature/core bucket such as `Broad Expansion`, `Consider Keywords`, `Style Keywords`, `Generic Style Reserve`, or `Game Keywords`.
+
+Explicit app-owned feature/core terms usually skip the subagent audit when they land deterministically in `Feature Keywords`, `System Keywords`, or `Core Intent Final`. User suitability keep terms also bypass audit.
+
+Important: `Consider Keywords` are in scope. If a candidate does not search toward the right app type, mark it `Research Only`. If it is only an in-app feature query with weak Play Store acquisition intent, also mark it `Research Only`. Do not make feature-only terms eligible just because the app supports that feature.
 
 ## Workflow
 
-### 1. Find what's missing
+### 1. Find misses
+
+Use the candidate pool CSV produced after classification/scoring. It should include at least `Keyword`, `Bucket`, `Volume`, and `DecisionRule` or `AIDecisionRule`; `EN`, `Reason`, and `LanguageGroup` are helpful grounding fields when present.
 
 ```powershell
-python tools/suitability_cache_helper.py find-misses --app <alias> --csv <path-to-csv> --market <MARKET>
+python tools/suitability_cache_helper.py find-misses --app <alias> --csv <candidate-pool-csv> --market <MARKET>
 ```
 
-Read the printed `missing_count` and the JSON file it wrote (default
-`.cache/<alias>_<market>_suitability_missing.json`, or pass `--output`). The CSV here is
-the **candidate pool CSV** (post-classification, with `Keyword`/`Bucket`/`Volume`
-columns) — not the raw AppTweak export. If `missing_count` is 0, skip straight to step 5
-(verify-cache) and run the pipeline — no subagent needed.
+Read the printed `missing_count` and the JSON path. The default output is `.cache/<alias>_<market>_suitability_missing.json`. If `missing_count` is `0`, run `verify-cache` and then rerun the pipeline.
 
-### 2. Chunk into batches
+### 2. Prepare batches
 
 ```powershell
-python tools/suitability_cache_helper.py prepare-batches --misses <misses-json-from-step-1> --output-dir <dir>
+python tools/suitability_cache_helper.py prepare-batches --misses <misses-json> --output-dir .cache/suitability_batches
 ```
 
-Default chunk size is 200 keywords/batch. Prints a `batches[]` list; each entry has
-`batch_path` and `result_path`.
+Default chunk size is 200 keywords per batch. Record every `batch_path` and `result_path` from the printed `batches[]` recipe.
 
-### 3. Spawn one subagent per batch (in parallel when there's more than one)
+### 3. Spawn subagents
 
-For each batch, spawn a subagent with:
-- The `batch_path` to read (JSON shape below).
-- The rubric in this document (section "Suitability rubric").
-- The app's `app_config.py` (or resolved effective config) path so the subagent grounds
-  its judgment in the app's real identity/category instead of guessing.
-- An explicit instruction to write its output to the batch's `result_path`, following the
-  result schema exactly, and to output nothing else (no prose, no partial JSON).
+Spawn one real subagent per batch, in parallel when there is more than one. Give each subagent:
 
-**Batch JSON shape** (what the subagent reads, produced by `prepare-batches`):
+- The exact `batch_path`.
+- The app's effective config or `app_config.py` path.
+- The rubric below.
+- An instruction to write only valid JSON to the provided `result_path`.
+
+Batch JSON shape:
+
 ```json
 {
-  "app_id": "...", "app_name": "...", "market": "BR_PT", "context_hash": "...",
-  "batch_id": "br_pt_suitability_batch_1", "batch_index": 1, "total_batches": 1,
+  "app_id": "...",
+  "app_name": "...",
+  "market": "MARKET",
+  "context_hash": "...",
+  "batch_id": "market_suitability_batch_1",
+  "batch_index": 1,
+  "total_batches": 1,
   "keywords": [
-    {"keyword": "gba retro games", "volume": 46, "bucket": "Feature Keywords", "decision_rule": "ai_feature", "reason": "missing_suitability_cache"}
-  ]
-}
-```
-
-**Result JSON shape** (what the subagent must write to `result_path`):
-```json
-{
-  "batch_id": "br_pt_suitability_batch_1",
-  "items": [
     {
-      "keyword": "gba retro games",
-      "metadata_eligible": false,
-      "ads_eligible": false,
-      "research_only": true,
-      "suitability_bucket": "Research Only",
-      "decision_rule": "ai_broad_head_term",
-      "reason": "Generic GBA + retro games phrase; no app-specific anchor, low store/ads conversion intent",
-      "confidence": 0.85
+      "keyword": "drop 4",
+      "volume": 14,
+      "bucket": "Consider Keywords",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "missing_suitability_cache"
     }
   ]
 }
 ```
 
-### 4. Save and verify
+Result JSON shape:
 
-For each batch:
+```json
+{
+  "batch_id": "market_suitability_batch_1",
+  "items": [
+    {
+      "keyword": "drop 4",
+      "metadata_eligible": false,
+      "ads_eligible": false,
+      "research_only": true,
+      "suitability_bucket": "Research Only",
+      "decision_rule": "ai_off_core_query",
+      "reason": "Unrelated phrase with no current app category, feature, or acquisition anchor.",
+      "confidence": 0.9
+    }
+  ]
+}
+```
+
+### 4. Save results
+
+For every batch:
+
 ```powershell
 python tools/suitability_cache_helper.py save-results --app <alias> --batch <batch_path> --results <result_path> --market <MARKET>
 ```
-This validates the result against the batch (every keyword accounted for exactly once,
-booleans well-formed, `metadata_eligible`/`research_only` not both true, confidence in
-[0,1]) before writing to SQLite.
 
-Then confirm nothing is left:
+The helper validates that every expected keyword appears exactly once, booleans are parseable, `metadata_eligible` and `research_only` do not conflict, required fields are present, and confidence is between 0 and 1. If it reports a `context_hash` mismatch, regenerate misses and batches before retrying.
+
+### 5. Verify cache
+
 ```powershell
-python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <path-to-csv> --market <MARKET>
+python tools/suitability_cache_helper.py verify-cache --app <alias> --csv <candidate-pool-csv> --market <MARKET>
 ```
-Must print `PASS ... 0 missing suitability` (exit code 0) before moving on.
 
-### 5. Run the real pipeline
+This must print `PASS <MARKET>: 0 missing suitability` and exit 0 before rerunning the pipeline.
 
-Only after verify-cache passes, run the app's actual runner (e.g.
-`python apps/<AppName>/run_pipeline.py --csv <path> --market <MARKET> --output <path>`)
-as normal.
+### 6. Rerun pipeline
 
-## Definition of done (self-check before you reply)
+Run the app runner or master orchestrator only after verification passes. If the rerun exports a new candidate pool and fails again, repeat this skill for the new pool.
 
-Do not finish until every box is true. If any is false, fix it before replying.
+## Suitability Rubric
 
-- [ ] `find-misses` ran for the exact app + market + candidate CSV requested.
-- [ ] Every batch with misses was judged by a **real subagent** — no hand-written,
-      guessed, or rubber-stamped cache rows.
-- [ ] `save-results` succeeded for every batch.
-- [ ] `verify-cache` prints `PASS ... 0 missing suitability` (exit code 0).
-- [ ] Only then was the real pipeline run — never before verify-cache passed.
-- [ ] No `context_hash` mismatch was ignored (if one occurred, misses/batches were
-      regenerated for the current app config/market).
+Ground every judgment in the current app, not in any example app. Before judging a batch, build an app-specific acquisition brief from the effective config, profile, market, and candidate rows.
 
-## Suitability rubric
+### Build App-Specific Acquisition Brief
 
-Ground every judgment in the app's actual identity (category, `intent_core_terms`,
-`feature_terms`, market) and in the question: **"if someone searches this exact phrase
-on the store, or an ad targets this exact phrase, does it surface/convert on THIS
-app specifically — or any app in the category?"**
+For the current app, identify:
 
-- **`metadata_eligible` / `ads_eligible`**: `true` when the phrase is specific enough
-  that ranking on it plausibly drives installs of *this* app (names a concrete feature,
-  console, or the app's own core intent). `false` for a broad head term: generic
-  category words, bare hardware names without a functional anchor, vague marketing
-  words ("advance", "lite", "pro" alone next to a hardware name), or anything that reads
-  like it belongs to the whole app category rather than this app.
-- **`research_only`**: the inverse of eligible — `true` exactly when both eligible flags
-  are `false`. Never set both `metadata_eligible`/`research_only` true (validation
-  rejects it).
-- **`suitability_bucket`**: `"Eligible"` or `"Research Only"` (match the booleans).
-- **`decision_rule`**: short snake_case, e.g. `ai_specific_feature`, `ai_broad_head_term`,
-  `ai_generic_category_term`.
-- **`reason`**: one short sentence justifying the call, naming what makes it specific or
-  generic.
-- **`confidence`**: 0.0-1.0; use 0.8-0.95 for a clear case, 0.55-0.7 for genuinely
-  borderline phrases.
+- `right_app_type`: the app category or job a Play Store user should be trying to find.
+- `core_acquisition_queries`: direct app/category queries likely to surface the right app type.
+- `category_acquisition_queries`: broader category, platform, content, or use-case queries that can still surface the right app type and plausibly convert.
+- `eligible_feature_anchors`: feature terms that users actually search as acquisition terms for this app, especially when combined with a core/category anchor.
+- `feature_only_research_terms`: real app features that are poor Play Store acquisition terms unless paired with a core/category anchor.
+- `wrong_app_type_queries`: unrelated products, apps, games, utilities, media, brands, or categories.
 
-### Examples (NDS_Emulator, an NDS/GBA/SNES/N64/PSP all-in-one emulator app)
+Use `app_name`, `category`, `intent_core_terms`, `feature_terms`, `style_terms`, `market_language_policy`, `App_Profile.json`, competitor metadata, candidate `Bucket`, `EN`, `Reason`, and the exact keyword text. Do not copy another app's examples or category rules. SuperNDS/emulator examples apply only to emulator apps whose own config/profile supports that identity.
+
+### Decision Tree
+
+1. App-type fit: Would this exact query likely surface the current app's `right_app_type` on Google Play?
+   - If no, return `Research Only` with a rule such as `ai_wrong_app_type`, `ai_off_core_query`, or `ai_unrelated_app`.
+2. Acquisition suitability: If the query can surface the right app type, is it specific enough to use in this app's metadata or ads?
+   - Feature support alone is not enough. A phrase can describe a real in-app feature and still be weak acquisition traffic.
+   - Broad category traffic can be enough when users plausibly search that phrase to find this app category and the app can compete for the query.
+   - If yes, return `Eligible`.
+   - If no, return `Research Only` with a rule such as `ai_feature_only_low_acquisition`, `ai_broad_head_term`, `ai_generic_category_term`, or `ai_weak_app_anchor`.
+
+Return `Eligible` only when both questions pass:
+
+- The query points to the current app's right app type on Google Play.
+- It names this app's core acquisition intent.
+- It names a supported category, platform, content type, use case, or user job that users plausibly search to find apps like this one.
+- It names a concrete supported feature only when that feature is itself an acquisition term or the query also contains a core/category anchor.
+- Or it combines a broad term with an app-specific anchor strong enough to make the search intent clear.
+
+Return `Research Only` when either question fails:
+
+- Wrong app type: off-core, unrelated utility, unrelated product/media/sport/tool, unrelated game-title query, or different app category.
+- Real feature but weak acquisition: feature-only terms that describe something the app supports but are unlikely to make users discover this app on Play Store.
+- Right app type but too broad or weak: vague category terms without enough app/category acquisition intent for the current app.
+- Generic hardware, setting, action, UI, or modifier phrases that are unlikely to surface this app type.
+- Broad style terms unless tied to the current app's core/category intent.
+- Vague marketing modifiers such as `advanced`, `pro`, `lite`, or `free` without a concrete app-specific anchor.
+- Any keyword whose semantic classification says `off-core`, `non-gaming`, `unrelated`, `utility`, `different category`, or equivalent.
+
+Field rules:
+
+- `metadata_eligible` and `ads_eligible`: `true` only for `Eligible` phrases.
+- `research_only`: `true` exactly when both eligibility flags are `false`.
+- `suitability_bucket`: use `Eligible` or `Research Only`.
+- `decision_rule`: short snake_case, for example `ai_specific_feature`, `ai_specific_core_intent`, `ai_supported_category_intent`, `ai_feature_only_low_acquisition`, `ai_broad_head_term`, `ai_generic_category_term`, `ai_weak_app_anchor`, `ai_wrong_app_type`, `ai_off_core_query`, `ai_unrelated_app`.
+- `reason`: one short sentence naming the concrete anchor, or naming whether the failure is wrong app type versus right app type but too broad.
+- `confidence`: 0.8 to 0.95 for clear cases; 0.55 to 0.7 for genuinely borderline cases.
+
+Generic examples:
+
+| Keyword pattern | Verdict | Why |
+|---|---|---|
+| `<core app category>`, `<category + core action>`, `<brand-neutral app type query>` | Eligible | Directly searches for the current app's right app type. |
+| `<supported platform/content/use-case that users search to find this app type>` | Eligible | Broader than the app name, but still plausible Play Store acquisition traffic for this app. |
+| `<specific feature + core/category anchor>` | Eligible | Feature is connected to an acquisition query for this app type. |
+| `<feature-only setting/action/hardware term>` | Research Only | May be a real feature, but weak store-search or ads acquisition traffic by itself. |
+| `<unrelated product/app/media/game/tool>` | Research Only | Wrong app type or off-core query. |
+| `<generic modifier only>` | Research Only | Too broad without a concrete app-specific anchor. |
+
+Example only: SuperNDS / NDS Emulator. Derive equivalent examples per app; do not reuse these rules for non-emulator apps.
 
 | Keyword | Verdict | Why |
 |---|---|---|
-| `gba emulator`, `nds roms`, `dual screen emulator` | (never reaches subagent — declared in `feature_terms`, already trusted) | — |
-| `gba retro games`, `game boy advance`, `joypad`, `turbospeed`, `gb advance` | Research Only | Generic hardware/category phrasing with no distinguishing feature; describes the whole GBA-emulator category, not this app |
-| `nds emulator with save states`, `supernds controller skins` | Eligible | Names a concrete, declared feature alongside the app's core identity |
+| `nds emulator`, `emulator semua konsol`, `nds emulator with save states` | Eligible | Core emulator intent or core intent plus concrete feature. |
+| `gba retro games`, `game boy advance`, `gba emulator retro game`, `nds 64 emulator retro` | Eligible | Console/category acquisition terms that can plausibly surface emulator apps on Play Store. |
+| `dual screen emulator`, `nds emulator with save states`, `controller skin emulator` | Eligible | Feature terms with a clear emulator/core anchor. |
+| `stik bluetooth`, `setting tombol gamepad`, `game controller`, `simpan permainan`, `joypad`, `turbospeed` | Research Only | Real or related feature/category terms, but weak Play Store acquisition intent without an emulator/ROM/retro-console anchor. |
+| `drop 4`, `fs advanced`, `and pies`, `mma manager`, `roll spike`, `yoto player` | Research Only | Wrong app type or unrelated query; should not be metadata or ads eligible. |
 
-## Notes
+## Definition Of Done
 
-- Never invent or guess-fill cache entries without actually reasoning about each
-  keyword — the whole point of spawning a real subagent per batch is genuine judgment,
-  not a rubber stamp.
-- Do not run `find-misses --input-dir` / batch an entire app's every market unless the
-  user actually asked for that — scope to the app/market actually requested.
-- If `save-results` reports a context_hash mismatch, the app's config/profile changed
-  since `find-misses` ran — redo steps 1-2 for that market before retrying.
-- This is a **separate cache/table** (`keyword_suitability_analysis`) from the agentic
-  semantic classifier's cache (`ai_keyword_analysis`) — warming one does not warm the
-  other. Run `.agents/skills/warm-agentic-cache/SKILL.md` first if the pipeline is also
-  failing with the semantic classifier's cache-only error.
+- `find-misses` ran against the exact app, market, and candidate pool CSV.
+- Every missing batch was judged by a real subagent.
+- `save-results` succeeded for every batch.
+- `verify-cache` printed `PASS <MARKET>: 0 missing suitability`.
+- The pipeline was rerun only after verification passed.
+- Scope stayed on the requested app/market only.
+
+## Guardrails
+
+- Never hand-write or guess-fill suitability rows.
+- Never use the raw AppTweak CSV for `find-misses`; use the post-classification candidate pool CSV.
+- Never ignore `context_hash` mismatch.
+- Do not batch every app or market unless the user explicitly asks for that scope.
+- Remember that semantic cache and suitability cache are separate tables. If semantic classification/gloss cache is missing, warm `warm-agentic-cache` first.

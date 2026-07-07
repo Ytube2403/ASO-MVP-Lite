@@ -1,19 +1,19 @@
 ---
 version: 1.3.0
 name: Google Material Design Light Theme System
-description: Hệ thống thiết kế chuẩn Google Light Theme tối ưu hóa giao diện slide, công cụ ASO Keyword Filter, và Keyword Tracker Dashboard.
+description: Google Light Theme design system optimized for slide decks, ASO Keyword Filter tools, and the Keyword Tracker Dashboard.
 colors:
-  bg-base: "#f8f9fa"        # Màu nền sáng nhẹ Google (Grey 100)
-  bg-surface: "#ffffff"     # Màu nền card chính (White)
-  text-primary: "#202124"   # Màu chữ chính tối (Google Charcoal)
-  text-secondary: "#5f6368" # Màu chữ phụ/mô tả (Google Slate)
-  accent-blue: "#1a73e8"    # Xanh dương chính Google Blue
-  accent-red: "#ea4335"     # Đỏ Google Red
-  accent-yellow: "#fbbc05"  # Vàng Google Yellow
-  accent-green: "#34a853"   # Xanh lá Google Green
-  bg-accent-soft: "#e8f0fe" # Nền xanh mờ (Blue 50)
-  border-color: "#dadce0"   # Đường viền phân cách chuẩn Google
-  bg-code: "#f1f3f4"        # Nền khối lệnh (Grey 200)
+  bg-base: "#f8f9fa"        # Light Google background (Grey 100)
+  bg-surface: "#ffffff"     # Main card background (White)
+  text-primary: "#202124"   # Primary dark text (Google Charcoal)
+  text-secondary: "#5f6368" # Secondary/description text (Google Slate)
+  accent-blue: "#1a73e8"    # Google Blue
+  accent-red: "#ea4335"     # Google Red
+  accent-yellow: "#fbbc05"  # Google Yellow
+  accent-green: "#34a853"   # Google Green
+  bg-accent-soft: "#e8f0fe" # Soft blue background (Blue 50)
+  border-color: "#dadce0"   # Standard Google divider border
+  bg-code: "#f1f3f4"        # Code block background (Grey 200)
 typography:
   fontFamily:
     display: "'Google Sans', 'Product Sans', 'Plus Jakarta Sans', sans-serif"
@@ -77,99 +77,98 @@ components:
     warning-text: "#b06000"
 ---
 
-# Quy Chuẩn Thiết Kế Google Material Design (Light Theme)
+# Google Material Design Standards (Light Theme)
 
-## 1. Overview (Tổng quan)
-Hệ thống thiết kế mới này chuyển hoàn toàn từ giao diện tối sang **Giao diện sáng Material Design (Google Light Theme)**. Mục tiêu là mang lại cảm giác thân thiện, sạch sẽ, thoáng đãng như các sản phẩm của Google (Drive, Slides, Console). Điều này khắc phục tình trạng khó đọc chữ, lệch layout bằng cách phân bổ thông tin thưa hơn trên nền sáng, tận dụng hệ 4 màu chủ đạo Google để nhận diện tính năng và phân loại từ khóa.
+## 1. Overview
 
----
+This design system moves fully from a dark UI to a Material Design light theme. The goal is a friendly, clean, spacious feel similar to Google products such as Drive, Slides, and Console. The light layout improves readability and reduces layout crowding while using Google's four main accent colors to identify features and keyword groups.
 
-## 2. Colors (Bảng màu Google)
-- **Nền chính (`bg-base`):** Màu xám nhạt `#f8f9fa` giúp giảm lóa mắt khi xem slide trên nền trắng, tạo sự khác biệt giữa khung slide stage và bên ngoài.
-- **Thẻ nội dung (`bg-surface`):** Màu trắng tinh khiết `#ffffff` làm nổi bật nội dung bên trong.
-- **Bốn màu nhấn thương hiệu:**
-  - **Google Blue (`accent-blue` - `#1a73e8`):** Dùng cho tiêu đề chính, các nút điều hướng cốt lõi và nhóm **Core Intent**.
-  - **Google Green (`accent-green` - `#34a853`):** Dùng cho mã nguồn ví dụ, các đề xuất cài đặt chuẩn.
-  - **Google Yellow (`accent-yellow` - `#fbbc05`):** Dùng cho các cảnh báo, danh sách **Consider**.
-  - **Google Red (`accent-red` - `#ea4335`):** Dùng cho các brand đối thủ cần chặn (competitor brands), lỗi hoặc từ khóa nhiễu.
+## 2. Colors
 
----
+- **Base background (`bg-base`):** light grey `#f8f9fa`, reducing glare and separating the slide stage from the outer viewport.
+- **Surface background (`bg-surface`):** pure white `#ffffff` for content cards.
+- **Google Blue (`accent-blue` - `#1a73e8`):** main titles, primary navigation, and Core Intent.
+- **Google Green (`accent-green` - `#34a853`):** code examples and recommended setup items.
+- **Google Yellow (`accent-yellow` - `#fbbc05`):** warnings and Consider lists.
+- **Google Red (`accent-red` - `#ea4335`):** blocked competitor brands, errors, and noisy keywords.
 
-## 3. Typography (Kiểu chữ)
-- **Display Font (`Google Sans` / `Plus Jakarta Sans`):** Phông chữ không chân tròn trịa đặc trưng của Google, tạo cảm giác chuyên nghiệp, gọn gàng và dễ tiếp cận.
-- **Body Font (`Roboto` / `Plus Jakarta Sans`):** Giữ độ rõ nét tối đa cho các đoạn văn bản dài, gạch đầu dòng, thuyết minh.
-- **Monospace Font (`JetBrains Mono` / `Consolas`):** Giữ tỷ lệ cố định cho cấu trúc mã nguồn.
+## 3. Typography
 
----
+- **Display font (`Google Sans` / `Plus Jakarta Sans`):** rounded sans-serif style for a clean, accessible Google-like feel.
+- **Body font (`Roboto` / `Plus Jakarta Sans`):** high readability for long text, bullets, and explanations.
+- **Monospace font (`JetBrains Mono` / `Consolas`):** fixed-width code and structured data.
 
-## 4. Layout & Division (Phân bổ layout tránh tràn chữ)
-Để khắc phục hoàn toàn lỗi tràn chữ và lệch layout, hệ slide được chia nhỏ từ 7 slide lên **10 slide**:
-- **Quy trình 10 bước** được chia đôi làm 2 slide (Mỗi slide chứa 5 bước).
-- **Cơ cấu đầu ra** được chia thành các nhóm v4.5: target 40 utility + diversity và sheet audit `13_Top_By_Volume`.
-- **Chuẩn dữ liệu đầu vào** được tách biệt: 1 slide hướng dẫn đặt tên file CSV và 1 slide đặc tả các cột dữ liệu bắt buộc.
+## 4. Layout And Division
 
----
+To prevent text overflow and layout drift, the slide system is split from 7 slides to **10 slides**:
 
-## 5. Visual Illustrations (Hình ảnh minh họa)
-Mỗi slide phải chứa ít nhất một thành phần trực quan:
-- Sơ đồ trục thời gian (timeline path/roadmaps) cho các bước quy trình.
-- Cấu trúc thư mục dạng cây (file tree) trực quan cho việc đặt tên file CSV.
-- Bảng lưới mô phỏng (data grid mockups) cho cấu trúc cột dữ liệu.
-- Biểu đồ phân bổ hình bánh (doughnut chart) cho quota từ khóa.
-- Khung giả lập trình viết mã (editor layout mockup) cho file config.
+- The **10-step workflow** is split into 2 slides, 5 steps per slide.
+- Output structure is grouped by v4.5 concepts: target 40 utility + diversity and audit sheet `13_Top_By_Volume`.
+- Input data standards are separated into one slide for CSV naming and one slide for required columns.
 
----
+## 5. Visual Illustrations
 
-## 6. Do's and Don'ts (Nên và Không nên)
+Every slide should include at least one visual element:
 
-### Nên làm (Do's)
-- **Do:** Sử dụng đúng mã màu của Google để nhấn mạnh nội dung.
-- **Do:** Đảm bảo khoảng cách lề tối thiểu 70px và khoảng trống giữa các card ít nhất 24px để tạo độ thoáng.
-- **Do:** Dùng phông chữ sáng màu trên nền tối đối với khối code, và chữ tối trên nền sáng đối với nội dung thường.
+- Timeline paths or roadmaps for workflow steps.
+- File-tree diagrams for CSV naming and folder placement.
+- Data-grid mockups for required columns.
+- Doughnut charts for keyword quotas.
+- Editor-layout mockups for config files.
 
-### Không nên làm (Don'ts)
-- **Don't:** Không nhét quá 5 thẻ con trên cùng một lưới hiển thị của slide stage 16:9.
-- **Don't:** Không sử dụng các tông màu tối sậm làm nền card trên giao diện Light Theme này.
-- **Don't:** Không dùng font có chân (Serif) làm chữ nội dung.
+## 6. Do's And Don'ts
 
----
+### Do
 
-## 7. Keyword Tracker Dashboard (Giao diện Web Dashboard)
+- Use the defined Google color tokens for emphasis.
+- Keep at least 70px slide padding and at least 24px between cards.
+- Use light text on dark code blocks and dark text on light content surfaces.
 
-Giao diện **ASO Keyword Tracker Dashboard** (`tracker/static/`) tuân thủ hoàn toàn hệ thiết kế Google Material Design Light Theme đã định nghĩa ở trên, với các bổ sung riêng cho ứng dụng web:
+### Don't
+
+- Do not put more than 5 child cards in one 16:9 slide-stage grid.
+- Do not use dark-heavy card backgrounds inside this light theme.
+- Do not use serif fonts for body text.
+
+## 7. Keyword Tracker Dashboard
+
+The **ASO Keyword Tracker Dashboard** (`tracker/static/`) follows this Google Material Design Light Theme with web-app-specific additions.
 
 ### 7.1 Typography
-- **Heading/UI Font:** `Outfit` (Google Fonts) — được chọn thay cho Google Sans vì license mở, vẫn giữ phong cách sans-serif hiện đại.
-- **Body/Data Font:** kế thừa từ hệ thống (`Roboto` fallback).
 
-### 7.2 Color Semantics cho Dashboard
-| Token | Mã màu | Ý nghĩa |
+- **Heading/UI font:** `Outfit` from Google Fonts. It replaces Google Sans because of its open license while keeping a modern sans-serif feel.
+- **Body/data font:** system fallback from `Roboto`.
+
+### 7.2 Dashboard Color Semantics
+
+| Token | Color | Meaning |
 |---|---|---|
-| `--success` / `--success-bg` | `#34a853` / `#e6f4ea` | Chỉ số tăng trưởng tốt (rank lên, volume tăng) |
-| `--danger` / `--danger-bg` | `#ea4335` / `#fce8e6` | Chỉ số giảm sút (rank xuống, volume giảm, keyword mất) |
-| `--warning` / `--warning-bg` | `#fbbc05` / `#fef7e0` | Cảnh báo hoặc trạng thái cần xem xét |
-| `--primary` / `--primary-bg` | `#1a73e8` / `#e8f0fe` | Accent chính, nút hành động, tab active, badge Brand |
+| `--success` / `--success-bg` | `#34a853` / `#e6f4ea` | Positive growth: rank up, volume up |
+| `--danger` / `--danger-bg` | `#ea4335` / `#fce8e6` | Negative movement: rank down, volume down, keyword lost |
+| `--warning` / `--warning-bg` | `#fbbc05` / `#fef7e0` | Warning or needs-review state |
+| `--primary` / `--primary-bg` | `#1a73e8` / `#e8f0fe` | Primary accent, action buttons, active tab, Brand badge |
 
 ### 7.3 Components
-- **App Bar:** Cố định trên đầu trang (sticky), nền trắng, viền dưới `#dadce0`.
-- **Control Panel:** Chứa 4 dropdowns (App, Locale, Month A, Month B) và nút Export.
-- **Tab Bar:** 5 tab ngang (Overview, Keywords, Trend, Movers, Setup) với indicator dưới tab active.
-- **KPI Cards:** Grid 4 cột, chiều cao 120px cố định, hiển thị giá trị lớn và delta badge.
-- **Chart Cards:** Sử dụng Apache ECharts, tối thiểu 300px chiều cao, responsive resize.
-- **Data Table:** Hỗ trợ sort header, search, filter, pagination, zebra striping.
-- **Toast:** Thông báo nổi góc phải dưới, tự ẩn sau 3 giây.
 
-### 7.4 Spacing & Layout
+- **App Bar:** sticky top bar, white background, bottom border `#dadce0`.
+- **Control Panel:** four dropdowns (App, Locale, Month A, Month B) and Export button.
+- **Tab Bar:** five horizontal tabs (Overview, Keywords, Trend, Movers, Setup) with an indicator under the active tab.
+- **KPI Cards:** four-column grid, fixed 120px height, large value and delta badge.
+- **Chart Cards:** Apache ECharts, minimum 300px height, responsive resize.
+- **Data Table:** sortable headers, search, filters, pagination, zebra striping.
+- **Toast:** bottom-right floating notification, auto-hides after 3 seconds.
+
+### 7.4 Spacing And Layout
+
 - **Main content padding:** 24px.
 - **Card gap:** 16-24px.
-- **Grid breakpoints:** 4 cột → 2 cột (≤1200px) → 1 cột (≤650px).
+- **Grid breakpoints:** 4 columns -> 2 columns at <=1200px -> 1 column at <=650px.
 
 ### 7.5 Setup Tab / Project Memory
-- **Purpose:** Tab `Setup` la read-only overview cua app dang chon, lay tu `app_config.py` va `App_Profile.json`; khong phu thuoc locale/month.
-- **Sections:** App identity, Positioning, Keyword setup, Competitor setup, Drop/risk setup, User overrides, Quota va Warnings.
-- **Cards:** Dung grid card 8px radius, khong long card trong card. Moi section co title ngan va list chip/row de scan nhanh.
-- **Badges:** Dung badge ro rang cho `Drop`, `Consider`, `Reserve`, `Boost` theo mau semantic cua dashboard.
-- **Warnings:** Hien thi warning card noi bat khi thieu competitor, thieu competitor brands, overlap config hoac profile/config mismatch.
-- **No editing:** Khong dat control chinh sua trong v1. Neu can sua setup, user sua source of truth trong `app_config.py` hoac `App_Profile.json`.
 
-
+- **Purpose:** read-only overview for the selected app, sourced from `app_config.py` and `App_Profile.json`, independent of locale/month.
+- **Sections:** App identity, Positioning, Keyword setup, Competitor setup, Drop/risk setup, User overrides, Quota, and Warnings.
+- **Cards:** use an 8px-radius grid card layout. Do not nest cards inside cards. Each section should have a short title and scannable chips/rows.
+- **Badges:** use clear badges for `Drop`, `Consider`, `Reserve`, and `Boost` using dashboard semantic colors.
+- **Warnings:** show prominent warning cards for missing competitors, missing competitor brands, config overlap, or profile/config mismatch.
+- **No editing:** v1 should not include editing controls. To change setup, users edit the source of truth in `app_config.py` or `App_Profile.json`.
