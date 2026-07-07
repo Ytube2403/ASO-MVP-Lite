@@ -30,7 +30,7 @@ Edit `app_config.py` when needed:
 
 Use the current operating flow in `../../docs/USAGE.md`: verify cache first, warm misses if any, then run the pipeline. If the agentic prompt/rubric changes and `ruleset_version` is bumped, warm every market you plan to run.
 
-From `ASO-MVP-Lite/apps/FunVid`:
+From `ASO-MVP/apps/FunVid`:
 
 ```powershell
 python run_pipeline.py --csv C:\path\to\FunVid_US_EN.csv --market US_EN

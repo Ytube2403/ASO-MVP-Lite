@@ -6,7 +6,7 @@
 **Purpose:** Filter, score, classify, audit, and export ASO keyword shortlists per app, market, language, and metadata platform.
 **Use cases:** Google Play keyword research, App Store keyword planning, metadata QA, ASO testing, UA keyword review, and keyword research audit.
 
-This is the complete v4.5 specification for ASO-MVP-Lite. Keep this file as the single complete planner spec. Operational quick-start notes may live in `docs/USAGE.md`, but the full decision contract belongs here.
+This is the complete v4.5 specification for ASO-MVP. Keep this file as the single complete planner spec. Operational quick-start notes may live in `docs/USAGE.md`, but the full decision contract belongs here.
 
 The beginner HTML guide `docs/ASO_Antigravity_Beginner_Guide.html` is intentionally excluded from English-only cleanup and can remain in its original language.
 

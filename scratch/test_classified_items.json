@@ -1,0 +1,1725 @@
+{
+  "batch_id": "id_id_batch_3",
+  "items": [
+    {
+      "keyword": "cara setting ppsspp tidak lag",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "how to set ppsspp not to lag",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped competitor brand: ppsspp"
+    },
+    {
+      "keyword": "lemuroid",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "lemuroid",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped competitor brand: lemuroid"
+    },
+    {
+      "keyword": "kumpulan game jadul",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "old game group",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "game jadul hp",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "old cell phone games",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "gimbot brick game",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "gimbot brick game",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "game dingdong pesawat",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "airplane dingdong game",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "game dingdong petualangan",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "adventure dingdong game",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "delta emulator ios",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "delta emulator ios",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped competitor brand: delta"
+    },
+    {
+      "keyword": "cara main game gba di hp",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "cara main game gba di hp",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "download emulator gba untuk android",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "download emulator gba untuk android",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator gba terbaik gratis",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "best free gba emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "download rom gba ukuran kecil",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "download rom gba ukuran kecil",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "cara setting fast forward emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "cara setting fast forward emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator ps2 android ringan",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "emulator ps2 android ringan",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped unsupported platform: ps2"
+    },
+    {
+      "keyword": "cara main ppsspp pakai stik",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "How to play PPSSPP using a stick",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped competitor brand: ppsspp"
+    },
+    {
+      "keyword": "cara cheat game gba",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "cara cheat game gba",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator gba hp kentang",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator gba hp kentang",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "game psp ukuran kecil cso",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "game psp ukuran kecil cso",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "download game gba google drive",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "download game gba google drive",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "cara menyambungkan stik ke emulator",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "how to connect the stick to the emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "download emulator gbc gratis",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "download emulator gbc gratis",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "cara mengatasi lag emulator ppsspp",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "How to overcome ppsspp emulator lag",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped competitor brand: ppsspp"
+    },
+    {
+      "keyword": "emulator serbaguna",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator serbaguna",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "emulator banyak konsol",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator of multiple consoles",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "satu emulator banyak game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "satu emulator banyak game",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "aplikasi main game jadul",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "old school gaming application",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "koleksi emulator game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "koleksi emulator game",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "simpan game emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "simpan game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "simpan progres game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "simpan progres game",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "simpan instan emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "simpan instan emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "mempercepat game emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "mempercepat game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "percepat speed game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "percepat speed game",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "emulator anti lemot",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator anti lemot",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "map tombol stik",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "stick button map",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "custom tombol emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "custom tombol emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "layout tombol emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "layout tombol emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "stik game android",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "stik game android",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "tombol virtual emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "tombol virtual emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "pustaka game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "pustaka game",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "pasang rom game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "pasang rom game",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "organisasi game emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "organisasi game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "scan game otomatis",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "scan game otomatis",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "folder game emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "folder game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "daftar game emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "daftar game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "masukkan game emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "masukkan game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "pustaka rom emulator",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "pustaka rom emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "game library emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "game library emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gamebot",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gamebot",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "kaset game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "kaset game",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "kaset jadul",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "old school cassette",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "konsol jadul",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "old school console",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "emulator ps1",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator ps1",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator ps 2",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator ps 2",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "emulator ps 4",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator ps 4",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "emulator ps5",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "emulator ps5",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped unsupported platform: ps5"
+    },
+    {
+      "keyword": "gbc",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gbc",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "ds",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "ds",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "nds emulator for android",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "nds emulator for android",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "nds emulators",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "nds emulators",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gba emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gba emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "gba emulator offline",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gba emulator offline",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "nds 64 emulator juegos retro",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "nds 64 emulator juegos retro",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gba",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gba",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "retro game emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "retro game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "bermain game retro",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "bermain game retro",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "retro gaming",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "retro gaming",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "game emulator offline",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "game emulator offline",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gba retro gaming",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gba retro gaming",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "gba game emulator retro games",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "gba game emulator retro games",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "konsol permainan",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "game console",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "aplikasi pengendali game",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "game controller application",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator online",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator online",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "game nostalgia 90an",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "game nostalgia 90an",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "aplikasi emulator game boy",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "gameboy emulator application",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator gameboy gratis",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator gameboy gratis",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "game konsol streaming",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "game konsol streaming",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "gameboy emulator classic game",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "gameboy emulator classic game",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator permainan",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "game emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gameboy",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gameboy",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "gameboy emulator offline",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gameboy emulator offline",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "gameboy app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gameboy app",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "nostalgic gaming",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "nostalgic gaming",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "gba game emulator free",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "gba game emulator free",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "game emulator ps3",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "game emulator ps3",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped unsupported platform: ps3"
+    },
+    {
+      "keyword": "psp emulator games",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "psp emulator games",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gameboy emulator free",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gameboy emulator free",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "playstation 4 game controller",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "playstation 4 game controller",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped unsupported platform: playstation"
+    },
+    {
+      "keyword": "retro game 64",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "retro game 64",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "gba retro emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "gba retro emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "manic emu",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "manic emu",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "genggam klasik",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "classic handheld",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "aplikasi gameboy",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gameboy app",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator app",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator app",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "game boy emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "game boy emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gameboy emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gameboy emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulador gba",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulador gba",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "game gba retro",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "game gba retro",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "mengontrol konsol",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "mengontrol konsol",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "konsol retro",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "konsol retro",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "gaming console",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gaming console",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "game boy advance emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "game boy advance emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "gba emulator games",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "gba emulator games",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "gba emulador",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gba emulador",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator delta",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "emulator delta",
+      "decision_rule": "ai_competitor",
+      "reason": "Dropped competitor brand: delta"
+    },
+    {
+      "keyword": "kontroler konsol",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "kontroler konsol",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "a ds",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "a ds",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "ds sd",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "ds sd",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "ds v s",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "ds v s",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "a sd ds",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "a sd ds",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "ds a sd",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "ds a sd",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "s sd ds",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "s sd ds",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "v sd ds",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "v sd ds",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "a ds sd",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "a ds sd",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "gbc emulator free",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "gbc emulator free",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "gbc emulator retro game",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "gbc emulator retro game",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "game jadul",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "game jadul",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "game masa kecil",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "childhood games",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "emulator game jadul",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "emulator game jadul",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator game klasik",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "emulator game klasik",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator game lawas",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "emulator game lawas",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator ringan",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator ringan",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "emulator offline",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator offline",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "emulator stik bluetooth",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator stik bluetooth",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "game jadul offline",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "offline old school games",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "game offline jadul",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "old school offline game",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "game jadul petualangan",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "old school adventure game",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "game nintendo jadul",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "game nintendo jadul",
+      "decision_rule": "ai_ip_dropped",
+      "reason": "Dropped IP/Franchise/Character: nintendo"
+    },
+    {
+      "keyword": "game ps1 jadul",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "Old school PS1 games",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "main game jadul",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "playing old school games",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "koleksi game jadul",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "collection of old school games",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "game jadul android",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "game jadul android",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "nostalgia game 90an",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "nostalgia game 90an",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "main gameboy di hp",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "playing gameboy on cellphone",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "main gba di android",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "main gba di android",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator gameboy bahasa indonesia",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator gameboy bahasa indonesia",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator dingdong",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator dingdong",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "stik gameboy",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "stik gameboy",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator konsol game",
+      "detected_language": "en",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "emulator konsol game",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "lancar no lag",
+      "detected_language": "id",
+      "language_group": "PRIMARY",
+      "semantic_bucket": "Consider Keywords",
+      "confidence": 0.9,
+      "english_gloss": "lancar no lag",
+      "decision_rule": "ai_manual_review",
+      "reason": "Consider: neutral term of possible relevance"
+    },
+    {
+      "keyword": "emulator game gratis",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "emulator game gratis",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "apk emulator game",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "apk emulator game",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator retro",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "emulator retro",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "game emulator android",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "game emulator android",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "retro emulator android",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "retro emulator android",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator gba",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator gba",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator gameboy",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator gameboy",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator psp",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator psp",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator nes",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator nes",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator snes",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator snes",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator n64",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator n64",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator gbc",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator gbc",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "emulator sega",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "emulator sega",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "game boy color emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "game boy color emulator",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator nintendo ds",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "emulator nintendo ds",
+      "decision_rule": "ai_ip_dropped",
+      "reason": "Dropped IP/Franchise/Character: nintendo"
+    },
+    {
+      "keyword": "save state emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "save state emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "fast forward emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "fast forward emulator",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "download emulator game",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Core Intent Final",
+      "confidence": 0.9,
+      "english_gloss": "download emulator game",
+      "decision_rule": "ai_core_intent",
+      "reason": "Core intent: Emulator term matching core NDS or retro emulator category"
+    },
+    {
+      "keyword": "emulator no lag",
+      "detected_language": "id",
+      "language_group": "MIXED",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "emulator no lag",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "retro gaming console",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "retro gaming console",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "handheld emulator android",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Broad Expansion",
+      "confidence": 0.9,
+      "english_gloss": "handheld emulator android",
+      "decision_rule": "ai_broad_expansion",
+      "reason": "Broad expansion: generic/bare retro game console or emulator term"
+    },
+    {
+      "keyword": "classic console emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Style Keywords",
+      "confidence": 0.9,
+      "english_gloss": "classic console emulator",
+      "decision_rule": "ai_style",
+      "reason": "Style keyword: matching retro, nostalgic or old-school theme terms"
+    },
+    {
+      "keyword": "rom gba",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "rom gba",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "rom gameboy",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "rom gameboy",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "download rom game",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "download rom game",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "download game psp",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "download game psp",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "game ps1 iso",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "game ps1 iso",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    },
+    {
+      "keyword": "pokemon gba emulator",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "pokemon gba emulator",
+      "decision_rule": "ai_ip_dropped",
+      "reason": "Dropped IP/Franchise/Character: pokemon"
+    },
+    {
+      "keyword": "mario emulator android",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "mario emulator android",
+      "decision_rule": "ai_ip_dropped",
+      "reason": "Dropped IP/Franchise/Character: mario"
+    },
+    {
+      "keyword": "zelda emulator android",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "zelda emulator android",
+      "decision_rule": "ai_ip_dropped",
+      "reason": "Dropped IP/Franchise/Character: zelda"
+    },
+    {
+      "keyword": "nintendo roms",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Dropped",
+      "confidence": 0.9,
+      "english_gloss": "nintendo roms",
+      "decision_rule": "ai_ip_dropped",
+      "reason": "Dropped IP/Franchise/Character: nintendo"
+    },
+    {
+      "keyword": "sega roms apk",
+      "detected_language": "en",
+      "language_group": "SECONDARY",
+      "semantic_bucket": "Feature Keywords",
+      "confidence": 0.9,
+      "english_gloss": "sega roms apk",
+      "decision_rule": "ai_feature",
+      "reason": "Feature keyword: matching supported emulator console or specific emulator feature/accessory"
+    }
+  ]
+}

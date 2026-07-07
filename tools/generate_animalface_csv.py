@@ -31,7 +31,9 @@ keywords = [
     ("what animal are you filter", 48, 5),
 ]
 
-csv_path = r"c:\Users\VOLIO\Documents\ASO_MVP\FunVid_AnimalFace_US_EN.csv"
+import os
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+csv_path = os.path.join(PROJECT_ROOT, "data", "seeds", "FunVid_AnimalFace_US_EN.csv")
 with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:
     writer = csv.writer(f)
     writer.writerow([

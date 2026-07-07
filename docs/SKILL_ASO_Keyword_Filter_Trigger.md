@@ -3,7 +3,7 @@
 **SKILL_ID:** `aso_keyword_filter_trigger`
 **VERSION:** 4.5
 **AUTHOR:** AI Assistant
-**SCOPE:** Detect trigger requests, resolve the app/market from a CSV filename, and run the ASO keyword filtering pipeline from the ASO-MVP-Lite workspace.
+**SCOPE:** Detect trigger requests, resolve the app/market from a CSV filename, and run the ASO keyword filtering pipeline from the ASO-MVP workspace.
 **RUNTIME:** Python 3.9+
 
 ---
@@ -126,5 +126,5 @@ python export_master_keywords.py --all
 ## Required Agent Rules
 
 1. Always use the central orchestrator `run_aso_filter.py`; do not manually reproduce each runner step.
-2. Keep all operations and generated Excel/JSON files inside the ASO-MVP-Lite workspace unless the user explicitly asks otherwise.
+2. Keep all operations and generated Excel/JSON files inside the ASO-MVP workspace unless the user explicitly asks otherwise.
 3. Do not open the interactive web UI unless the user explicitly asks for it or the command includes `--interactive`.

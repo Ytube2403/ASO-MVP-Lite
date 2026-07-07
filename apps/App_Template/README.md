@@ -67,7 +67,7 @@ MyNewApp_US_EN.csv
 
 Current usage flow is in `../../docs/USAGE.md`: verify cache first, warm misses if any, then run the pipeline. If the agentic prompt/rubric changes and `ruleset_version` is bumped, warm every market you plan to run.
 
-From `ASO-MVP-Lite/apps/App_Template`:
+From `ASO-MVP/apps/App_Template`:
 
 ```powershell
 python run_pipeline.py --csv C:\path\to\MyNewApp_US_EN.csv --market US_EN
@@ -96,7 +96,7 @@ Master Keywords exports are written to `data/master_keywords/`. The dashboard op
 
 ## Shared Platform Logic v4.5
 
-The template pipeline uses shared modules under `ASO-MVP-Lite/shared/`:
+The template pipeline uses shared modules under `ASO-MVP/shared/`:
 
 - `shared/language_detector.py`: market-policy-aware language grouping into `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: precompiled matcher, hard filter, classifier, validator, audit, cache, and versioning.

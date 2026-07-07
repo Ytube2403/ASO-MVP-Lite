@@ -1,0 +1,257 @@
+1	Batch 1	गेम एमुलेटर	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+2	Batch 1	game emulator	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+3	Batch 1	wretro games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+4	Batch 1	game emulator android	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+5	Batch 1	गेमिंग कंसोल एमुलेटर	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+6	Batch 1	जीबीसी एमुलेटर	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+7	Batch 1	कंसोल एमुलेटर	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+8	Batch 1	रिमोट वाले गेम	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_feature_only_low_acquisition	Reason: Generic controller or hardware settings query with weak emulator acquisition intent.
+9	Batch 1	क्लासिक गेम बॉय एडवांस	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+10	Batch 1	गेम बॉय एडवांस गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+11	Batch 1	रिमोट वाला गेम	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_feature_only_low_acquisition	Reason: Generic controller or hardware settings query with weak emulator acquisition intent.
+12	Batch 1	retro games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+13	Batch 1	जीबीए एमुलेटर सेटअप	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+14	Batch 1	गेम बॉय एडवांस	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+15	Batch 1	सबसे बेस्ट एमुलेटर	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+16	Batch 1	गेम बॉय एडवांस रोम	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+17	Batch 1	gba emulator retro game	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+18	Batch 1	retro gaming console	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+19	Batch 1	एमुलेटर जीबीए	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+20	Batch 1	जीबीए गेम लाइब्रेरी	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+21	Batch 1	controller emulator	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+22	Batch 1	गेमबॉय एडवांस एमुलेटर	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+23	Batch 1	जीबीए एमुलेटर	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+24	Batch 1	gba emulator gameboy retro	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+25	Batch 1	console gaming	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+26	Batch 1	nes game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+27	Batch 1	gba emulator retro game offline	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+28	Batch 1	console game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+29	Batch 1	90s के गेम डाउनलोड	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+30	Batch 1	speed badhane wala emulator	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+31	Batch 1	gba emulator games	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+32	Batch 1	90s game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+33	Batch 1	retro	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+34	Batch 1	simulator 3d pod	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_wrong_app_type	Reason: Searches for 'simulator 3d pod' which is not emulated/supported by this app.
+35	Batch 1	gme boy	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+36	Batch 1	with this	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'with this' with no clear Play Store search intent.
+37	Batch 1	2000 games	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+38	Batch 1	games 2015	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+39	Batch 1	ज़ य द	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'ज़ य द' with no clear Play Store search intent.
+40	Batch 1	games 2006	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+41	Batch 1	game tracker	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_wrong_app_type	Reason: Searches for 'game tracker' which is not emulated/supported by this app.
+42	Batch 1	supergames	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+43	Batch 1	loco roco	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_unrelated_app	Reason: Specific PSP game title search rather than emulator search.
+44	Batch 1	java games	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_wrong_app_type	Reason: Searches for 'java games' which is not emulated/supported by this app.
+45	Batch 1	will continue	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'will continue' with no clear Play Store search intent.
+46	Batch 1	games in hd	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+47	Batch 1	fdg mobile games gbr	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_unrelated_app	Reason: Searches for a specific game developer/publisher.
+48	Batch 1	rumble	Bucket: Feature Keywords	Verdict: Research Only	Rule: ai_wrong_app_type	Reason: Searches for 'rumble' which is not emulated/supported by this app.
+49	Batch 1	game center	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'game center' with no clear Play Store search intent.
+50	Batch 1	arcade games	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'arcade games' with no clear Play Store search intent.
+51	Batch 1	64 in 1 game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+52	Batch 1	paid game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'paid game' with no clear Play Store search intent.
+53	Batch 1	64 in 1	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+54	Batch 1	dos games	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_wrong_app_type	Reason: Searches for 'dos games' which is not emulated/supported by this app.
+55	Batch 1	32 games game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+56	Batch 1	game 32 games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+57	Batch 1	64 games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+58	Batch 1	nes 1200	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+59	Batch 1	classic games game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+60	Batch 1	classic game games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+61	Batch 1	old computer games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+62	Batch 1	game classic games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+63	Batch 1	16 bit games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+64	Batch 1	super game boy	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+65	Batch 1	games 32 game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+66	Batch 1	game games classic	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+67	Batch 1	games game classic	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+68	Batch 1	games classic game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+69	Batch 1	game 32 bit game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+70	Batch 1	16	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase '16' with no clear Play Store search intent.
+71	Batch 1	1x	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase '1x' with no clear Play Store search intent.
+72	Batch 1	old games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+73	Batch 1	entertainment apps	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'entertainment apps' with no clear Play Store search intent.
+74	Batch 1	classic game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+75	Batch 1	playing	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'playing' with no clear Play Store search intent.
+76	Batch 1	org	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'org' with no clear Play Store search intent.
+77	Batch 1	video game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'video game' with no clear Play Store search intent.
+78	Batch 1	कृपया	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'कृपया' with no clear Play Store search intent.
+79	Batch 1	old classic game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+80	Batch 1	cso	Bucket: Feature Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'cso' with no clear Play Store search intent.
+81	Batch 1	console quality	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'console quality' with no clear Play Store search intent.
+82	Batch 1	v game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_off_core_query	Reason: Generic query with unclear retro emulator search intent.
+83	Batch 1	iso	Bucket: Feature Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'iso' with no clear Play Store search intent.
+84	Batch 1	papp	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'papp' with no clear Play Store search intent.
+85	Batch 1	सोर्स	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'सोर्स' with no clear Play Store search intent.
+86	Batch 1	सॉलिड	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'सॉलिड' with no clear Play Store search intent.
+87	Batch 1	happy republic	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'happy republic' with no clear Play Store search intent.
+88	Batch 1	rewind	Bucket: Feature Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'rewind' with no clear Play Store search intent.
+89	Batch 1	nes games	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+90	Batch 1	archive	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'archive' with no clear Play Store search intent.
+91	Batch 1	90 fps	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase '90 fps' with no clear Play Store search intent.
+92	Batch 1	स्थिरता	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'स्थिरता' with no clear Play Store search intent.
+93	Batch 1	एमुलेटर ऐप	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+94	Batch 1	क्लासिक गेम ब्वॉय	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+95	Batch 1	जीबीए गेम रोम	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+96	Batch 1	gba emulator offline	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+97	Batch 1	gameboy advance	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+98	Batch 1	जीबीए गेम रॉम	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+99	Batch 1	जीबीए रोम	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+100	Batch 1	जीबीए एम्यूलेटर	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+101	Batch 1	जीबीए इम्यूलेशन ऐप	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+102	Batch 1	फ़ुल	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'फ़ुल' with no clear Play Store search intent.
+103	Batch 1	gba एम्यूलेटर	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+104	Batch 1	जीबीए गेम खेलना	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+105	Batch 1	gba emulator	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+106	Batch 1	gba games	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+107	Batch 1	gba game	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+108	Batch 1	gba rom	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+109	Batch 1	games 90s	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+110	Batch 1	gba emulator 2018	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+111	Batch 1	android emulator	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+112	Batch 1	old video game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+113	Batch 1	सुविधाओं क्लासिक	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_off_core_query	Reason: Generic query with unclear retro emulator search intent.
+114	Batch 1	तेज़ी से सीखें	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'तेज़ी से सीखें' with no clear Play Store search intent.
+115	Batch 1	पुराने गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+116	Batch 1	पुराने गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+117	Batch 1	पुराने वीडियो गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+118	Batch 1	पुराने वीडियो गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+119	Batch 1	बचपन के गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+120	Batch 1	बचपन के गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+121	Batch 1	बचपन वाले गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+122	Batch 1	बचपन वाले गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+123	Batch 1	बचपन के वीडियो गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+124	Batch 1	बचपन के वीडियो गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+125	Batch 1	90s के गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+126	Batch 1	90 के गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+127	Batch 1	टीवी वाले गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+128	Batch 1	टीवी वाले गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+129	Batch 1	टीवी वाला गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+130	Batch 1	वीडियो गेम कैसेट	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+131	Batch 1	वीडियो गेम कैसेट्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+132	Batch 1	पीली कैसेट	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+133	Batch 1	पीली कैसेट गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+134	Batch 1	कॉइन वाले गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+135	Batch 1	कॉइन वाले गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+136	Batch 1	कॉइन वाला गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+137	Batch 1	दुकान वाले गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+138	Batch 1	दुकान वाले गेम्स	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+139	Batch 1	पार्लर वाले गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+140	Batch 1	डब्बा गेम	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+141	Batch 1	कम एमबी वाले गेम	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+142	Batch 1	बिना इंटरनेट के गेम	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+143	Batch 1	पुराने वीडियो गेम डाउनलोड	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+144	Batch 1	बचपन के गेम डाउनलोड	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+145	Batch 1	टीवी वाले गेम डाउनलोड	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+146	Batch 1	कॉइन वाले गेम मोबाइल में	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+147	Batch 1	mitashi	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+148	Batch 1	mitashi game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+149	Batch 1	mitashi games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+150	Batch 1	mitashi console	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+151	Batch 1	mitashi video game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+152	Batch 1	mitashi video games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+153	Batch 1	mitashi game in	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+154	Batch 1	mitashi game zone	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+155	Batch 1	mitashi game zone download	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'mitashi' commonly played on emulators.
+156	Batch 1	samurai game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'samurai' commonly played on emulators.
+157	Batch 1	samurai console	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'samurai' commonly played on emulators.
+158	Batch 1	samurai video game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'samurai' commonly played on emulators.
+159	Batch 1	whiz kid game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'whiz kid' commonly played on emulators.
+160	Batch 1	whiz kid console	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'whiz kid' commonly played on emulators.
+161	Batch 1	little master game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'little master' commonly played on emulators.
+162	Batch 1	little master console	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'little master' commonly played on emulators.
+163	Batch 1	brick game	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+164	Batch 1	brick game classic	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+165	Batch 1	gun wala game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+166	Batch 1	car racing wala game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+167	Batch 1	game boy	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+168	Batch 1	gbc	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+169	Batch 1	gb	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for Game Boy console supported by this app.
+170	Batch 1	genesis	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+171	Batch 1	dreamcast	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+172	Batch 1	ending man	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for famous Indian retro console/brand 'ending man' commonly played on emulators.
+173	Batch 1	media	Bucket: Consider Keywords	Verdict: Research Only	Rule: ai_weak_app_anchor	Reason: Vague generic phrase 'media' with no clear Play Store search intent.
+174	Batch 1	purane video game play online	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+175	Batch 1	9999 in 1	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+176	Batch 1	9999 in 1 game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+177	Batch 1	9999 in 1 video game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+178	Batch 1	999999 in 1	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+179	Batch 1	yellow cassette game android	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+180	Batch 1	purane game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+181	Batch 1	purane video game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+182	Batch 1	bachpan ke game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+183	Batch 1	bachpan ke video game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+184	Batch 1	90s ke game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+185	Batch 1	tv wale game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+186	Batch 1	yellow cassette game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+187	Batch 1	coin wale game mobile mein	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+188	Batch 1	dukaan wale game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+189	Batch 1	video game download apk	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_off_core_query	Reason: Generic query with unclear retro emulator search intent.
+190	Batch 1	cassette wale game download	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+191	Batch 1	game emulator android tv	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+192	Batch 1	video game stick	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+193	Batch 1	remote wala game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_feature_only_low_acquisition	Reason: Generic controller or hardware settings query with weak emulator acquisition intent.
+194	Batch 1	gamepad simulator	Bucket: Feature Keywords	Verdict: Research Only	Rule: ai_feature_only_low_acquisition	Reason: Generic controller or hardware settings query with weak emulator acquisition intent.
+195	Batch 1	save state emulator	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_feature	Reason: Search for core emulator feature supported by this app.
+196	Batch 1	fast forward emulator	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_feature	Reason: Search for core emulator feature supported by this app.
+197	Batch 1	emulator no lag	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_feature	Reason: Search for core emulator feature supported by this app.
+198	Batch 1	custom button emulator	Bucket: Feature Keywords	Verdict: Eligible	Rule: ai_specific_feature	Reason: Search for core emulator feature supported by this app.
+199	Batch 1	gamepad settings android	Bucket: Feature Keywords	Verdict: Research Only	Rule: ai_feature_only_low_acquisition	Reason: Generic controller or hardware settings query with weak emulator acquisition intent.
+200	Batch 1	game download karne wala app	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+201	Batch 2	offline emulator android	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+202	Batch 2	bina net ke emulator	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+203	Batch 2	gamepad controller android settings	Bucket: Feature Keywords	Verdict: Research Only	Rule: ai_feature_only_low_acquisition	Reason: Generic controller or hardware settings query with weak emulator acquisition intent.
+204	Batch 2	kam mb wale game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+205	Batch 2	bina internet ke game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_broad_head_term	Reason: Broad generic games or app downloader query with weak emulator conversion.
+206	Batch 2	sabse best emulator	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_specific_core_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+207	Batch 2	purane game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+208	Batch 2	purane games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+209	Batch 2	purane video game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+210	Batch 2	purane video games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+211	Batch 2	bachpan ke game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+212	Batch 2	bachpan ke games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+213	Batch 2	bachpan wale game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+214	Batch 2	bachpan wale games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+215	Batch 2	bachpan ke video game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+216	Batch 2	bachpan ke video games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+217	Batch 2	90s ke game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+218	Batch 2	90s ke games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+219	Batch 2	90s ke video game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+220	Batch 2	90s ke video games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+221	Batch 2	90 ke game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+222	Batch 2	90 ke games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+223	Batch 2	tv wale game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+224	Batch 2	tv wale games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+225	Batch 2	tv wala game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+226	Batch 2	tv wala games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+227	Batch 2	tv wala video game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+228	Batch 2	tv wala video games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+229	Batch 2	purane tv wale game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+230	Batch 2	video game cassette	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+231	Batch 2	video game cassettes	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+232	Batch 2	game ki cassette	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+233	Batch 2	game cassette	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+234	Batch 2	yellow cassette	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+235	Batch 2	yellow cassette game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+236	Batch 2	yellow cassette games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+237	Batch 2	pili cassette	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+238	Batch 2	pili cassette game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+239	Batch 2	coin wale game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+240	Batch 2	coin wale games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+241	Batch 2	coin wala game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+242	Batch 2	coin wala games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+243	Batch 2	dukaan wale game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+244	Batch 2	dukaan wale games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+245	Batch 2	dukaan wale video game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+246	Batch 2	parlor wale game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+247	Batch 2	parlor wale games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+248	Batch 2	game parlor games	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+249	Batch 2	token wale game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+250	Batch 2	token wala game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+251	Batch 2	dabba game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+252	Batch 2	dabba video game	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Search for retro/classic console games or accessories commonly played via emulator.
+253	Batch 2	stik wala game	Bucket: Broad Expansion	Verdict: Research Only	Rule: ai_feature_only_low_acquisition	Reason: Generic controller or hardware settings query with weak emulator acquisition intent.
+254	Batch 2	video game console	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+255	Batch 2	videogame cassette wala	Bucket: Style Keywords	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+256	Batch 2	super nes	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
+257	Batch 2	console games	Bucket: Broad Expansion	Verdict: Eligible	Rule: ai_supported_category_intent	Reason: Direct search for retro console, games or emulator supported by this app.
