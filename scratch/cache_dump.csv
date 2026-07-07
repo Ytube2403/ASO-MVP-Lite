@@ -1,0 +1,101 @@
+keyword,detected_language,language_group,semantic_bucket,confidence,english_gloss,decision_rule,reason
+गेम एमुलेटर,hi,PRIMARY,Consider Keywords,1.0,game emulator,consider_relevant_terms,Relevant retro gaming or emulator terms
+retro game emulator 64,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+retro game emulator,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+retro game emulator app,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+game emulator,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+retro game emulator android,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+retro game emulator offline,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+wretro games,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+game emulator android,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+retro game emulator console,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+गेमिंग कंसोल एमुलेटर,hi,PRIMARY,Consider Keywords,1.0,gaming console emulator,consider_relevant_terms,Relevant retro gaming or emulator terms
+retro game emulator old games,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+जीबीसी एमुलेटर,hi,PRIMARY,Feature Keywords,1.0,gbc emulator,emulator_features_consoles,Other retro console or emulator feature terms
+कंसोल एमुलेटर,hi,PRIMARY,Consider Keywords,1.0,console emulator,consider_relevant_terms,Relevant retro gaming or emulator terms
+रिमोट वाला गेम,hi,PRIMARY,Consider Keywords,1.0,remote game,consider_relevant_terms,Relevant retro gaming or emulator terms
+क्लासिक गेम बॉय एडवांस,hi,PRIMARY,Feature Keywords,1.0,classic game boy advance,emulator_features_consoles,Other retro console or emulator feature terms
+गेम बॉय एडवांस गेम्स,hi,PRIMARY,Feature Keywords,1.0,game boy advance games,emulator_features_consoles,Other retro console or emulator feature terms
+all in one emulator,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+retro games,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+जीबीए एमुलेटर सेटअप,hi,PRIMARY,Feature Keywords,1.0,gba emulator setup,emulator_features_consoles,Other retro console or emulator feature terms
+गेम बॉय एडवांस,hi,PRIMARY,Feature Keywords,1.0,game boy advance,emulator_features_consoles,Other retro console or emulator feature terms
+सबसे बेस्ट एमुलेटर,hi,PRIMARY,Consider Keywords,1.0,the best emulator,consider_relevant_terms,Relevant retro gaming or emulator terms
+गेम बॉय एडवांस रोम,hi,PRIMARY,Feature Keywords,1.0,game boy advance rom,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator retro game,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+retro gaming console,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+एमुलेटर जीबीए,hi,PRIMARY,Feature Keywords,1.0,emulator gba,emulator_features_consoles,Other retro console or emulator feature terms
+जीबीए गेम लाइब्रेरी,hi,PRIMARY,Feature Keywords,1.0,gba game library,emulator_features_consoles,Other retro console or emulator feature terms
+controller emulator,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+गेमबॉय एडवांस एमुलेटर,hi,PRIMARY,Feature Keywords,1.0,gameboy advance emulator,emulator_features_consoles,Other retro console or emulator feature terms
+जीबीए एमुलेटर,hi,PRIMARY,Feature Keywords,1.0,gba emulator,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator gameboy retro,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+emulador gba,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+retro emulator india,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+console gaming,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+nes game,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator retro game offline,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+console game,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+emulator,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+90s के गेम डाउनलोड,hi,PRIMARY,Style Keywords,1.0,90s game download,retro_style_nostalgia,Retro/classic style or nostalgia terms
+speed badhane wala emulator,hi,PRIMARY,Consider Keywords,1.0,speed booster emulator,consider_relevant_terms,Relevant retro gaming or emulator terms
+gba emulator games,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+classic console emulator,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+90s game,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+retro,en,SECONDARY,Style Keywords,1.0,,retro_style_nostalgia,Retro/classic style or nostalgia terms
+gba emulator 2 pokemon,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+indian bike driving 3d,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: indian bike driving
+offroad 4x4 simulator,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: offroad 4x4
+gta6,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: gta6
+playback 2,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: playback 2
+simulator 3d pod,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+terrariya,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: terrariya
+jhon gba lite,en,SECONDARY,Dropped,1.0,,competitor_brand,Competitor brand match: jhon gba
+unit games,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+terara,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: terara
+हुक जाम,hi,PRIMARY,Consider Keywords,1.0,hook jam,general_consider_fallback,General check / other relevant term
+play station games,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+jhon gba,en,SECONDARY,Dropped,1.0,,competitor_brand,Competitor brand match: jhon gba
+gme boy,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+sdk games,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+unity games,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+आर म द,hi,PRIMARY,Consider Keywords,1.0,ar ma da,general_consider_fallback,General check / other relevant term
+minee resar,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+mega gb,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+with this,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+trove,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: trove
+trak resing oph rod,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+2000 games,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+games 2015,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+outrun,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: outrun
+ज़ य द,hi,PRIMARY,Consider Keywords,1.0,zi ya da,general_consider_fallback,General check / other relevant term
+games 2006,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+game panjat tebing,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+driving school simulator evo,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+game tracker,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+naitro jamp,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+supergames,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+loco roco,en,SECONDARY,Dropped,1.0,,irrelevant_intent,Irrelevant/unrelated game name: loco roco
+java games,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+will continue,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+will continue to,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+games in hd,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+monstar kaar gems,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+games by unity,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+fdg mobile games gbr,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+nds emulator,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+nds emulator for android,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+nds emulator for pokemon games,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+nds emulator android,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+nds emulator mac,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+mario game,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+rumble,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+tekken 3,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+level devil,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+mario,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+taken 3 game,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+tekken,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+super mario game,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+brawlhalla,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+prince of persia,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+street fighter,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term

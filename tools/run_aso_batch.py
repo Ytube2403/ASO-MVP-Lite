@@ -41,6 +41,11 @@ def validate_jobs(payload, project_root, manifest_path=""):
             continue
         csv_path = csv_value if os.path.isabs(csv_value) else os.path.abspath(os.path.join(manifest_dir, csv_value))
         if not os.path.exists(csv_path):
+            # Try resolving relative to project_root to handle moved manifest files
+            csv_path_root = os.path.abspath(os.path.join(project_root, csv_value))
+            if os.path.exists(csv_path_root):
+                csv_path = csv_path_root
+        if not os.path.exists(csv_path):
             errors.append(f"{label} CSV does not exist: {csv_path}")
             continue
         try:

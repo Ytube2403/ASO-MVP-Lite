@@ -59,5 +59,5 @@ Desktop.ini
 
 # Scratch experiments are local-only. Official operational tools live in tools/.
 scratch/*.py
-/batch_*.json
+/batches/batch_*.json
 /C*Users*AppData*Local*Temp*scratchpad*.diff

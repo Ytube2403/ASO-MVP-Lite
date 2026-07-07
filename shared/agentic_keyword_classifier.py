@@ -9,7 +9,12 @@ from shared.keyword_filter.cache import config_hash
 from shared.keyword_filter.hard_filters import evaluate_hard_filters
 from shared.keyword_filter.matcher import has_any_term, normalize_filter_text, tokenize
 from shared.keyword_filter.scoring import has_core_intent, has_feature_intent, has_style_intent
-from shared.language_detector import detect_keyword_language
+from shared.language_detector import (
+    detect_keyword_language,
+    get_market_language_policy,
+    lang_match,
+    normalize_lang_code,
+)
 
 
 class AIKeywordClassifierError(RuntimeError):
@@ -605,11 +610,27 @@ def analyze_dataframe(df, config, app_profile=None, cache_path=None, market="", 
             status="AI_REUSED_CANONICAL",
         )
 
+    policy = get_market_language_policy(market or config.get("market", "US_EN"), config)
     output = []
     for item in pre_ai_items:
         result = result_by_position.get(item.position)
         if result is None:
             raise AIKeywordClassifierError(f"Missing agentic cache result for {item.keyword!r}")
+
+        lang = result.detected_language
+        if not lang or str(lang).strip().lower() == "unknown":
+            group = "UNKNOWN"
+        elif "+" in str(lang):
+            group = "MIXED"
+        else:
+            norm_lang = normalize_lang_code(lang)
+            if any(lang_match(norm_lang, p) for p in policy["primary"]):
+                group = "PRIMARY"
+            elif any(lang_match(norm_lang, s) for s in policy["secondary"]):
+                group = "SECONDARY"
+            else:
+                group = "FOREIGN"
+
         output.append({
             "NeedsAI": item.needs_ai,
             "PreAIAction": item.action,
@@ -617,7 +638,7 @@ def analyze_dataframe(df, config, app_profile=None, cache_path=None, market="", 
             "PreAIReason": item.reason,
             "CanonicalKeyword": item.canonical_keyword,
             "DetectedLanguage": result.detected_language,
-            "LanguageGroup": result.language_group,
+            "LanguageGroup": group,
             "AISemanticBucket": result.semantic_bucket,
             "AIDecisionRule": result.decision_rule,
             "AIReason": result.reason,

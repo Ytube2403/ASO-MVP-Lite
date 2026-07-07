@@ -1,0 +1,92 @@
+keyword,detected_language,language_group,semantic_bucket,confidence,english_gloss,decision_rule,reason
+zarchiver,pt,PRIMARY,Dropped,1.0,zarchiver,irrelevant_term,"Irrelevant category game, service, or brand term"
+zarchiver,en,SECONDARY,Dropped,1.0,archiver,irrelevant_category_or_ip,"Dropped: Irrelevant game, brand, or IP 'zarchiver'"
+zarchiver,sk,SECONDARY,Consider Keywords,1.0,zarchiver,consider_keyword,Other relevant term
+zarchiver,en,SECONDARY,Consider Keywords,0.85,ZArchiver (file archiver utility for ROMs),ai_consider_intent,"Companion tool, platform utility, or boundary game"
+zarchiver,en,SECONDARY,Consider Keywords,0.9,ZArchiver archive utility app,ai_consider,"Archive extraction utility commonly used to unzip ROMs, but not an emulator"
+zarchiver,en,SECONDARY,Consider Keywords,0.9,ZArchiver file manager (used to extract ROMs),ai_consider_intent,"Companion app, controller utility, or boundary service"
+zarchiver,en,SECONDARY,Consider Keywords,0.85,ZArchiver (file archiver utility for ROMs),ai_consider_intent,"Companion tool, platform utility, or boundary game"
+zarchiver,en,SECONDARY,Consider Keywords,0.9,ZArchiver archive utility app,ai_consider,"Archive extraction utility commonly used to unzip ROMs, but not an emulator"
+zarchiver,en,SECONDARY,Consider Keywords,0.9,ZArchiver file manager (used to extract ROMs),ai_consider_intent,"Companion app, controller utility, or boundary service"
+playstation india,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: playstation
+playstation 4 games,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: playstation
+playstation now,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: playstation
+playstation app,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: playstation
+playstation,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: playstation
+playstation,pt,PRIMARY,Dropped,1.0,playstation,platform_drop,Platform/hardware name (playstation)
+sony playstation,pt,PRIMARY,Dropped,1.0,sony playstation,platform_drop,Platform/hardware name (playstation)
+playstation 4,pt,PRIMARY,Dropped,1.0,playstation 4,platform_drop,Platform/hardware name (playstation)
+playstation 2,pt,PRIMARY,Dropped,1.0,playstation 2,platform_drop,Platform/hardware name (playstation)
+playstation app,pt,PRIMARY,Dropped,1.0,playstation app,platform_drop,Platform/hardware name (playstation)
+exbox,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+xbox beta,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: xbox
+xbox,pt,PRIMARY,Dropped,1.0,xbox,platform_drop,Platform/hardware name (xbox)
+xbox controller,en,SECONDARY,Dropped,1.0,xbox controller,platform_drop,Platform/hardware name (xbox)
+damon xbox 360,pt,PRIMARY,Dropped,1.0,damon xbox 360,competitor_brand,Competitor brand/emulator (damon)
+xbox game pass,en,SECONDARY,Dropped,1.0,xbox game pass,platform_drop,Platform/hardware name (xbox)
+xbox,en,SECONDARY,Dropped,1.0,,platform_only,Platform-only keyword without app intent: xbox
+xbox cloud gaming,en,SECONDARY,Consider Keywords,1.0,,consider_keyword,Other relevant term
+xbox game pass,ca,SECONDARY,Consider Keywords,1.0,xbox game pass,consider_keyword,Other relevant term
+ps xbox,ca,SECONDARY,Consider Keywords,1.0,ps xbox,consider_keyword,Other relevant term
+nintendo games,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+nintendo emulator,en,SECONDARY,Consider Keywords,1.0,,consider_relevant_terms,Relevant retro gaming or emulator terms
+nintendo,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+nintendo ds,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+nintendo 64,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+nintendo,pt,PRIMARY,Consider Keywords,1.0,nintendo,classic_ip_intent,Classic game IP compatible with retro emulator
+nintendo switch,pt,PRIMARY,Dropped,1.0,nintendo switch,platform_drop,Platform/hardware name (switch)
+nintendo ds,pt,PRIMARY,Core Intent Final,1.0,nintendo ds,nds_core_intent,Nintendo DS/NDS core emulator intent
+damon nintendo switch,pt,PRIMARY,Dropped,1.0,damon nintendo switch,competitor_brand,Competitor brand/emulator (damon)
+nintendo emulator,en,SECONDARY,Feature Keywords,1.0,nintendo emulator,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+pspcl,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+psp emulator,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: psp
+pspp,en,SECONDARY,Consider Keywords,1.0,,general_consider_fallback,General check / other relevant term
+psp,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: psp
+emulador psp,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: psp
+psp game,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: psp
+psp,pt,PRIMARY,Dropped,1.0,psp,platform_drop,Platform/hardware name (psp)
+iq games psp,en,SECONDARY,Dropped,1.0,iq games psp,platform_drop,Platform/hardware name (psp)
+psp emulador,pt,PRIMARY,Dropped,1.0,psp emulator,platform_drop,Platform/hardware name (psp)
+pspad,pt,PRIMARY,Dropped,1.0,pspad,irrelevant_term,"Irrelevant category game, service, or brand term"
+gba emulator retro game,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator gameboy retro,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+emulador gba,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator retro game offline,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator games,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator 2 pokemon,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+jhon gba lite,en,SECONDARY,Dropped,1.0,,competitor_brand,Competitor brand match: jhon gba
+jhon gba,en,SECONDARY,Dropped,1.0,,competitor_brand,Competitor brand match: jhon gba
+gba emulator offline,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+pokemon gba,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gba emulator gameboy retro,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gameboy advance,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gameboy,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+pokémon gameboy,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+gb4 emulator classic gameboy,en,SECONDARY,Feature Keywords,1.0,gb4 emulator classic gameboy,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+gameboy emulator,en,SECONDARY,Feature Keywords,1.0,gameboy emulator,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+gameboy advance emulator,en,SECONDARY,Feature Keywords,1.0,gameboy advance emulator,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+gameboy advance,en,SECONDARY,Feature Keywords,1.0,gameboy advance,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+gameboy color emulator,en,SECONDARY,Feature Keywords,1.0,gameboy color emulator,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+gameboy retro games,pt,PRIMARY,Feature Keywords,1.0,gameboy retro games,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+sunmi,tr,SECONDARY,Consider Keywords,1.0,bored,consider_keyword,Other relevant term
+sunmi,en,SECONDARY,Dropped,0.95,Sunmi tech company - irrelevant search,ai_dropped,Irrelevant search query or off-topic term
+sunmi,en,SECONDARY,Dropped,0.95,Sunmi tech company - irrelevant search,ai_dropped,Irrelevant search query or off-topic term
+delfin,en,SECONDARY,Consider Keywords,1.0,,consider_keyword,Other relevant term
+delfines,unknown,SECONDARY,Consider Keywords,1.0,dolphins,consider_keyword,Other relevant term
+delfin,es,PRIMARY,Feature Keywords,0.95,"Dolphin (Spanish: delfín, console emulator)",ai_feature_intent,Console emulator brand in Spanish (Dolphin Emulator)
+delfines,es,PRIMARY,Dropped,0.95,Dolphins (Spanish: delfines - irrelevant search),ai_dropped,Irrelevant search query or off-topic term
+delfin,es,PRIMARY,Feature Keywords,0.95,"Dolphin (Spanish: delfín, console emulator)",ai_feature_intent,Console emulator brand in Spanish (Dolphin Emulator)
+delfines,es,PRIMARY,Dropped,0.95,Dolphins (Spanish: delfines - irrelevant search),ai_dropped,Irrelevant search query or off-topic term
+backbone,en,SECONDARY,Consider Keywords,1.0,,consider_keyword,Other relevant term
+backbone,en,SECONDARY,Consider Keywords,0.9,Backbone gamepad controller brand,ai_consider_intent,"Companion app, controller utility, or boundary service"
+backbone,en,SECONDARY,Consider Keywords,0.9,Backbone gamepad controller brand,ai_consider_intent,"Companion app, controller utility, or boundary service"
+emulador gba,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+emulador nds,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+nds emulador,en,SECONDARY,Core Intent Final,1.0,,nds_emulator_intent,Nintendo DS/NDS core emulator intent
+emulador snes,en,SECONDARY,Feature Keywords,1.0,,emulator_features_consoles,Other retro console or emulator feature terms
+emulador psp,en,SECONDARY,Dropped,1.0,,platform_only,Dropped platform name: psp
+emulador,pt,PRIMARY,Feature Keywords,1.0,emulator,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+n64 emulador,pt,PRIMARY,Feature Keywords,1.0,n64 emulator,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+ps2 emulador,pt,PRIMARY,Dropped,1.0,ps2 emulator,platform_drop,Platform/hardware name (ps2)
+gba emulador,pt,PRIMARY,Feature Keywords,1.0,gba emulator,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"
+gba emulador retro game,pt,PRIMARY,Feature Keywords,1.0,gba emulator retro game,feature_intent,"Retro console or emulation feature terms (skin, button, controller, rom, save, etc.)"

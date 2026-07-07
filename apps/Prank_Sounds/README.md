@@ -55,7 +55,7 @@ Examples:
 
 Use the current operating flow in `../../docs/USAGE.md`: verify cache first, warm cache if there are misses, then run the pipeline. If the agentic prompt/rubric changes and `ruleset_version` is bumped, warm every market you plan to run.
 
-From `ASO-MVP-Lite/apps/Prank_Sounds`:
+From `ASO-MVP/apps/Prank_Sounds`:
 
 ```powershell
 python run_pipeline.py --csv C:\path\to\PrankSounds_US_EN.csv --market US_EN
@@ -75,7 +75,7 @@ The workbook includes the full report, `target 40 utility + diversity` shortlist
 
 ## Shared Platform Logic v4.5
 
-Prank Sounds uses shared modules under `ASO-MVP-Lite/shared/`:
+Prank Sounds uses shared modules under `ASO-MVP/shared/`:
 
 - `shared/language_detector.py`: market-policy-aware grouping into `PRIMARY`, `SECONDARY`, `MIXED`, `FOREIGN`, `UNKNOWN`.
 - `shared/keyword_filter/`: matcher, hard filter, classifier, validator, audit, cache, and versioning.

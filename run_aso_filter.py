@@ -69,8 +69,9 @@ def main():
     target_input_path = os.path.join(target_input_dir, filename)
 
     abs_target_path = os.path.abspath(target_input_path)
+    abs_csv_path = os.path.abspath(csv_path)
 
-    if csv_path != abs_target_path:
+    if os.path.normcase(abs_csv_path) != os.path.normcase(abs_target_path):
         print(f"File is not in the correct Input archive path: {target_input_path}")
         print("Archiving input CSV to standard structure...")
         os.makedirs(target_input_dir, exist_ok=True)

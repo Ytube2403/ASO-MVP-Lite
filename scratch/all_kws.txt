@@ -1,0 +1,236 @@
+BATCH 1 KEYWORDS:
+1. fusion solar | bucket: Broad Expansion | rule: ai_broad_expansion
+2. n64 emulator android with games | bucket: Feature Keywords | rule: ai_feature
+3. n64 emulador | bucket: Feature Keywords | rule: ai_feature
+4. iso | bucket: Broad Expansion | rule: ai_broad_expansion
+5. gba emulador | bucket: Feature Keywords | rule: ai_feature
+6. gba emulador retro game | bucket: Feature Keywords | rule: ai_feature
+7. gbc emulator | bucket: Feature Keywords | rule: ai_feature
+8. retrô | bucket: Style Keywords | rule: ai_style
+9. nes emulator | bucket: Feature Keywords | rule: ai_feature
+10. gba lite | bucket: Feature Keywords | rule: ai_feature
+11. nostálgia | bucket: Style Keywords | rule: ai_style
+12. old games | bucket: Broad Expansion | rule: ai_broad_expansion
+13. 80 arcade games | bucket: Broad Expansion | rule: ai_broad_expansion
+14. vintage games | bucket: Broad Expansion | rule: ai_broad_expansion
+15. top game | bucket: Broad Expansion | rule: ai_broad_expansion
+16. joypad | bucket: Feature Keywords | rule: ai_feature
+17. playing games | bucket: Broad Expansion | rule: ai_broad_expansion
+18. game boy advance | bucket: Feature Keywords | rule: ai_feature
+19. ds games | bucket: Feature Keywords | rule: ai_feature
+20. video game | bucket: Broad Expansion | rule: ai_broad_expansion
+21. gba retro games | bucket: Feature Keywords | rule: ai_feature
+22. emulador retrô | bucket: Broad Expansion | rule: ai_broad_expansion
+23. gameboy emulator | bucket: Feature Keywords | rule: ai_feature
+24. n64 game emulator | bucket: Feature Keywords | rule: ai_feature
+25. gba game emulator | bucket: Feature Keywords | rule: ai_feature
+26. gba retro | bucket: Broad Expansion | rule: ai_broad_expansion
+27. n64 emulator for android | bucket: Feature Keywords | rule: ai_feature
+28. gba jogos | bucket: Feature Keywords | rule: ai_feature
+29. fliperama emulador | bucket: Broad Expansion | rule: ai_broad_expansion
+30. peles | bucket: Feature Keywords | rule: ai_feature
+31. 2025 | bucket: Broad Expansion | rule: ai_broad_expansion
+32. 2026 | bucket: Broad Expansion | rule: ai_broad_expansion
+33. gb advance | bucket: Feature Keywords | rule: ai_feature
+34. gameboy advance emulator | bucket: Feature Keywords | rule: ai_feature
+35. gba retrô | bucket: Broad Expansion | rule: ai_broad_expansion
+36. gba game | bucket: Feature Keywords | rule: ai_feature
+37. gbã emulator | bucket: Feature Keywords | rule: ai_feature
+38. top games | bucket: Broad Expansion | rule: ai_broad_expansion
+39. retro game | bucket: Broad Expansion | rule: ai_broad_expansion
+40. n64 emulator with games | bucket: Feature Keywords | rule: ai_feature
+41. games retrô | bucket: Broad Expansion | rule: ai_broad_expansion
+42. game console | bucket: Broad Expansion | rule: ai_broad_expansion
+43. 3d super | bucket: Broad Expansion | rule: ai_broad_expansion
+44. p5 | bucket: Broad Expansion | rule: ai_broad_expansion
+45. apoiar | bucket: Broad Expansion | rule: ai_broad_expansion
+46. bike unchained 2 | bucket: Broad Expansion | rule: ai_broad_expansion
+47. extras | bucket: Broad Expansion | rule: ai_broad_expansion
+48. sports games | bucket: Broad Expansion | rule: ai_broad_expansion
+49. 2021 games | bucket: Broad Expansion | rule: ai_broad_expansion
+50. pepe | bucket: Broad Expansion | rule: ai_broad_expansion
+51. boy emulator | bucket: Feature Keywords | rule: ai_feature
+52. pc emulator | bucket: Feature Keywords | rule: ai_feature
+53. pro emulator | bucket: Broad Expansion | rule: ai_broad_expansion
+54. gameboi | bucket: Feature Keywords | rule: ai_feature
+55. receive | bucket: Broad Expansion | rule: ai_broad_expansion
+56. jogo retrô | bucket: Broad Expansion | rule: ai_broad_expansion
+57. best game | bucket: Broad Expansion | rule: ai_broad_expansion
+58. gba controller | bucket: Feature Keywords | rule: ai_feature
+59. boy gba | bucket: Broad Expansion | rule: ai_broad_expansion
+60. bomba patch | bucket: Broad Expansion | rule: ai_broad_expansion
+61. gba snes | bucket: Feature Keywords | rule: ai_feature
+62. roms gba | bucket: Feature Keywords | rule: ai_feature
+63. best games | bucket: Broad Expansion | rule: ai_broad_expansion
+64. game boy | bucket: Broad Expansion | rule: ai_broad_expansion
+65. videogame | bucket: Broad Expansion | rule: ai_broad_expansion
+66. igames | bucket: Broad Expansion | rule: ai_broad_expansion
+67. play 2 | bucket: Consider Keywords | rule: ai_broad_expansion
+68. emulador de jogos gba | bucket: Feature Keywords | rule: ai_feature
+69. emulador de jogo gba | bucket: Feature Keywords | rule: ai_feature
+70. games console | bucket: Broad Expansion | rule: ai_broad_expansion
+71. jogos retrô | bucket: Broad Expansion | rule: ai_broad_expansion
+72. gba collection | bucket: Feature Keywords | rule: ai_feature
+73. gba jogos retro | bucket: Feature Keywords | rule: ai_feature
+74. gba jogos retrô | bucket: Feature Keywords | rule: ai_feature
+75. dream simulator | bucket: Broad Expansion | rule: ai_broad_expansion
+76. inclinação | bucket: Broad Expansion | rule: ai_broad_expansion
+77. metal gear solid | bucket: Broad Expansion | rule: ai_broad_expansion
+78. fóruns | bucket: Broad Expansion | rule: ai_broad_expansion
+79. soccer games | bucket: Broad Expansion | rule: ai_broad_expansion
+80. app power | bucket: Broad Expansion | rule: ai_broad_expansion
+81. games 2021 new games | bucket: Broad Expansion | rule: ai_broad_expansion
+82. 2021 football games | bucket: Broad Expansion | rule: ai_broad_expansion
+83. 2026 league | bucket: Broad Expansion | rule: ai_broad_expansion
+84. gold game | bucket: Broad Expansion | rule: ai_broad_expansion
+85. sources | bucket: Broad Expansion | rule: ai_broad_expansion
+86. game gba emulator | bucket: Broad Expansion | rule: ai_broad_expansion
+87. gba console | bucket: Broad Expansion | rule: ai_broad_expansion
+88. gameboy advance | bucket: Broad Expansion | rule: ai_broad_expansion
+89. dream league | bucket: Broad Expansion | rule: ai_broad_expansion
+90. retro games | bucket: Broad Expansion | rule: ai_broad_expansion
+91. joystick | bucket: Feature Keywords | rule: ai_feature
+92. retro console | bucket: Broad Expansion | rule: ai_broad_expansion
+93. retro gba | bucket: Broad Expansion | rule: ai_broad_expansion
+94. jogo retro | bucket: Broad Expansion | rule: ai_broad_expansion
+95. games fliperama | bucket: Broad Expansion | rule: ai_broad_expansion
+96. jogos de arcada | bucket: Broad Expansion | rule: ai_broad_expansion
+97. arcade jogo | bucket: Broad Expansion | rule: ai_broad_expansion
+98. super games | bucket: Broad Expansion | rule: ai_broad_expansion
+99. dream soccer 2024 | bucket: Broad Expansion | rule: ai_broad_expansion
+100. force only | bucket: Broad Expansion | rule: ai_broad_expansion
+101. mobile gamepad | bucket: Feature Keywords | rule: ai_feature
+102. sports fc mobile | bucket: Broad Expansion | rule: ai_broad_expansion
+103. ff games | bucket: Broad Expansion | rule: ai_broad_expansion
+104. gamepad remoto | bucket: Feature Keywords | rule: ai_feature
+105. app station | bucket: Broad Expansion | rule: ai_broad_expansion
+106. mobile fc | bucket: Broad Expansion | rule: ai_broad_expansion
+107. stations | bucket: Broad Expansion | rule: ai_broad_expansion
+108. ea fc 24 mobile | bucket: Broad Expansion | rule: ai_broad_expansion
+109. jogar pc | bucket: Broad Expansion | rule: ai_broad_expansion
+110. gameboy color emulator | bucket: Feature Keywords | rule: ai_feature
+111. modulador | bucket: Broad Expansion | rule: ai_broad_expansion
+112. retro boy | bucket: Style Keywords | rule: ai_style
+113. consoles | bucket: Broad Expansion | rule: ai_broad_expansion
+114. console games | bucket: Broad Expansion | rule: ai_broad_expansion
+115. sports game | bucket: Broad Expansion | rule: ai_broad_expansion
+116. jogos gba | bucket: Broad Expansion | rule: ai_broad_expansion
+117. jogos exclusivos | bucket: Broad Expansion | rule: ai_broad_expansion
+118. gaming | bucket: Broad Expansion | rule: ai_broad_expansion
+119. console | bucket: Broad Expansion | rule: ai_broad_expansion
+120. baixar jogos | bucket: Broad Expansion | rule: ai_broad_expansion
+121. gaming emulator | bucket: Broad Expansion | rule: ai_broad_expansion
+122. gameboy retro games | bucket: Broad Expansion | rule: ai_broad_expansion
+123. emulator games | bucket: Broad Expansion | rule: ai_broad_expansion
+124. game console emulator | bucket: Broad Expansion | rule: ai_broad_expansion
+125. gameboy retro | bucket: Broad Expansion | rule: ai_broad_expansion
+126. console emulator | bucket: Broad Expansion | rule: ai_broad_expansion
+127. emulators | bucket: Broad Expansion | rule: ai_broad_expansion
+128. arcade jogos | bucket: Broad Expansion | rule: ai_broad_expansion
+129. gba gameboy | bucket: Broad Expansion | rule: ai_broad_expansion
+130. gameboy games | bucket: Broad Expansion | rule: ai_broad_expansion
+131. console retrô | bucket: Broad Expansion | rule: ai_broad_expansion
+132. retro rewind store | bucket: Style Keywords | rule: ai_style
+133. console portátil | bucket: Broad Expansion | rule: ai_broad_expansion
+134. originals | bucket: Broad Expansion | rule: ai_broad_expansion
+135. force simulator | bucket: Broad Expansion | rule: ai_broad_expansion
+136. gamepad for tv | bucket: Feature Keywords | rule: ai_feature
+137. gamepad games | bucket: Broad Expansion | rule: ai_broad_expansion
+138. game emulator | bucket: Broad Expansion | rule: ai_broad_expansion
+139. retro game emulator | bucket: Style Keywords | rule: ai_style
+140. console de jogos retro | bucket: Style Keywords | rule: ai_style
+141. game emulator free | bucket: Broad Expansion | rule: ai_broad_expansion
+142. emulador retro64 | bucket: Feature Keywords | rule: ai_feature
+143. retro game 90s | bucket: Style Keywords | rule: ai_style
+144. game emulators for android | bucket: Broad Expansion | rule: ai_broad_expansion
+145. emulator gameboy | bucket: Feature Keywords | rule: ai_feature
+146. retro game 64 | bucket: Style Keywords | rule: ai_style
+147. gameboy jogos retro | bucket: Broad Expansion | rule: ai_broad_expansion
+148. retro games arcade | bucket: Style Keywords | rule: ai_style
+149. emulador de juegos | bucket: Broad Expansion | rule: ai_broad_expansion
+150. games emulator for android | bucket: Broad Expansion | rule: ai_broad_expansion
+151. emulador de gba retrô | bucket: Feature Keywords | rule: ai_feature
+152. retro game center | bucket: Style Keywords | rule: ai_style
+153. emulador de videogame | bucket: Broad Expansion | rule: ai_broad_expansion
+154. gba retro gaming | bucket: Broad Expansion | rule: ai_broad_expansion
+155. emulador gba retrô | bucket: Feature Keywords | rule: ai_feature
+156. emulador gba retro | bucket: Feature Keywords | rule: ai_feature
+157. emulador de consoles | bucket: Broad Expansion | rule: ai_broad_expansion
+158. retro game arcade | bucket: Style Keywords | rule: ai_style
+159. gba emulador retro | bucket: Feature Keywords | rule: ai_feature
+160. gameboy emulador | bucket: Feature Keywords | rule: ai_feature
+161. gba game emulator free | bucket: Feature Keywords | rule: ai_feature
+162. emulador de game boy grátis | bucket: Feature Keywords | rule: ai_feature
+163. gba emulador retro console | bucket: Feature Keywords | rule: ai_feature
+164. emulador de jogos de gba | bucket: Feature Keywords | rule: ai_feature
+165. emulador gba | bucket: Feature Keywords | rule: ai_feature
+166. emulador gameboy gratis | bucket: Feature Keywords | rule: ai_feature
+167. game boy emulatdor | bucket: Broad Expansion | rule: ai_broad_expansion
+168. retro arcade games | bucket: Style Keywords | rule: ai_style
+169. emulador de jogo classico | bucket: Style Keywords | rule: ai_style
+170. emulador gameboy grátis | bucket: Feature Keywords | rule: ai_feature
+171. emulador gbc | bucket: Feature Keywords | rule: ai_feature
+172. gba emulator | bucket: Feature Keywords | rule: ai_feature
+173. jogos retro estrategia | bucket: Style Keywords | rule: ai_style
+174. jogos game boy | bucket: Broad Expansion | rule: ai_broad_expansion
+175. game boy jogos | bucket: Broad Expansion | rule: ai_broad_expansion
+176. emulador n64 | bucket: Feature Keywords | rule: ai_feature
+177. emulador de n64 | bucket: Feature Keywords | rule: ai_feature
+178. n64 emulator | bucket: Feature Keywords | rule: ai_feature
+179. gbc emulador | bucket: Feature Keywords | rule: ai_feature
+180. gbc emulatore | bucket: Feature Keywords | rule: ai_feature
+181. emulador de nes | bucket: Feature Keywords | rule: ai_feature
+182. emulador game boy | bucket: Feature Keywords | rule: ai_feature
+183. nes retro | bucket: Broad Expansion | rule: ai_broad_expansion
+184. nes emulador | bucket: Feature Keywords | rule: ai_feature
+185. emulador super nes | bucket: Feature Keywords | rule: ai_feature
+186. emulador de gbc | bucket: Feature Keywords | rule: ai_feature
+187. gba games | bucket: Broad Expansion | rule: ai_broad_expansion
+188. snes emulator | bucket: Feature Keywords | rule: ai_feature
+189. jogos de acrade | bucket: Broad Expansion | rule: ai_broad_expansion
+190. jogar arcade | bucket: Broad Expansion | rule: ai_broad_expansion
+191. old games free | bucket: Broad Expansion | rule: ai_broad_expansion
+192. free games arcade | bucket: Broad Expansion | rule: ai_broad_expansion
+193. arcade de jogos | bucket: Broad Expansion | rule: ai_broad_expansion
+194. jogo do fliperama | bucket: Broad Expansion | rule: ai_broad_expansion
+195. jogabilidade clássica | bucket: Style Keywords | rule: ai_style
+196. salvar jogos clássicos | bucket: Style Keywords | rule: ai_style
+197. 80 s arcade games | bucket: Broad Expansion | rule: ai_broad_expansion
+198. jogo do arcade | bucket: Broad Expansion | rule: ai_broad_expansion
+199. jogos antigos gratis | bucket: Style Keywords | rule: ai_style
+200. fliperama de jogos | bucket: Broad Expansion | rule: ai_broad_expansion
+
+BATCH 2 KEYWORDS:
+1. jogo de arcada | bucket: Broad Expansion | rule: ai_broad_expansion
+2. jogos no fliperama | bucket: Broad Expansion | rule: ai_broad_expansion
+3. jogos de gba | bucket: Broad Expansion | rule: ai_broad_expansion
+4. jogo gbc emulador | bucket: Feature Keywords | rule: ai_feature
+5. emulador avancado | bucket: Broad Expansion | rule: ai_broad_expansion
+6. boy gba emulator | bucket: Feature Keywords | rule: ai_feature
+7. leading gba emulators | bucket: Feature Keywords | rule: ai_feature
+8. super emulator | bucket: Broad Expansion | rule: ai_broad_expansion
+9. featured gba emulator | bucket: Feature Keywords | rule: ai_feature
+10. configuração do emulador gba | bucket: Feature Keywords | rule: ai_feature
+11. emulador avançado | bucket: Broad Expansion | rule: ai_broad_expansion
+12. emulador gba game | bucket: Feature Keywords | rule: ai_feature
+13. emulador de jogo n64 | bucket: Feature Keywords | rule: ai_feature
+14. emulador de game boy | bucket: Feature Keywords | rule: ai_feature
+15. coleção gba | bucket: Feature Keywords | rule: ai_feature
+16. emulador de game boy advance | bucket: Feature Keywords | rule: ai_feature
+17. emulador de gba | bucket: Feature Keywords | rule: ai_feature
+18. emulator gba | bucket: Feature Keywords | rule: ai_feature
+19. game boy advance emulator | bucket: Feature Keywords | rule: ai_feature
+20. gba game boy | bucket: Broad Expansion | rule: ai_broad_expansion
+21. leading gba | bucket: Broad Expansion | rule: ai_broad_expansion
+22. colecao gba | bucket: Feature Keywords | rule: ai_feature
+23. console gba | bucket: Broad Expansion | rule: ai_broad_expansion
+24. controle de gba | bucket: Feature Keywords | rule: ai_feature
+25. controle gba | bucket: Feature Keywords | rule: ai_feature
+26. emulador gba rápido | bucket: Feature Keywords | rule: ai_feature
+27. featured gba | bucket: Broad Expansion | rule: ai_broad_expansion
+28. gba boy | bucket: Broad Expansion | rule: ai_broad_expansion
+29. gba clássico | bucket: Style Keywords | rule: ai_style
+30. gba rápido | bucket: Broad Expansion | rule: ai_broad_expansion
+31. jogar gba jogos | bucket: Feature Keywords | rule: ai_feature
+32. emulador gameboy | bucket: Feature Keywords | rule: ai_feature
+33. emulador gameboy advance | bucket: Feature Keywords | rule: ai_feature

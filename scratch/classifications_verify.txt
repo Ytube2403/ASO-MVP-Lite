@@ -1,0 +1,445 @@
+us_en_suitability_batch_1	bit handhelds	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	game retro	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	games retro	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	retro game	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	emulator gbr retro	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	gameboy emulator retro games	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	gbr game emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	reto games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	retro games emulator gba	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	gameboy emulator retro game	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	console game retro	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	gb emulator retro	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	retro console games on android	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	retro game app	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gameboy retro	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	games retro game	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	games game retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba retro games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	gameboy retro games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	retro game games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	play retro games on android	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games game	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gameboy retro game	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	all retro games in one	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	emulator gbretro	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	emulator retro games arcade	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	vintage games on android	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba emulator 90s retro games	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	game retro hub	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	play retro games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	play classic games on android	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games collection	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	emulator gba retro games	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	game emulator gba retro	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	roms emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games gba	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	gbr retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	emulator online gameboy	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro game retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	real retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	fast emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gameboy emulator with games	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	game games retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro gameboy emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	classic game arcade emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	retro gaming collection	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	play old retro games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	classic game hub emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	emulador gameboy gratis	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	emulator games arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro game console hdmi	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	retro game library	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro gba games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	gba retro game emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro game center	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro game and classics	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro game video	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	nes classic games emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	arcade emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	classic console game roms	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	emu nes games	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	emulator gameboy games	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	game boy game emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	play retro console games	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	retro game console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	game gear emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	90s retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	arcade retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	classic games library emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	one emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	retro games library emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	gameboy emulator classic games	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro arcade emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	games gameboy emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	emulator gbretro games	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	retro gaming on mobile	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	video game retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games 99 in 1	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro gaming console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	gba retro game	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	gba emulator retro game	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	gba emulator retro gameboy	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro gaming fun	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gameboy retro collection	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	nostalgia retro game console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	classic retro game controller	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	emulator gameboy	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro gba emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro video game controller	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	game gameboy emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	bogba emulator retro	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	emulator games for gameboy	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro gamer lite	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	portable retro game player	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gameboy emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	handheld retro game system	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	retro emulator touch layout	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_1	classic game boy games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	classic gameboy emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	classic 90s games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba retro	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	gba retro emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	nostalgia emulator games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba retro games arcade	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	emulator game boy	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	gameboy with emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	retro arcade game controller	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	games like game retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	old retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games new	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	classic retro game	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	emu game	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba games emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	play retro	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	retro games offline	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	retro game arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro arcade game console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_1	game gba emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	gba game emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	gbc emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	old games from the 1990s	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	game boy advance gba emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	arcade retro game	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba gaming	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba controller	Eligible	ai_specific_feature	Feature query with a clear emulator or console anchor.
+us_en_suitability_batch_1	90s games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gamehub	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	game console	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	gba classic game	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	game hub	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	games retro new	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	mp5 game	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	old games nostalgia	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	old retro gaem	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	game boy	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	retro arcade games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro old arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	arcade retro gaem	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro new games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	arcade retro old	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	old school games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	classic 8 bit retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	games bew retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro active games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gaem retro old	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	90s retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	8 bit retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	classic retro arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro old gaem	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	retro arcade	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	nes games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	retro	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	retro gaem arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	arcade classic games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	gaem arcade retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro offline games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	classic arcade games free	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	arcade old retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	classic arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	classic arcade games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_1	bit retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	cn arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gameboy gba emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	game boy color emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_1	best games for gba	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	bonus emulators	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro games bew	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro video game	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro nes games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	retro arcade gaem	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro arcade old	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gaem retro arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	bew games retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	old retro arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro game collector	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gba snes nes	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro rewind video	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	delivery boy game	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	handsome boy	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	pizza match	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	retro rewind store	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	world pizza	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	console play	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	escape run away boy	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	n64 game	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_1	retro sandbox	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro replay video	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	retro style games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	juegos clasicos	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	500 games in one	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	super boy	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	fly guy	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	be my	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	eggshells	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	retro nostalgia	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_1	clásicos	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_1	gaming rgb	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	brick game retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	games console	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	arcade centre	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	retro flight	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	arcade collection	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	friends emulator	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	gba ds	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	math ds	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	2ds	Research Only	ai_wrong_app_type	Targets 2DS hardware console which is part of 3DS family and not supported.
+us_en_suitability_batch_2	ds emulator gba	Eligible	ai_specific_core_intent	Directly targets NDS/DS emulator, matching the app's core positioning.
+us_en_suitability_batch_2	emulator gba ds	Eligible	ai_specific_core_intent	Directly targets NDS/DS emulator, matching the app's core positioning.
+us_en_suitability_batch_2	kart ds	Research Only	ai_off_core_query	Unrelated or off-core game title/query lacking emulator relevance.
+us_en_suitability_batch_2	emulator ds gba	Eligible	ai_specific_core_intent	Directly targets NDS/DS emulator, matching the app's core positioning.
+us_en_suitability_batch_2	d s	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	juegos de cias	Research Only	ai_wrong_app_type	CIA files are for Nintendo 3DS, which is not supported by this emulator.
+us_en_suitability_batch_2	ds game	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	ds games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	super emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	ds3 emulator	Research Only	ai_wrong_app_type	Targets DS3/unsupported console query.
+us_en_suitability_batch_2	emulates	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	custom ds	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	dsf ds	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	ds dsf	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	simple emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	classic handheld	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	fds ds	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	android gameboy	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	super res	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	gba nes n64	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	nds64 emulator	Eligible	ai_specific_core_intent	Directly targets NDS/DS emulator, matching the app's core positioning.
+us_en_suitability_batch_2	emulator 8bit 8 bit	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	nes emulator gba	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	8bit ds	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	sps ips roms	Research Only	ai_feature_only_low_acquisition	ROM patching or technical setting/file format query with low store acquisition intent.
+us_en_suitability_batch_2	convertor emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	duck retro nostalgia	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	classic plus emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_2	emulator effects	Research Only	ai_feature_only_low_acquisition	Technical shader or emulator graphical setting query with low store acquisition intent.
+us_en_suitability_batch_2	emulator modern	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	lite games emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	emulator features	Research Only	ai_feature_only_low_acquisition	Technical shader or emulator graphical setting query with low store acquisition intent.
+us_en_suitability_batch_2	snes n64 gba	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	ips roms	Research Only	ai_feature_only_low_acquisition	ROM patching or technical setting/file format query with low store acquisition intent.
+us_en_suitability_batch_2	emulator history	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	emulator graphic	Research Only	ai_feature_only_low_acquisition	Technical shader or emulator graphical setting query with low store acquisition intent.
+us_en_suitability_batch_2	android emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	boy advance emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_2	retr gba	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	zen game boy	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	gba accessories	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	ip emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gbc	Eligible	ai_supported_category_intent	Supported retro console core name, which is relevant category traffic.
+us_en_suitability_batch_2	atari games	Research Only	ai_wrong_app_type	Targets Atari consoles, which are not supported by this emulator.
+us_en_suitability_batch_2	rewind retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro classic games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro offline	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	classic games all in 1	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	fast display	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	games 80s	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	game 8 bit	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro adventure	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	arcade classics	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	phone emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	1980s retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	my arcade center	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gameshark	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	super emulator retro	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_2	console quality	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	cheats pro app	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gba library	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	old games from the 2000	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	classic 80s games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_2	old games from the 2015	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	emu ips	Research Only	ai_feature_only_low_acquisition	ROM patching or technical setting/file format query with low store acquisition intent.
+us_en_suitability_batch_2	rewinding	Research Only	ai_feature_only_low_acquisition	ROM patching or technical setting/file format query with low store acquisition intent.
+us_en_suitability_batch_2	atari 7800	Research Only	ai_wrong_app_type	Targets Atari consoles, which are not supported by this emulator.
+us_en_suitability_batch_2	retro old games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro world	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	arcade classic	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	terminal emulator	Research Only	ai_wrong_app_type	Terminal emulator is a sysadmin/developer utility, not a retro console game emulator.
+us_en_suitability_batch_2	8bit retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	console games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	classic origin	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	video game wiki	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	old gamez	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	modern classics	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	classic atari games	Research Only	ai_wrong_app_type	Targets Atari consoles, which are not supported by this emulator.
+us_en_suitability_batch_2	80 s games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	1980s arcade games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	1985 games all in one	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	1980s games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	80 arcade games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	nostalgia	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_2	bit boy	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	old boy	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	boyzone all songs offline	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	handheld	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_2	nes offline	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	500 in 1 games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	nes classic	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	80s arcade	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	old games from the 1980s	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	8bit games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	ds lite	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	2d retro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	pro emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	nds 64	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	90s	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_2	gba classic	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gameboy advance	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	games 64	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gba emulator play	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	visual boy advance emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_2	game boy gba emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	play retro arcade games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	portable emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	provenance emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro arcade games for free	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro boy	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro classic arcade collection	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro classic console controller	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	retro console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	retro console player	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	retro console player console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	retro emu fast forward	Eligible	ai_specific_feature	Feature query with a clear emulator or console anchor.
+us_en_suitability_batch_2	retro emu skins	Eligible	ai_specific_feature	Feature query with a clear emulator or console anchor.
+us_en_suitability_batch_2	retro game controller mapper	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro game emu 8bit	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro game value	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro gba	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	retro handheld	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	retro handheld console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	retro handheld gaming	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	retro pocket boy advance	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro pocket game boy	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	retro pocket games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro pro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro replay	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro video games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	retro64 games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	rumble	Research Only	ai_feature_only_low_acquisition	ROM patching or technical setting/file format query with low store acquisition intent.
+us_en_suitability_batch_2	snes emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	snes gba nes	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	super nes emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	game retro games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gameboy advance gbc emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gameboy classic games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gameboy color emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gameboy emulator free	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gameboy gba	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gamepad mapper emulator	Eligible	ai_specific_feature	Feature query with a clear emulator or console anchor.
+us_en_suitability_batch_2	gamerboy	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	games gba	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gaming console	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gaming platforms	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gba advance emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba and gbc emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba android	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gba collection	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba console	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gba console games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba emulator android	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator console	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator controller	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator for android	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator free	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator games download	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator roms	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator with games included	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba emulator with roms	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gba games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba games library manager	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba nes snes	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gba player	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba retro game advance	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba retro game advance free	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba retro game player	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba retro gaming	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gba snes	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gbc emulator for android	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gbc game	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	gbc game emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	gbc pro	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	gbã emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	i games	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	igames	Research Only	ai_off_core_query	Unrelated or off-core search query with no relevant emulator or console intent.
+us_en_suitability_batch_2	master system emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	my gameboy	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	my retro gameboy	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	n64 game emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	neo geo emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	nes emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	nes game emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_2	nes gba snes	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	nes retro	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_2	old retro arcade games	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_2	pc emulator	Research Only	ai_wrong_app_type	Targets PC/desktop emulation platforms rather than mobile handheld game emulators.
+us_en_suitability_batch_2	play classic 80s arcade games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_2	play classic 90s console games	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_2	play classic console games	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_3	play classic handheld games	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_3	play gameboy color games	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_3	64 bit console	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	8 bit emulator game boy	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	8bit 8 bit emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	8bit emulator 8 bit	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	awesome game boy advance	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_3	best retro game	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	boy emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_3	boy gba	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	classic 16 bit games	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	classic game organizer	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	classic gameboy emulator gba	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	classic handheld game console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_3	classic handheld game player	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_3	classic super console	Eligible	ai_supported_category_intent	Targets retro handheld or console platform category traffic.
+us_en_suitability_batch_3	classic video game player	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	console	Research Only	ai_broad_head_term	Broad head term or generic category phrase with no specific emulator/console anchor.
+us_en_suitability_batch_3	console gaming	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	console simulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	custom skins retro emulator	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_3	download gba emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	dreamcast	Research Only	ai_wrong_app_type	Targets Dreamcast console, which is not supported by this emulator.
+us_en_suitability_batch_3	emu game boy advance	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	emu gameboy classic	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	emu snes classic	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	emulador de gba android	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	emulate gaming consoles	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	emulation gameboy	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	emulator 36 powerful	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	emulator 8 bit 8bit	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	emulator classic game console	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_3	emulator games enjoy	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	emulator gba	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	emulator load state retro	Eligible	ai_supported_category_intent	Targets retro or classic emulator, matching the app's secondary positioning.
+us_en_suitability_batch_3	emulator modern adventure	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	emulator shaders	Research Only	ai_feature_only_low_acquisition	Technical shader or emulator graphical setting query with low store acquisition intent.
+us_en_suitability_batch_3	fc emulator	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.
+us_en_suitability_batch_3	game boy 8 bit emulator	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	game boy advance collection	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_3	game boy classic roms	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_3	game boy color games roms	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_3	game boy console	Eligible	ai_supported_category_intent	Targets games, ROMs, or library for a supported console core.
+us_en_suitability_batch_3	game boy emulator free android	Eligible	ai_supported_category_intent	Targets emulator for a supported retro console core.
+us_en_suitability_batch_3	game console handheld	Research Only	ai_weak_app_anchor	Vague or weak query with insufficient acquisition intent for this app.

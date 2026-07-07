@@ -43,7 +43,7 @@ When you open the workspace in VS Code, `.vscode/extensions.json` recommends the
 
 ## 3. Fresh Installation
 
-Open PowerShell at the `ASO-MVP-Lite` folder:
+Open PowerShell at the `ASO-MVP` folder:
 
 ```powershell
 python --version
@@ -87,7 +87,7 @@ The test suite should finish with `OK` and no Snowball `skipped` line.
 
 ## 6. Agentic Cache And English Gloss
 
-Lite does not translate keywords over the network during runtime. Runners only read the existing `EN` column in the CSV or `AIEnglishGloss` already warmed into `.cache/agentic_keyword_analysis.sqlite3` by Antigravity subagents.
+ASO-MVP does not translate keywords over the network during runtime. Runners only read the existing `EN` column in the CSV or `AIEnglishGloss` already warmed into `.cache/agentic_keyword_analysis.sqlite3` by Antigravity subagents.
 
 If a non-English keyword is missing `english_gloss`, the pipeline fails fast before scoring. Run `tools/warm_cache_helper.py find-misses -> prepare-batches -> save-results -> verify-cache` before the real pipeline run.
 
@@ -106,7 +106,7 @@ gh auth status
 
 ## 8. Smoke-Test The Pipeline
 
-From the `ASO-MVP-Lite` folder:
+From the `ASO-MVP` folder:
 
 ```powershell
 python run_aso_filter.py --csv C:\path\to\Pranky_US_EN.csv
